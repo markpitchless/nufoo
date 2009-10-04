@@ -2,6 +2,7 @@ bin/nufoo
 Build.PL
 Changes
 lib/NuFoo.pm
+lib/NuFoo/Builder.pm
 lib/NuFoo/Cmd.pm
 MANIFEST
 README
