@@ -11,7 +11,7 @@ Version 0.01
 =cut
 
 our $VERSION = '0.01';
-
+use 5.010;
 use Moose;
 use MooseX::Method::Signatures;
 
@@ -19,12 +19,24 @@ extends 'NuFoo';
 
 with 'MooseX::Getopt';
 
+# This activates use of Getopt::Long::Descriptive for usage (along with
+# _usage_format below) to give the --help option.
+# It is a bit restrictive, so should move to Pod::Usage at some point.
 has help => ( is => 'rw', isa => 'Bool',
     documentation => "Display help message" );
 
+sub _usage_format {
+    return "usage: %c [OPTIONS] [BUILDER [BUILDER_OPTIONS]]";
+}
+
+before new_with_options => sub {
+    Getopt::Long::Configure('pass_through'); 
+};
+
 method run() {
     my @argv = @{$self->extra_argv};
-    my $name = shift @argv || die "No builder name";
+    my $name = shift @argv;
+    die "No builder name" if !$name || $name =~ m/^-/;
 }
 
 1;
