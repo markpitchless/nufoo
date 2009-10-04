@@ -1,8 +1,5 @@
 package NuFoo;
 
-use warnings;
-use strict;
-
 =head1 NAME
 
 NuFoo - Developer tool for creating new boilerplace files using a set of builder modules.
@@ -15,6 +12,11 @@ Version 0.01
 
 our $VERSION = '0.01';
 
+use Moose;
+
+
+1;
+__END__
 
 =head1 SYNOPSIS
 
@@ -84,5 +86,3 @@ See http://dev.perl.org/licenses/ for more information.
 
 
 =cut
-
-1; # End of NuFoo
