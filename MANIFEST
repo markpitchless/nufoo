@@ -1,8 +1,10 @@
+bin/nufoo
 Build.PL
 Changes
+lib/NuFoo.pm
+lib/NuFoo/Cmd.pm
 MANIFEST
 README
-lib/NuFoo.pm
 t/00-load.t
 t/pod-coverage.t
 t/pod.t
