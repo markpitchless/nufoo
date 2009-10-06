@@ -13,7 +13,39 @@ Version 0.01
 our $VERSION = '0.01';
 
 use Moose;
+use MooseX::Method::Signatures;
 
+has include_path => (
+    is         => 'rw',
+    isa        => 'ArrayRef',
+    lazy_build => 1,
+    auto_deref => 1
+);
+
+method _build_include_path () {
+    return [
+        "./nufoo",
+        "./.nufoo",
+        "$ENV{HOME}/.nufoo",
+        '/usr/local/share/nufoo',
+    ];
+}
+
+method load_builder (Str $name) {
+    local @INC = @INC;
+    unshift @INC, $self->include_path;
+    my $class = $self->builder_name_to_class($name);
+    eval "use $class";
+    return undef if $@ =~ m/^Can't locate .*? in \@INC/;
+    die $@ if $@;
+    return $class;
+}
+
+method builder_name_to_class($class: Str $name) {
+    $name =~ s/\./::/g;
+    $name =~ s/\//::/g;
+    return "NuFoo::$name";
+}
 
 1;
 __END__
@@ -28,7 +60,37 @@ interface, L<nufoo>:
 
 =head1 DESCRIPTION
 
+=head1 ATTRIBUTES
+
+=head2 include_path
+
+Array of directories to search for builders in.
+
 =head1 METHODS 
+
+=head2 load_builder
+
+ load_builder( Str $name );
+
+Load the builder given by name, returing the builders class name if loaded.
+Returns undef if the builder is not found and throws an error if the builder
+fails to load.
+
+Builders are searched for in the normal perl include path as well as the
+L<include_path> attrib on the NuFoo object.
+
+=head2 builder_name_to_class
+
+ builder_name_to_class( Str $name );
+
+Return the class name for the builder name given. Builder names can be given
+using . or :: or / as a seperator. The name is additionally prefixed with
+NuFoo:: to keep them all in a namespace out of the way of the rest of perl.
+e.g.
+
+ Perl.Moose.Class -> NuFoo::Perl::Moose::Class
+ NuFoo.Builder    -> NuFoo::NuFoo::Builder
+ HTML/Page        -> NuFoo::HTML::Page
 
 =head1 AUTHOR
 
