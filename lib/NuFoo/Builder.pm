@@ -21,6 +21,14 @@ before new_with_options => sub {
     Getopt::Long::Configure('no_pass_through'); 
 };
 
+# Override method from the role to show the builder name in the usage.
+sub _usage_format {
+    my $proto = shift;
+    my $class = ref $proto || $proto;
+    my $name  = NuFoo->builder_class_to_name($class);
+    return "usage: %c $name OPTIONS";
+}
+
 method build() {
     my $class = blessed $self;
     confess "method build is abstract, $class must impliment";

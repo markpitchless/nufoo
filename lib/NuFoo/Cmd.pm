@@ -37,6 +37,14 @@ method run() {
     my @argv = @{$self->extra_argv};
     my $name = shift @argv;
     die "No builder name" if !$name || $name =~ m/^-/;
+
+    my $builder_class = $self->load_builder( $name );
+    die "Builder $name not found." if !$builder_class;
+
+    local @ARGV = @argv;
+    my $builder = $builder_class->new_with_options;
+
+    $builder->build;
 }
 
 1;

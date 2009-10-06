@@ -47,6 +47,12 @@ method builder_name_to_class($class: Str $name) {
     return "NuFoo::$name";
 }
 
+method builder_class_to_name($class: Str $name) {
+    $name =~ s/^NuFoo:://;
+    $name =~ s/::/\./g;
+    return $name;
+}
+
 1;
 __END__
 
