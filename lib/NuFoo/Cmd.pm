@@ -25,6 +25,14 @@ with 'MooseX::Getopt';
 has help => ( is => 'rw', isa => 'Bool',
     documentation => "Display help message" );
 
+has include => (
+    is            => 'rw',
+    isa           => 'ArrayRef',
+    auto_deref    => 1,
+    predicate     => 'has_include',
+    documentation => qq{Addition directories to search for builders. Give
+    mutiple directories as multiple options.} );
+
 sub _usage_format {
     return "usage: %c [OPTIONS] [BUILDER [BUILDER_OPTIONS]]";
 }
@@ -35,11 +43,17 @@ before new_with_options => sub {
 
 method run() {
     my @argv = @{$self->extra_argv};
+
+    if ( $self->has_include) {
+        $self->include_path( [ $self->include, $self->include_path ] );
+    }
+
     my $name = shift @argv;
     die "No builder name" if !$name || $name =~ m/^-/;
 
     my $builder_class = $self->load_builder( $name );
-    die "Builder $name not found." if !$builder_class;
+    die "Builder $name not found. (Searching: ".join(' ',$self->include_path).")"
+        if !$builder_class;
 
     local @ARGV = @argv;
     my $builder = $builder_class->new_with_options;
