@@ -12,6 +12,7 @@ Version 0.01
 
 our $VERSION = '0.01';
 use 5.010;
+use File::Spec::Functions qw(rel2abs);
 use Moose;
 use MooseX::Method::Signatures;
 
@@ -27,6 +28,15 @@ sub _usage_format {
     my $class = ref $proto || $proto;
     my $name  = NuFoo->builder_class_to_name($class);
     return "usage: %c $name OPTIONS";
+}
+
+method home_dir {
+    my $class = blessed $self;
+    (my $inc_file = $class) =~ s/::/\//g;
+    $inc_file .= ".pm";
+    my $file  = $INC{$inc_file} || return undef; 
+    $file =~ s/\.pm$//;
+    return rel2abs($file);
 }
 
 method build() {
@@ -45,6 +55,13 @@ A builder does the actual work of generating files for the user. This is the
 base class all builders must be based on.
 
 =head1 METHODS 
+
+=head2 home_dir
+
+Return the home directory for this builder. This is the dir for resources such
+as template.
+
+Path returned as absolute path string.
 
 =head2 build 
 
