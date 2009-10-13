@@ -1,4 +1,4 @@
-package NuFoo::NuFoo::Hello::World;
+package NuFoo::NuFoo::Hello::World::Builder;
 
 use CLASS;
 use Moose;

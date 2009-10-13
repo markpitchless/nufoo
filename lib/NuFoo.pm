@@ -44,11 +44,12 @@ method load_builder (Str $name) {
 method builder_name_to_class($class: Str $name) {
     $name =~ s/\./::/g;
     $name =~ s/\//::/g;
-    return "NuFoo::$name";
+    return "NuFoo::$name\::Builder";
 }
 
 method builder_class_to_name($class: Str $name) {
     $name =~ s/^NuFoo:://;
+    $name =~ s/::Builder$//;
     $name =~ s/::/\./g;
     return $name;
 }

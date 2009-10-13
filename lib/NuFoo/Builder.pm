@@ -12,7 +12,7 @@ Version 0.01
 
 our $VERSION = '0.01';
 use 5.010;
-use File::Spec::Functions qw(rel2abs);
+use File::Spec::Functions qw(rel2abs splitpath);
 use Moose;
 use MooseX::Method::Signatures;
 
@@ -35,8 +35,8 @@ method home_dir {
     (my $inc_file = $class) =~ s/::/\//g;
     $inc_file .= ".pm";
     my $file  = $INC{$inc_file} || return undef; 
-    $file =~ s/\.pm$//;
-    return rel2abs($file);
+    my (undef, $dir, undef) = splitpath($file);
+    return rel2abs($dir);
 }
 
 method build() {

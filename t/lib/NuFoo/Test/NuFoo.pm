@@ -15,13 +15,16 @@ sub load_builder : Test(6) {
     
     ok !$nufoo->load_builder("Not.Found"), "Missing builder not found";
     
-    is $nufoo->load_builder("NuFoo.Hello.World"), "NuFoo::NuFoo::Hello::World",
+    is $nufoo->load_builder("NuFoo.Hello.World"),
+        "NuFoo::NuFoo::Hello::World::Builder",
         "NuFoo.Hello.World loaded";
 
-    is $nufoo->load_builder("NuFoo/Hello/World"), "NuFoo::NuFoo::Hello::World",
+    is $nufoo->load_builder("NuFoo/Hello/World"),
+        "NuFoo::NuFoo::Hello::World::Builder",
         "NuFoo/Hello/World loaded";
 
-    is $nufoo->load_builder("NuFoo::Hello::World"), "NuFoo::NuFoo::Hello::World",
+    is $nufoo->load_builder("NuFoo::Hello::World"),
+        "NuFoo::NuFoo::Hello::World::Builder",
         "NuFoo::Hello::World loaded";
 
     my $class = $nufoo->load_builder("NuFoo.Hello.World");

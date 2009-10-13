@@ -29,7 +29,7 @@ sub home_dir : Test(2) {
     
     # Load from a relative include path
     my $nufoo_rel = NuFoo->new( include_path => [abs2rel("$Bin/nufoo")] );
-    my $builder   = $nufoo_rel->load_builder("NuFoo.Hello.World2")->new();
+    $builder      = $nufoo_rel->load_builder("NuFoo.Hello.World2")->new();
     is $builder->home_dir, "$Bin/nufoo/NuFoo/NuFoo/Hello/World2",
         "home_dir - relative";
 }
