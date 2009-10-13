@@ -1,0 +1,23 @@
+package [% class_name %];
+
+=head1 NAME
+
+[% class_name %] - Builds...
+
+=cut
+
+use CLASS;
+use Moose;
+
+extends 'NuFoo::Builder';
+
+sub build {
+    my $self = shift;
+
+    # TODO - Add builder here
+}
+
+CLASS->meta->make_immutable;
+no moose;
+
+1;
