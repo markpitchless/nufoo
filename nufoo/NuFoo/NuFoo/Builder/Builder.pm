@@ -9,10 +9,10 @@ NuFoo::NuFoo::Builder::Builder - Create a new NuFoo builder.
 use CLASS;
 use Moose;
 use MooseX::Method::Signatures;
+use Log::Any qw($log);
 use Template;
 use File::Path qw(make_path);
 use File::Spec::Functions qw(splitpath);
-
 
 extends 'NuFoo::Builder';
 
@@ -67,16 +67,16 @@ method write_file (Str $file, Str|ScalarRef $content) {
     unless ( -d $dir ) {
         my @created = make_path($dir);
         foreach (@created) {
-            print "Created directory $_\n";
+            $log->info( "Created directory $_");
         }
     }
     if ( -f $file ) {
-        print "Skipped $file : Already exists\n";
+        $log->warning( "Skipped $file : Already exists" );
     }
     else {
         open my $out, ">", $file or die "Failed to open $file to write : $!"; 
         print $out (ref $content ? $$content : $content);
-        print "Created file $file\n";
+        $log->info( "Created file $file" );
     }
 } 
 

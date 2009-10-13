@@ -14,6 +14,8 @@ our $VERSION = '0.01';
 use 5.010;
 use Moose;
 use MooseX::Method::Signatures;
+use Log::Any;
+use NuFoo::Cmd::Logger;
 
 extends 'NuFoo';
 
@@ -47,6 +49,8 @@ method run() {
     if ( $self->has_include) {
         $self->include_path( [ $self->include, $self->include_path ] );
     }
+
+    Log::Any->set_adapter('+NuFoo::Cmd::Logger');
 
     my $name = shift @argv;
     die "No builder name" if !$name || $name =~ m/^-/;
