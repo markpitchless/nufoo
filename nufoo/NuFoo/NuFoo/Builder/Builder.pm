@@ -65,18 +65,26 @@ sub build {
 method write_file (Str $file, Str|ScalarRef $content) {
     my (undef, $dir, $filename) = splitpath( $file );
     unless ( -d $dir ) {
-        my @created = make_path($dir);
-        foreach (@created) {
-            $log->info( "Created directory $_");
+        my @created = eval { make_path($dir) };
+        if ($@) {
+            $log->error("Failed creating '$dir' : $@");
+        }
+        else {
+            foreach (@created) {
+                $log->info( "Created directory '$_'");
+            }
         }
     }
     if ( -f $file ) {
-        $log->warning( "Skipped $file : Already exists" );
+        $log->warning( "Skipped '$file' : Already exists" );
     }
     else {
-        open my $out, ">", $file or die "Failed to open $file to write : $!"; 
+        open my $out, ">", $file or do {
+            $log->error( "Failed to open '$file' to write : $!" );
+            return;
+        };
         print $out (ref $content ? $$content : $content);
-        $log->info( "Created file $file" );
+        $log->info( "Created file '$file'" );
     }
 } 
 
