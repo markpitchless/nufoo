@@ -11,6 +11,9 @@ my $builder = Module::Build->new(
         'Moose'                      => 0,
         'MooseX::Getopt'             => 0,
         'MooseX::Method::Signatures' => 0,
+        'Template'   => 0,
+        'File::Spec' => 0,
+        'File::Path' => 0,
     },
     build_requires => {
         'Test::More' => 0,
