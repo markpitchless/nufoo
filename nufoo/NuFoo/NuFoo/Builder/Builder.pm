@@ -38,7 +38,7 @@ sub _build_class_name {
     my $self = shift;
     my $name = $self->name;
     $name =~ s/\./::/g;
-    return "NuFoo::$name";
+    return "NuFoo::$name\::Builder";
 }
 
 sub _build_tt {
