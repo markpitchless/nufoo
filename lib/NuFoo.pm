@@ -14,6 +14,7 @@ our $VERSION = '0.01';
 
 use Moose;
 use MooseX::Method::Signatures;
+use Log::Any qw($log);
 
 has include_path => (
     is         => 'rw',
@@ -33,6 +34,7 @@ method _build_include_path () {
 
 method load_builder (Str $name) {
     local @INC = @INC;
+    $log->debug("Loading $name from local INC=@INC");
     unshift @INC, $self->include_path;
     my $class = $self->builder_name_to_class($name);
     eval "use $class";

@@ -27,13 +27,18 @@ with 'MooseX::Getopt';
 has help => ( is => 'rw', isa => 'Bool',
     documentation => "Display help message" );
 
+has debug => ( is => 'rw', isa => 'Bool', default => 0,
+    documentation => "Output debugging messages." );
+
+has quiet => ( is => 'rw', isa => 'Bool', default => 0,
+    documentation => "Be quiet, only output errors messages." );
+
 has include => (
     is            => 'rw',
     isa           => 'ArrayRef',
     auto_deref    => 1,
     predicate     => 'has_include',
-    documentation => qq{Addition directories to search for builders. Give
-    mutiple directories as multiple options.} );
+    documentation => qq{Additional directories to search for builders. Give mutiple directories as multiple options.} );
 
 sub _usage_format {
     return "usage: %c [OPTIONS] [BUILDER [BUILDER_OPTIONS]]";
@@ -50,7 +55,11 @@ method run() {
         $self->include_path( [ $self->include, $self->include_path ] );
     }
 
-    Log::Any->set_adapter('+NuFoo::Cmd::Logger');
+    my $level;
+    $level = 'debug' if $self->debug;
+    $level = 'error' if $self->quiet;
+    $level ||= 'info';
+    Log::Any->set_adapter('+NuFoo::Cmd::Logger', level => $level);
 
     my $name = shift @argv;
     die "No builder name" if !$name || $name =~ m/^-/;

@@ -67,7 +67,8 @@ method write_file (Str $file, Str|ScalarRef $content) {
     unless ( -d $dir ) {
         my @created = eval { make_path($dir) };
         if ($@) {
-            $log->error("Failed creating '$dir' : $@");
+            (my $err = $@) =~ s/ at .*\.pm line \d+\n?//;
+            $log->error("Failed creating '$dir' : $err");
         }
         else {
             foreach (@created) {
