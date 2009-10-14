@@ -49,9 +49,7 @@ sub _build_tt {
     return $tt;
 }
 
-sub build {
-    my $self = shift;
-
+method build () {
     my $tt   = $self->tt;
     my $tmpl = "builder.tt";
     my $vars = $self->tt_vars;
@@ -59,6 +57,13 @@ sub build {
     $tt->process( $tmpl, $vars, \$out ) || die $tt->error, "\n";
 
     my $file = $self->class2file( $self->class_name );
+    foreach (qw/nufoo .nufoo/) {
+        if ( -d $_ ) {
+            $log->info("Using local nufoo directory '$_'");
+            $file = "$_/$file";
+            last;
+        }
+    }
     $self->write_file( $file, \$out );
 }
 
