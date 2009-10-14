@@ -3,6 +3,7 @@ use Carp qw(croak confess);
 use Log::Any::Util qw(make_method);
 use strict;
 use warnings;
+use Term::ANSIColor;
 use base qw(Log::Any::Adapter::Base);
 
 our $VERSION = '0.01';
@@ -13,10 +14,22 @@ our %LOG_LEVEL;
     %LOG_LEVEL = map { ($_ => $num++) } Log::Any->logging_methods;
 }
 
+our %LEVEL_COLOR = (
+    #debug     => ['blue'],
+    info      => ['green'],
+    notice    => ['green'],
+    warning   => ['yellow'],
+    error     => ['red'],
+    critical  => ['red'],
+    alert     => ['red'],
+    emergency => ['red'],
+);
+
 sub init {
     my ($self) = @_;
 
     $self->{level} ||= 'info';
+    $self->{use_color} = (-t STDOUT ? 1 : 0) if not defined $self->{use_color};
 
     confess 'must supply a valid level'
         unless exists $LOG_LEVEL{ $self->{level} };
@@ -32,7 +45,13 @@ foreach my $method ( Log::Any->logging_methods() ) {
     make_method( $method, sub {
         my ($self,$msg) = @_;
         return unless $self->$is_level;
-        print "$level\: $msg", "\n";
+        my $color = $self->{use_color} && $LEVEL_COLOR{$method};
+        if ( $color ) {
+            print colored $color, "$level\: $msg", "\n";
+        }
+        else {
+            print "$level\: $msg", "\n";
+        }
     });
 }
 
