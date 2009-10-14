@@ -28,6 +28,12 @@ has class_name => (
     documentation => qq{Class name of the builder. You do not normally set as it is derived from the name by default.},
 );
 
+has attributes => (
+    is            => "rw",
+    isa           => "ArrayRef",
+    documentation => qq{Add attributes to the new builder. Give more than once.},
+);
+
 has tt => ( is => "ro", isa => "Template", required => 1,
     traits  => ["NoGetopt"],
     lazy    => 1,

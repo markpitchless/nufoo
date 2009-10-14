@@ -11,6 +11,15 @@ use Moose;
 
 extends 'NuFoo::Builder';
 
+[%- FOREACH attr IN attributes %]
+has [% attr %] => (
+    is            => "rw",
+    isa           => "Str",
+    documentation => qq{},
+);
+
+[%- END %]
+
 sub build {
     my $self = shift;
 
