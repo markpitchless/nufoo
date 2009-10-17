@@ -11,8 +11,6 @@ use Moose;
 use MooseX::Method::Signatures;
 use Log::Any qw($log);
 use Template;
-use File::Path qw(make_path);
-use File::Spec::Functions qw(splitpath);
 
 extends 'NuFoo::Builder';
 
