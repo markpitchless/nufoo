@@ -73,33 +73,6 @@ method build () {
     $self->write_file( $file, \$out );
 }
 
-method write_file (Str $file, Str|ScalarRef $content) {
-    my (undef, $dir, $filename) = splitpath( $file );
-    unless ( -d $dir ) {
-        my @created = eval { make_path($dir) };
-        if ($@) {
-            (my $err = $@) =~ s/ at .*\.pm line \d+\n?//;
-            $log->error("Failed creating '$dir' : $err");
-        }
-        else {
-            foreach (@created) {
-                $log->info( "Created directory '$_'");
-            }
-        }
-    }
-    if ( -f $file ) {
-        $log->warning( "Skipped '$file' : Already exists" );
-    }
-    else {
-        open my $out, ">", $file or do {
-            $log->error( "Failed to open '$file' to write : $!" );
-            return;
-        };
-        print $out (ref $content ? $$content : $content);
-        $log->info( "Created file '$file'" );
-    }
-} 
-
 method class2file (Str $name) {
     $name =~ s/::/\//g;
     $name . ".pm";

@@ -15,8 +15,12 @@ use 5.010;
 use File::Spec::Functions qw(rel2abs splitpath);
 use Moose;
 use MooseX::Method::Signatures;
+use Log::Any qw($log);
 
 with 'MooseX::Getopt';
+
+has force => ( is => 'rw', isa => 'Bool', required => 1, default => 0,
+    documentation => qq{Overright existing files} );
 
 before new_with_options => sub {
     Getopt::Long::Configure('no_pass_through'); 
@@ -43,6 +47,37 @@ method build() {
     my $class = blessed $self;
     confess "method build is abstract, $class must impliment";
 }
+
+method write_file (Str $file, Str|ScalarRef $content, Bool :$force?) {
+    $force = $self->force if !defined $force;
+    my (undef, $dir, $filename) = splitpath( $file );
+
+    unless ( -d $dir ) {
+        my @created = eval { make_path($dir) };
+        if ($@) {
+            (my $err = $@) =~ s/ at .*\.pm line \d+\n?//;
+            $log->error("Failed creating '$dir' : $err");
+        }
+        else {
+            foreach (@created) {
+                $log->info( "Created directory '$_'");
+            }
+        }
+    }
+
+    my $exists = -f $file ? 1 : 0;
+    if ( $exists && !$force ) {
+        $log->warning( "Skipped '$file' : Already exists" );
+    }
+    else {
+        open my $out, ">", $file or do {
+            $log->error( "Failed to open '$file' to write : $!" );
+            return;
+        };
+        print $out (ref $content ? $$content : $content);
+        $log->info( ($exists ? "Over wrote" : "Created") . " file '$file'" );
+    }
+} 
 
 1;
 __END__
