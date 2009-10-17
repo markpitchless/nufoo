@@ -11,7 +11,7 @@ use Moose;
 use MooseX::Method::Signatures;
 use Log::Any qw($log);
 
-extends 'NuFoo::Builder';
+extends 'NuFoo::Core::Builder';
 
 with 'NuFoo::Core::Role::TT';
 
@@ -83,7 +83,7 @@ Builds L<Moose|Moose> classes.
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Builder>.
+L<NuFoo>, L<NuFoo::Core::Builder>.
 
 =head1 BUGS
 

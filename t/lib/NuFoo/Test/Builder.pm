@@ -17,7 +17,7 @@ sub construct : Test(2) {
     my $builder;
     lives_ok { $builder = $class->new() }
         "Can construct loaded builder NuFoo.Hello.World";
-    isa_ok $builder, "NuFoo::Builder";
+    isa_ok $builder, "NuFoo::Core::Builder";
 }
 
 sub home_dir : Test(2) {

@@ -64,7 +64,7 @@ __END__
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Builder>, L<Moose>, L<perl>.
+L<NuFoo>, L<NuFoo::Core::Builder>, L<Moose>, L<perl>.
 
 =head1 BUGS
 

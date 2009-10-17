@@ -9,7 +9,7 @@ package [% class_name %];
 use CLASS;
 use Moose;
 
-extends 'NuFoo::Builder';
+extends 'NuFoo::Core::Builder';
 
 [%- FOREACH attr IN attributes %]
 has [% attr %] => (
@@ -50,7 +50,7 @@ Builds...
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Builder>.
+L<NuFoo>, L<NuFoo::Core::Builder>.
 
 =head1 BUGS
 

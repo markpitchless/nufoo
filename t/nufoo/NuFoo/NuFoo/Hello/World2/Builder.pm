@@ -3,7 +3,7 @@ package NuFoo::NuFoo::Hello::World2::Builder;
 use CLASS;
 use Moose;
 
-extends 'NuFoo::Builder';
+extends 'NuFoo::Core::Builder';
 
 has who => ( is => "rw", isa => "Str", default => "World",
     documentation => qq{Who to say hello to.},

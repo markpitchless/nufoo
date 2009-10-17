@@ -1,8 +1,8 @@
-package NuFoo::Builder;
+package NuFoo::Core::Builder;
 
 =head1 NAME
 
-NuFoo::Builder - Base class for builders. 
+NuFoo::Core::Builder - Base class for builders. 
 
 =head1 VERSION
 
@@ -12,12 +12,11 @@ Version 0.01
 
 our $VERSION = '0.01';
 use 5.010;
-use File::Spec::Functions qw(rel2abs splitpath);
 use Moose;
 use MooseX::Method::Signatures;
 use Log::Any qw($log);
 use File::Path qw(make_path);
-use File::Spec::Functions qw(splitpath);
+use File::Spec::Functions qw(rel2abs splitpath);
 
 with 'MooseX::Getopt';
 

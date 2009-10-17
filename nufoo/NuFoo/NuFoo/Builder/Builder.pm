@@ -12,7 +12,7 @@ use MooseX::Method::Signatures;
 use Log::Any qw($log);
 use Template;
 
-extends 'NuFoo::Builder';
+extends 'NuFoo::Core::Builder';
 
 has name => ( is => "rw", isa => "Str", required => 1,
     documentation => qq{Name of the new builder},
