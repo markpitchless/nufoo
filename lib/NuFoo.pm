@@ -95,11 +95,13 @@ L<include_path> attrib on the NuFoo object.
 Return the class name for the builder name given. Builder names can be given
 using . or :: or / as a seperator. The name is additionally prefixed with
 NuFoo:: to keep them all in a namespace out of the way of the rest of perl.
+All Builders are called Builder. This is to make it easy to list all
+builders in the include path.
 e.g.
 
- Perl.Moose.Class -> NuFoo::Perl::Moose::Class
- NuFoo.Builder    -> NuFoo::NuFoo::Builder
- HTML/Page        -> NuFoo::HTML::Page
+ Perl.Moose.Class -> NuFoo::Perl::Moose::Class::Builder
+ NuFoo.Builder    -> NuFoo::NuFoo::Builder::Builder
+ HTML/Page        -> NuFoo::HTML::Page::Builder
 
 =head1 AUTHOR
 
