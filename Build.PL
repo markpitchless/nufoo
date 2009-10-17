@@ -9,6 +9,7 @@ my $builder = Module::Build->new(
     dist_version_from   => 'lib/NuFoo.pm',
     requires => {
         'Moose'                      => 0,
+        'MooseX::Types'              => 0,
         'MooseX::Getopt'             => 0,
         'MooseX::Method::Signatures' => 0,
         'File::Spec'      => 0,

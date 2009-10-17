@@ -8,10 +8,14 @@ NuFoo::Core::Types - The NuFoo types library.
 
 our $VERSION = '0.01';
 
-use Moose::Util::TypeConstraints;
+use MooseX::Types -declare => [qw(
+    PerlPackageName
+)];
 
-subtype 'PerlPackageName',
-    as 'Str',
+use MooseX::Types::Moose qw(Str);
+
+subtype PerlPackageName,
+    as Str,
     where { m/^\w+(::\w+)?$/ },
     message { "The string ($_) is not a valid package/class name" },
 ;
@@ -30,6 +34,8 @@ __END__
 =head1 TYPES
 
 =head2 PerlPackageName
+
+A Str that is a valid perl package/class name.
 
 =head1 ATTRIBUTES 
 

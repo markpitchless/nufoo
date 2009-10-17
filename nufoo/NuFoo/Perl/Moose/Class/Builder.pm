@@ -9,7 +9,7 @@ NuFoo::Perl::Moose::Class::Builder - Builds Moose classes.
 use CLASS;
 use Moose;
 use MooseX::Method::Signatures;
-use NuFoo::Core::Types;
+use NuFoo::Core::Types qw(PerlPackageName);
 use Log::Any qw($log);
 
 extends 'NuFoo::Core::Builder';
@@ -18,7 +18,7 @@ with 'NuFoo::Core::Role::TT';
 
 has class => (
     is            => "rw",
-    isa           => "PerlPackageName",
+    isa           => PerlPackageName,
     documentation => qq{The class name.},
 );
 
