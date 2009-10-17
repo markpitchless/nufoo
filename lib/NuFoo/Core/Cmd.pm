@@ -16,6 +16,7 @@ use Moose;
 use MooseX::Method::Signatures;
 use Log::Any;
 use NuFoo::Core::Cmd::Logger;
+use Log::Any qw($log);
 
 extends 'NuFoo';
 
@@ -68,10 +69,22 @@ method run() {
     die "Builder $name not found. (Searching: ".join(' ',$self->include_path).")"
         if !$builder_class;
 
-    local @ARGV = @argv;
-    my $builder = $builder_class->new_with_options;
-
-    $builder->build;
+    eval { 
+        local @ARGV = @argv;
+        my $builder = $builder_class->new_with_options;
+        $builder->build
+    };
+    if ($@) {
+        if ( $@ =~ m/Attribute \((\w+)\) does not pass the type constraint because: (.*?) at/ ) {
+            my $name = $1;
+            my $msg  = $2;
+            $log->error("Invalid '$name' : $msg");
+            # TODO pod2usage
+        }
+        else {
+            $log->error("Build failed: $@");
+        }
+    }
 }
 
 1;
