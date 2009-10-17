@@ -33,10 +33,10 @@ method _build_include_path () {
 }
 
 method load_builder (Str $name) {
-    local @INC = @INC;
-    $log->debug("Loading $name from local INC=@INC");
-    unshift @INC, $self->include_path;
     my $class = $self->builder_name_to_class($name);
+    local @INC = @INC;
+    unshift @INC, $self->include_path;
+    $log->debug("Loading $name as $class from local INC=@INC");
     eval "use $class";
     return undef if $@ =~ m/^Can't locate .*? in \@INC/;
     die $@ if $@;
