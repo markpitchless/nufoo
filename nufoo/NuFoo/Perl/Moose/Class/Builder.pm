@@ -9,7 +9,8 @@ NuFoo::Perl::Moose::Class::Builder - Builds Moose classes.
 use CLASS;
 use Moose;
 use MooseX::Method::Signatures;
-use NuFoo::Core::Types qw(PerlPackageName);
+use MooseX::Types::Moose qw( :all );
+use NuFoo::Core::Types qw( PerlPackageName PerlPackageList );
 use Log::Any qw($log);
 
 extends 'NuFoo::Core::Builder';
@@ -30,13 +31,13 @@ has has => (
 
 has extends => (
     is            => "rw",
-    isa           => "ArrayRef",
+    isa           => PerlPackageList,
     documentation => qq{Class names the new class extends. Multiple allowed.},
 );
 
 has with => (
     is            => "rw",
-    isa           => "ArrayRef",
+    isa           => PerlPackageList,
     documentation => qq{Roles this class does. Multiple allowed.},
 );
 

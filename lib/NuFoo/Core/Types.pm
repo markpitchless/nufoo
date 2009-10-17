@@ -10,14 +10,20 @@ our $VERSION = '0.01';
 
 use MooseX::Types -declare => [qw(
     PerlPackageName
+    PerlPackageList
 )];
 
-use MooseX::Types::Moose qw(Str);
+use MooseX::Types::Moose qw( :all );
 
 subtype PerlPackageName,
     as Str,
     where { m/^\w+(::\w+)?$/ },
     message { "The string ($_) is not a valid package/class name" },
+;
+
+subtype PerlPackageList,
+    as ArrayRef[PerlPackageName],
+    message { "There is an invalid package/class name in ".join(", ", @$_) },
 ;
 
 no Moose::Util::TypeConstraints;
