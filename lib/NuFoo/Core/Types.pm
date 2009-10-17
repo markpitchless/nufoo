@@ -27,9 +27,14 @@ __END__
 
 =head1 SYNOPSIS
 
- use NuFoo::Core::Types;
+ use Moose;
+ use NuFoo::Core::Types qw( PerlPackageName );
+
+ has class => ( is => 'rw', isa => PerlPackageName );
 
 =head1 DESCRIPTION
+
+The type library for L<NuFoo> using L<MooseX::Types>.
 
 =head1 TYPES
 
