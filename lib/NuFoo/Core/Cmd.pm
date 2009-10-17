@@ -1,8 +1,8 @@
-package NuFoo::Cmd;
+package NuFoo::Core::Cmd;
 
 =head1 NAME
 
-NuFoo::Cmd - Impliments the command line interface to NuFoo. 
+NuFoo::Core::Cmd - Impliments the command line interface to NuFoo. 
 
 =head1 VERSION
 
@@ -15,7 +15,7 @@ use 5.010;
 use Moose;
 use MooseX::Method::Signatures;
 use Log::Any;
-use NuFoo::Cmd::Logger;
+use NuFoo::Core::Cmd::Logger;
 
 extends 'NuFoo';
 
@@ -59,7 +59,7 @@ method run() {
     $level = 'debug' if $self->debug;
     $level = 'error' if $self->quiet;
     $level ||= 'info';
-    Log::Any->set_adapter('+NuFoo::Cmd::Logger', level => $level);
+    Log::Any->set_adapter('+NuFoo::Core::Cmd::Logger', level => $level);
 
     my $name = shift @argv;
     die "No builder name" if !$name || $name =~ m/^-/;
@@ -80,7 +80,7 @@ __END__
 =head1 SYNOPSIS
 
  #!/usr/bin/perl
- my $nufoo = NuFoo::Cmd->new_with_options;
+ my $nufoo = NuFoo::Core::Cmd->new_with_options;
  $nufoo->run;
 
 =head1 DESCRIPTION

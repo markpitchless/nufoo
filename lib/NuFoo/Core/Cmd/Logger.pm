@@ -1,4 +1,4 @@
-package NuFoo::Cmd::Logger;
+package NuFoo::Core::Cmd::Logger;
 use Carp qw(croak confess);
 use Log::Any::Util qw(make_method);
 use strict;
@@ -73,12 +73,12 @@ __END__
 
 =head1 NAME
 
-NuFoo::Cmd::Logger - A Log::Any screen logger.
+NuFoo::Core::Cmd::Logger - A Log::Any screen logger.
 
 =head1 SYNOPSIS
 
-    use NuFoo::Cmd::Logger;
-    Log::Any->set_adapter('+NuFoo::Cmd::Logger', level => $level);
+    use NuFoo::Core::Cmd::Logger;
+    Log::Any->set_adapter('+NuFoo::Core::Cmd::Logger', level => $level);
 
 =head1 DESCRIPTION
 
