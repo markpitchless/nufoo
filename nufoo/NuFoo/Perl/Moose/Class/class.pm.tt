@@ -19,10 +19,9 @@ with '[% with.join("', '") %]';
 
 [%- END %]
 [%- FOREACH attr IN has  %]
-has [% attr %] => (
-    is            => "rw",
-    isa           => "Str",
-    documentation => qq{},
+has [% attr.name %] => (
+    is  => "[% attr.is %]",
+    isa => "[% attr.isa %]",
 );
 
 [%- END %]
@@ -42,7 +41,7 @@ __END__
 =head1 ATTRIBUTES 
 
 [%- FOREACH attr IN has %]
-=head2 [% attr %]
+=head2 [% attr.name %]
 
 [%- END %]
 =head1 METHODS 

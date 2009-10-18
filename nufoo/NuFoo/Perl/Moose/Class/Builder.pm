@@ -10,7 +10,12 @@ use CLASS;
 use Moose;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
-use NuFoo::Core::Types qw( PerlPackageName PerlPackageList );
+use NuFoo::Core::Types qw(
+    PerlPackageName
+    PerlPackageList
+    PerlMooseAttributeSpec
+    PerlMooseAttributeSpecList
+);
 use Log::Any qw($log);
 
 extends 'NuFoo::Core::Builder';
@@ -25,7 +30,8 @@ has class => (
 
 has has => (
     is            => "rw",
-    isa           => "ArrayRef",
+    isa           => PerlMooseAttributeSpecList,
+    coerce        => 1,
     documentation => qq{Attributes for the class. Mutiple allowed.},
 );
 
@@ -65,7 +71,9 @@ __END__
 
 =head1 SYNOPSIS
 
- $ nufoo Perl.Moose.Class 
+ $ nufoo Perl.Moose.Class --class=Hello::World 
+ 
+ $ nufoo Perl.Moose.Class --class=My::Cmd --with=MooseX::Getopt --has=name --has=Bool:force 
 
 =head1 DESCRIPTION
 

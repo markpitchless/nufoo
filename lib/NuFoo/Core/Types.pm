@@ -9,11 +9,17 @@ NuFoo::Core::Types - The NuFoo types library.
 our $VERSION = '0.01';
 
 use MooseX::Types -declare => [qw(
+    ArrayRefOfStr
     PerlPackageName
     PerlPackageList
+    PerlMooseAttributeSpec
+    PerlMooseAttributeSpecList
 )];
 
 use MooseX::Types::Moose qw( :all );
+
+# Needed for defining deep coercion
+subtype ArrayRefOfStr, as ArrayRef[Str];
 
 subtype PerlPackageName,
     as Str,
@@ -24,6 +30,30 @@ subtype PerlPackageName,
 subtype PerlPackageList,
     as ArrayRef[PerlPackageName],
     message { "There is an invalid package/class name in ".join(", ", @$_) },
+;
+
+subtype PerlMooseAttributeSpec,
+    as HashRef,
+    where { defined $_->{name} && $_->{name} =~ m/^[A-Za-z_][A-Za-z0-9_]*$/ },
+    message { "Must have at least have a valid name" },
+;
+
+subtype PerlMooseAttributeSpecList, as ArrayRef[PerlMooseAttributeSpec];
+
+sub str_to_moose_attribute_spec {
+    my ($isa,$name) = $_[0] =~ m/(?:(\w+):)?(.*)/;
+    $isa ||= "Str";
+    return { name => $name, isa => $isa, is => "rw" };
+}
+
+coerce PerlMooseAttributeSpec,
+    from Str,
+    via { str_to_moose_attribute_spec($_); }
+;
+
+coerce PerlMooseAttributeSpecList,
+    from ArrayRefOfStr,
+    via { [ map { str_to_moose_attribute_spec($_); } @$_ ]; }
 ;
 
 no Moose::Util::TypeConstraints;
