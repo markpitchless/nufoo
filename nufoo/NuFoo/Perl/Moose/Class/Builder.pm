@@ -31,6 +31,7 @@ has class => (
 has has => (
     is            => "rw",
     isa           => PerlMooseAttributeSpecList,
+    default       => sub { [] },
     coerce        => 1,
     documentation => qq{Attributes for the class. Mutiple allowed.},
 );
@@ -38,12 +39,14 @@ has has => (
 has extends => (
     is            => "rw",
     isa           => PerlPackageList,
+    default       => sub { [] },
     documentation => qq{Class names the new class extends. Multiple allowed.},
 );
 
 has with => (
     is            => "rw",
     isa           => PerlPackageList,
+    default       => sub { [] },
     documentation => qq{Roles this class does. Multiple allowed.},
 );
 
@@ -73,21 +76,41 @@ __END__
 
  $ nufoo Perl.Moose.Class --class=Hello::World 
  
- $ nufoo Perl.Moose.Class --class=My::Cmd --with=MooseX::Getopt --has=name --has=Bool:force 
+ $ nufoo Perl.Moose.Class --class=Point --has=Int:x --has=Int:y
+ 
+ $ nufoo Perl.Moose.Class --class=Point3D --extends=Point --has=Int:z
 
+ $ nufoo Perl.Moose.Class --class=My::Cmd --with=MooseX::Getopt --has=Bool:force=1
+ 
 =head1 DESCRIPTION
 
 Builds L<Moose|Moose> classes.
 
 =head1 ATTRIBUTES 
 
-=head2 name
+=head2 class
+
+The package name for the new class.
 
 =head2 has
 
+List of attributes for the class. Each attribute is a hashref with a name
+attribute to name the attribute the rest of the keys corrisonde to the
+arguments passed to has when setting up a class.
+
+The attribute can also be given as a string of the form:
+
+ <type>:<name>=<default>
+
+ type and default are optional.
+
 =head2 extends
 
+List of classes this class extends.
+
 =head2 with
+
+List of roles this class consumes.
 
 =head1 METHODS 
 

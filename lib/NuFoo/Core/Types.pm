@@ -34,16 +34,25 @@ subtype PerlPackageList,
 
 subtype PerlMooseAttributeSpec,
     as HashRef,
-    where { defined $_->{name} && $_->{name} =~ m/^[A-Za-z_][A-Za-z0-9_]*$/ },
+    where { defined $_->{name} && $_->{name} =~ m/^[\w_][\w\d_]*$/ },
     message { "Must have at least have a valid name" },
 ;
 
 subtype PerlMooseAttributeSpecList, as ArrayRef[PerlMooseAttributeSpec];
 
 sub str_to_moose_attribute_spec {
-    my ($isa,$name) = $_[0] =~ m/(?:(\w+):)?(.*)/;
+    my ($isa,$name,$def) = $_[0] =~ m/
+        ^
+        (?:(\w+):)?   # Optional type \1
+        ([\w\d_]+)    # The attribute name \2
+        (?:=(.*))?    # Optional default \3
+        $
+    /x;
+    return unless $name;
     $isa ||= "Str";
-    return { name => $name, isa => $isa, is => "rw" };
+    my $spec = { name => $name, isa => $isa, is => "rw" };
+    $spec->{default} = $def if defined $def;
+    return $spec;
 }
 
 coerce PerlMooseAttributeSpec,
