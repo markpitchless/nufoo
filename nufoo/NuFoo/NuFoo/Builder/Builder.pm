@@ -14,6 +14,8 @@ use Template;
 
 extends 'NuFoo::Core::Builder';
 
+with 'NuFoo::Core::Role::TT';
+
 has name => ( is => "rw", isa => "Str", required => 1,
     documentation => qq{Name of the new builder},
 );
@@ -32,12 +34,6 @@ has attributes => (
     documentation => qq{Add attributes to the new builder. Give more than once.},
 );
 
-has tt => ( is => "ro", isa => "Template", required => 1,
-    traits  => ["NoGetopt"],
-    lazy    => 1,
-    builder => '_build_tt',
-);
-
 sub _build_class_name {
     my $self = shift;
     my $name = $self->name;
@@ -45,21 +41,7 @@ sub _build_class_name {
     return "NuFoo::$name\::Builder";
 }
 
-sub _build_tt {
-    my $self = shift;
-    my $tt = Template->new({
-        INCLUDE_PATH => $self->home_dir,
-    });
-    return $tt;
-}
-
 method build () {
-    my $tt   = $self->tt;
-    my $tmpl = "builder.tt";
-    my $vars = $self->tt_vars;
-    my $out  = "";
-    $tt->process( $tmpl, $vars, \$out ) || die $tt->error, "\n";
-
     my $file = $self->class2file( $self->class_name );
     foreach (qw/nufoo .nufoo/) {
         if ( -d $_ ) {
@@ -68,26 +50,13 @@ method build () {
             last;
         }
     }
+    my $out = $self->tt_process( "builder.tt" );
     $self->write_file( $file, \$out );
 }
 
 method class2file (Str $name) {
     $name =~ s/::/\//g;
     $name . ".pm";
-}
-
-# Just use MooseX::Getopt attribs for now
-sub tt_attribs { shift->_compute_getopt_attrs; }
-
-sub tt_vars {
-    my $self = shift;
-    my $vars = {};
-    foreach my $attr ($self->tt_attribs) {
-        my $name = $attr->name;
-        my $meth = $attr->get_read_method;
-        $vars->{$name} = $self->$meth;
-    } 
-    return $vars;
 }
 
 CLASS->meta->make_immutable;
