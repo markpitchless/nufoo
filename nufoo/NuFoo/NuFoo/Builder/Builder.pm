@@ -21,6 +21,7 @@ has name => ( is => "rw", isa => "Str", required => 1,
 );
 
 has class_name => (
+    traits  => ["NoGetopt"],
     is      => "rw",
     isa     => "Str",
     lazy    => 1,
