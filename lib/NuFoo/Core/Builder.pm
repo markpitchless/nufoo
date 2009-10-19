@@ -41,8 +41,8 @@ sub _usage_format {
     return "usage: %c $name OPTIONS";
 }
 
-method home_dir {
-    my $class = blessed $self;
+method home_dir($self:) {
+    my $class = blessed $self || $self;
     (my $inc_file = $class) =~ s/::/\//g;
     $inc_file .= ".pm";
     my $file  = $INC{$inc_file} || return undef; 

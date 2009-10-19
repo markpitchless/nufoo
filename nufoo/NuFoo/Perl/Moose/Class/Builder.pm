@@ -25,6 +25,7 @@ with 'NuFoo::Core::Role::TT';
 has class => (
     is            => "rw",
     isa           => PerlPackageName,
+    required      => 1,
     documentation => qq{The class name.},
 );
 
@@ -74,13 +75,7 @@ __END__
 
 =head1 SYNOPSIS
 
- $ nufoo Perl.Moose.Class --class=Hello::World 
- 
- $ nufoo Perl.Moose.Class --class=Point --has=Int:x --has=Int:y
- 
- $ nufoo Perl.Moose.Class --class=Point3D --extends=Point --has=Int:z
-
- $ nufoo Perl.Moose.Class --class=My::Cmd --with=MooseX::Getopt --has=Bool:force=1
+ nufoo Perl.Moose.Class ATTRIBUTES 
  
 =head1 DESCRIPTION
 
@@ -88,14 +83,16 @@ Builds L<Moose|Moose> classes.
 
 =head1 ATTRIBUTES 
 
-=head2 class
+=over 4
+
+=item class
 
 The package name for the new class.
 
-=head2 has
+=item has
 
 List of attributes for the class. Each attribute is a hashref with a name
-attribute to name the attribute the rest of the keys corrisonde to the
+attribute to name the attribute the rest of the keys corrisond to the
 arguments passed to has when setting up a class.
 
 The attribute can also be given as a string of the form:
@@ -104,15 +101,25 @@ The attribute can also be given as a string of the form:
 
  type and default are optional.
 
-=head2 extends
+=item extends
 
 List of classes this class extends.
 
-=head2 with
+=item with
 
 List of roles this class consumes.
 
-=head1 METHODS 
+=back
+
+=head1 EXAMPLES
+
+ nufoo Perl.Moose.Class --class=Hello::World 
+ 
+ nufoo Perl.Moose.Class --class=Point --has=Int:x --has=Int:y
+
+ nufoo Perl.Moose.Class --class=Point3D --extends=Point --has=Int:z
+
+ nufoo Perl.Moose.Class --class=My::Cmd --with=MooseX::Getopt --has=Bool:force=1
 
 =head1 SEE ALSO
 

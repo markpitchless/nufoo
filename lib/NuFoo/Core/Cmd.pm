@@ -2,7 +2,7 @@ package NuFoo::Core::Cmd;
 
 =head1 NAME
 
-NuFoo::Core::Cmd - Impliments the command line interface to NuFoo. 
+nufoo - Create new boiler plate code. 
 
 =head1 VERSION
 
@@ -17,6 +17,7 @@ use MooseX::Method::Signatures;
 use Log::Any;
 use NuFoo::Core::Cmd::Logger;
 use Log::Any qw($log);
+use Pod::Usage;
 
 extends 'NuFoo';
 
@@ -27,6 +28,9 @@ with 'MooseX::Getopt';
 # It is a bit restrictive, so should move to Pod::Usage at some point.
 has help => ( is => 'rw', isa => 'Bool',
     documentation => "Display help message" );
+
+has man => ( is => 'rw', isa => 'Bool',
+    documentation => "Display manual" );
 
 has debug => ( is => 'rw', isa => 'Bool', default => 0,
     documentation => "Output debugging messages." );
@@ -49,12 +53,30 @@ before new_with_options => sub {
     Getopt::Long::Configure('pass_through'); 
 };
 
+method exit_error (Str $msg) {
+    $log->error($msg);
+    exit 1;
+}
+
+method usage_error (Str $msg, Int $verbose = 1) {
+    $log->error($msg) if $msg;
+    pod2usage(
+        -verbose => $verbose,
+        -input   => __FILE__,
+    );
+}
+
+method builder_usage_error( Str $class, Str $msg, Int $verbose = 99 ) {
+    $log->error($msg) if $msg;
+    pod2usage(
+        -verbose  => $verbose,
+        -input    => $class->home_dir . "/Builder.pm",
+        -sections => "SYNOPSIS|ATTRIBUTES",
+    );
+}
+
 method run() {
     my @argv = @{$self->extra_argv};
-
-    if ( $self->has_include) {
-        $self->include_path( [ $self->include, $self->include_path ] );
-    }
 
     my $level;
     $level = 'debug' if $self->debug;
@@ -62,16 +84,28 @@ method run() {
     $level ||= 'info';
     Log::Any->set_adapter('+NuFoo::Core::Cmd::Logger', level => $level);
 
+    if ( $self->has_include) {
+        $self->include_path( [ $self->include, $self->include_path ] );
+    }
+
     my $name = shift @argv;
-    die "No builder name" if !$name || $name =~ m/^-/;
+    $self->usage_error("",2) if $self->man && !$name;
+    
+    $self->usage_error("No builder name") if !$name || $name =~ m/^-/;
 
     my $builder_class = $self->load_builder( $name );
-    die "Builder $name not found. (Searching: ".join(' ',$self->include_path).")"
-        if !$builder_class;
+    $self->exit_error(
+        "Builder '$name' not found.\n(Searching: "
+        .join(' ',$self->include_path)
+        .")"
+    ) if !$builder_class;
+    
+    $self->builder_usage_error( $builder_class, "", 2 ) if $self->man;
 
+    my $builder;
     eval { 
         local @ARGV = @argv;
-        my $builder = $builder_class->new_with_options;
+        $builder = $builder_class->new_with_options;
         $builder->build
     };
     if ($@) {
@@ -81,14 +115,14 @@ method run() {
             ) {
                 my $name = $1;
                 my $msg  = $2;
-                $log->error("Invalid '$name' : $msg");
-                # TODO pod2usage
+                $self->builder_usage_error(
+                    $builder_class, "Invalid '$name' : $msg"
+                );
             }
             when (/Required option missing: (.*?)\n/) {
-                $log->error("Required option missing: $1");
-                my $msg = $@;
-                $msg =~ s/.*\n//; # Remove 1st line, the rest is usage.
-                print $msg;
+                $self->builder_usage_error(
+                    $builder_class, "Required option missing: $1"
+                );
             }
             default {
                 $log->error("Build failed: $@");
@@ -102,17 +136,46 @@ __END__
 
 =head1 SYNOPSIS
 
- #!/usr/bin/perl
- my $nufoo = NuFoo::Core::Cmd->new_with_options;
- $nufoo->run;
+ nufoo
+ nufoo --man
+ nufoo --man BUILDER
+
+ nufoo [OPTIONS] [BUILDER] [BUILDER_OPTIONS]
 
 =head1 DESCRIPTION
 
-=head1 METHODS 
+nufoo is a tool for creating new boiler plate files. E.g. new classes, html
+pages etc. For example the following would create us a new Moose class. 
+ 
+ nufoo Perl.Moose.Class --class=My::Foo
 
-=head2 run
+To get help on a particular builder, including what option it takes use --man
+options with a builder name, e.g.
 
-Run the command line.
+  nufoo --man Perl.Moose.Class
+
+=head1 OPTIONS
+
+=over 4
+
+=item --include
+
+Additional directories to search for builders in. Give more then once.
+
+=item --quiet
+
+Only show errors in log output.
+
+=item --man
+
+Display the manual page. With a builder name show the manual page for that
+builder.
+
+=item --debug
+
+Show debug messages.
+
+=back
 
 =head1 SEE ALSO
 
