@@ -75,14 +75,24 @@ method run() {
         $builder->build
     };
     if ($@) {
-        if ( $@ =~ m/Attribute \((\w+)\) does not pass the type constraint because: (.*?) at/ ) {
-            my $name = $1;
-            my $msg  = $2;
-            $log->error("Invalid '$name' : $msg");
-            # TODO pod2usage
-        }
-        else {
-            $log->error("Build failed: $@");
+        given($@) {
+            when (
+                /Attribute \((\w+)\) does not pass the type constraint because: (.*?) at/
+            ) {
+                my $name = $1;
+                my $msg  = $2;
+                $log->error("Invalid '$name' : $msg");
+                # TODO pod2usage
+            }
+            when (/Required option missing: (.*?)\n/) {
+                $log->error("Required option missing: $1");
+                my $msg = $@;
+                $msg =~ s/.*\n//; # Remove 1st line, the rest is usage.
+                print $msg;
+            }
+            default {
+                $log->error("Build failed: $@");
+            }
         }
     }
 }
