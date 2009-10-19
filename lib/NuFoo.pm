@@ -15,6 +15,7 @@ our $VERSION = '0.01';
 use Moose;
 use MooseX::Method::Signatures;
 use Log::Any qw($log);
+use File::Spec::Functions qw( rel2abs );
 
 has include_path => (
     is         => 'rw',
@@ -24,9 +25,10 @@ has include_path => (
 );
 
 method _build_include_path () {
+    # Paths to use in ISA must be absolute.
     return [
-        "./nufoo",
-        "./.nufoo",
+        rel2abs("nufoo"),
+        rel2abs(".nufoo"),
         "$ENV{HOME}/.nufoo",
         '/usr/local/share/nufoo',
     ];
