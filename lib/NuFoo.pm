@@ -40,7 +40,9 @@ method load_builder (Str $name) {
     unshift @INC, $self->include_path;
     $log->debug("Loading $name as $class from local INC=@INC");
     eval "use $class";
-    return undef if $@ =~ m/^Can't locate .*? in \@INC/;
+    if ( my ($path) = $@ =~ m/^Can't locate (.*?) in \@INC/ ) {
+        die "Can't locate builder $name ($path) in \@INC";
+    }
     die $@ if $@;
     return $class;
 }

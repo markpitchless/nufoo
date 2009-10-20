@@ -66,7 +66,8 @@ method usage_error (Str $msg, Int $verbose = 1) {
     );
 }
 
-method builder_usage_error( Str $class, Str $msg, Int $verbose = 99 ) {
+method builder_usage_error( Str|Object $class, Str $msg, Int $verbose = 99 ) {
+    $class = blessed $class || $class;
     $log->error($msg) if $msg;
     pod2usage(
         -verbose  => $verbose,
@@ -74,6 +75,12 @@ method builder_usage_error( Str $class, Str $msg, Int $verbose = 99 ) {
         -sections => "SYNOPSIS|ATTRIBUTES",
     );
 }
+
+override _new_builder => sub {
+    my ($self, $class, $args) = @_;
+    $args ||= {};
+    return $class->new_with_options($args); 
+};
 
 method run() {
     my @argv = @{$self->extra_argv};
@@ -93,23 +100,25 @@ method run() {
     
     $self->usage_error("No builder name") if !$name || $name =~ m/^-/;
 
-    my $builder_class = $self->load_builder( $name );
-    $self->exit_error(
-        "Builder '$name' not found.\n(Searching: "
-        .join(' ',$self->include_path)
-        .")"
-    ) if !$builder_class;
-    
-    $self->builder_usage_error( $builder_class, "", 2 ) if $self->man;
-
-    my $builder;
+    my ($builder, $builder_class);
     eval { 
+        # See _new_builder above, we new using new_with_options
+        # Load first as we need the class for error messages below.
         local @ARGV = @argv;
-        $builder = $builder_class->new_with_options;
+        $builder_class = $self->load_builder( $name );
+        $builder = $self->new_builder( $name );
+        $self->builder_usage_error( $builder, "", 2 ) if $self->man;
         $builder->build
     };
     if ($@) {
         given($@) {
+            when (/^Can't locate builder .*? in \@INC/) {
+                $self->exit_error(
+                    "Builder '$name' not found.\n(Searching: "
+                    .join(' ',$self->include_path)
+                    .")"
+                );
+            }
             when (
                 /Attribute \((\w+)\) does not pass the type constraint because: (.*?) at/
             ) {
