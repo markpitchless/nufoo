@@ -63,3 +63,50 @@ method class2file (Str $name) {
 CLASS->meta->make_immutable;
 
 1;
+
+__END__
+=head1 SYNOPSIS
+
+ nufoo NuFoo.Builder  ATTRIBUTES 
+ 
+=head1 DESCRIPTION
+
+Builds new NuFoo builders. 
+
+=head1 ATTRIBUTES 
+
+=over 4
+
+=item name 
+
+The name of the new builder in dot notation. Will be used to generate the
+correct file and class names.
+
+=back
+
+=head1 EXAMPLES
+
+ nufoo NuFoo.Builder --name=Perl.Wizzbang
+
+ nufoo NuFoo.Builder --name=My.Class
+
+=head1 SEE ALSO
+
+L<NuFoo>, L<NuFoo::Core::Builder>.
+
+=head1 BUGS
+
+All complex software has bugs lurking in it, and this module is no exception.
+See L<NuFoo/BUGS> for details of how to report bugs.
+
+=head1 AUTHOR
+
+Mark Pitchless, C<< <markpitchless at gmail.com> >>
+
+=head1 ACKNOWLEDGEMENTS
+
+=head1 COPYRIGHT & LICENSE
+
+See L<NuFoo>.
+
+=cut
