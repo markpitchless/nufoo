@@ -14,11 +14,16 @@ our $VERSION = '0.01';
 use 5.010;
 use Moose;
 use MooseX::Method::Signatures;
+use MooseX::StrictConstructor;
 use Log::Any qw($log);
 use File::Path qw(make_path);
 use File::Spec::Functions qw(rel2abs splitpath);
 
 with 'MooseX::Getopt';
+
+has nufoo => ( is => "ro", isa => "NuFoo", required => 1,
+    traits => ['NoGetopt']
+);
 
 has force => (
     traits        => ['Getopt'],

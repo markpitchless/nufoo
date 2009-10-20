@@ -79,7 +79,7 @@ method builder_usage_error( Str|Object $class, Str $msg, Int $verbose = 99 ) {
 override _new_builder => sub {
     my ($self, $class, $args) = @_;
     $args ||= {};
-    return $class->new_with_options($args); 
+    return $class->new_with_options(%$args); 
 };
 
 method run() {
