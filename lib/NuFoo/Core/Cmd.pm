@@ -113,15 +113,18 @@ method run() {
             when (
                 /Attribute \((\w+)\) does not pass the type constraint because: (.*?) at/
             ) {
-                my $name = $1;
-                my $msg  = $2;
                 $self->builder_usage_error(
-                    $builder_class, "Invalid '$name' : $msg"
+                    $builder_class, "Invalid '$1' : $2"
                 );
             }
             when (/Required option missing: (.*?)\n/) {
                 $self->builder_usage_error(
                     $builder_class, "Required option missing: $1"
+                );
+            }
+            when (/Unknown option: (.*?)\n/) {
+                $self->builder_usage_error(
+                    $builder_class, "Unknown option: $1"
                 );
             }
             default {
