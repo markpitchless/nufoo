@@ -45,6 +45,16 @@ method load_builder (Str $name) {
     return $class;
 }
 
+method new_builder ( Str $name, HashRef $args? = {} ) {
+    my $class = $self->load_builder($name) || return undef;
+    return $self->_new_builder($class, $args);
+}
+
+# Here for subclassers who may want to new differently e.g. new_with_options
+method _new_builder ( Str $class, HashRef $args? = {} ) {
+    return $class->new($args);
+}
+
 method builder_name_to_class($class: Str $name) {
     $name =~ s/\./::/g;
     $name =~ s/\//::/g;

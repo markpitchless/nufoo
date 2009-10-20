@@ -28,4 +28,19 @@ sub load_builder : Test(4) {
         "NuFoo::Hello::World loaded";
 }
 
+sub new_builder : Test(6) {
+    my $nufoo = NuFoo->new( include_path => ["$Bin/nufoo"] );
+    my ($builder);
+
+    $builder = $nufoo->new_builder('NuFoo.Hello.World');
+    isa_ok( $builder, "NuFoo::Core::Builder", "No args" );
+    isa_ok( $builder, "NuFoo::NuFoo::Hello::World::Builder", "No args" );
+    is( $builder->who, "World", "who attrib is default value." );
+
+    $builder = $nufoo->new_builder('NuFoo.Hello.World', { who => "Me" });
+    isa_ok( $builder, "NuFoo::Core::Builder", "With args" );
+    isa_ok( $builder, "NuFoo::NuFoo::Hello::World::Builder", "With args" );
+    is( $builder->who, "Me", "Who attrib set via new call." );
+}
+
 1;
