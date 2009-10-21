@@ -5,6 +5,11 @@ use warnings;
 
 use base qw(Test::Class);
 use Test::More;
+[%- IF uses.size %]
+    [%- FOREACH package IN uses %]
+use [% package %];
+    [%- END %]
+[%- END %]
 
 sub test : Test(1) {
     # TODO - Add tests, ok?
