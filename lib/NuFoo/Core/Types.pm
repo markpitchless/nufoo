@@ -23,7 +23,7 @@ subtype ArrayRefOfStr, as ArrayRef[Str];
 
 subtype PerlPackageName,
     as Str,
-    where { m/^\w+(::\w+)?$/ },
+    where { m/^\w+(::\w+)*$/ },
     message { "The string ($_) is not a valid package/class name" },
 ;
 

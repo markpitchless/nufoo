@@ -43,6 +43,7 @@ method load_builder (Str $name) {
     if ( my ($path) = $@ =~ m/^Can't locate (.*?) in \@INC/ ) {
         die "Can't locate builder $name ($path) in \@INC";
     }
+    $log->debug( "Load error: $@" ) if $@;
     die $@ if $@;
     return $class;
 }

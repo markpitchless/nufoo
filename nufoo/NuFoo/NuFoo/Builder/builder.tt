@@ -11,6 +11,10 @@ use Moose;
 
 extends 'NuFoo::Core::Builder';
 
+[%- IF with.size %]
+with '[% with.join("', '") %]';
+
+[%- END %]
 [%- FOREACH attr IN has  %]
 has [% attr.name %] => (
     is      => "[% attr.is %]",

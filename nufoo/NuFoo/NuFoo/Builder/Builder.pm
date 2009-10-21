@@ -36,7 +36,23 @@ has class_name => (
     documentation => qq{Class name of the builder. You do not normally set as it is derived from the name by default.},
 );
 
-has has => (
+has 'with' => (
+    is            => "rw",
+    isa           => PerlPackageList,
+    default       => sub { [] },
+    documentation => qq{Roles this class does. Multiple allowed.},
+);
+
+has is_tt => (
+    traits        => ['Getopt'],
+    is            => "rw",
+    isa           => Bool,
+    default       => 0,
+    cmd_aliases   => ['tt'],
+    documentation => qq{Setup builder for Template use.},
+);
+
+has 'has' => (
     is            => "rw",
     isa           => PerlMooseAttributeSpecList,
     default       => sub { [] },
@@ -52,6 +68,13 @@ sub _build_class_name {
 }
 
 method build () {
+    if ( $self->is_tt ) {
+        my $with = $self->with;
+        unless ( "NuFoo::Core::Role::TT" ~~ @$with ) {
+            $self->with( [ @$with, "NuFoo::Core::Role::TT"] );
+        }
+    }
+
     my $file = $self->class2file( $self->class_name );
     foreach (qw/nufoo .nufoo/) {
         if ( -d $_ ) {
@@ -90,6 +113,18 @@ Builds new NuFoo builders.
 
 The name of the new builder in dot notation. Will be used to generate the
 correct file and class names.
+
+=item has
+
+Attributes for the class.
+
+=item with
+
+List of roles to consume.
+
+=item tt
+
+Setup class for Template use. Includes the TT role.
 
 =back
 
