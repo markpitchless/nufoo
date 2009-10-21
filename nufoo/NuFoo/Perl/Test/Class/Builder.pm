@@ -145,6 +145,14 @@ String of package names (seperated by comma or space) under Test:: to use. E.g.
 "Deep,Exception" would "use Test::Deep; use Test::Exception;" in the built
 test.
 
+=item t_file
+
+Create a normal .t file to run this Test::Class.
+
+=item t_file_name
+
+Name for .t file when is using t_file option.
+
 =back
 
 =head1 EXAMPLES 
