@@ -42,6 +42,13 @@ has deep => (
 
 
 method build {
+    if ( $self->deep ) {
+        my $uses = $self->uses;
+        unless ( @$uses ~~ "Test::Deep" ) {
+            $self->uses( [ "Test::Deep", @$uses ] );
+        }
+    }
+
     my $file = $self->name . ".t";
     my $out  = $self->tt_process( 'test.t.tt' );
     $self->write_file( $file, \$out );
