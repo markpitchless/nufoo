@@ -65,6 +65,17 @@ has test_class => (
     documentation => qq{Ceate a test (Perl.Test.More) for this class.},
 );
 
+has test_class_name => (
+    is            => "rw",
+    isa           => PerlPackageName,
+    lazy_build    => 1,
+    documentation => qq{Class name for test if test_class is set. Default is to prefix Test:: to class name.},
+);
+
+sub _build_test_class_name {
+    my $self = shift;
+    return "Test::" . $self->class;
+}
 
 method build {
     my $out  = $self->tt_process( 'class.pm.tt' );
@@ -85,11 +96,8 @@ method build {
     }
 
     if ( $self->test_class ) {
-        my $name = lc $self->class;
-        $name =~ s/::/-/g;
-        my $class = "Test::" . $self->class;
         $self->nufoo->build( "Perl.Test.Class", {
-            class   => $class,
+            class   => $self->test_class_name,
             uses    => [ $self->class ],
         } );
     }
@@ -141,6 +149,18 @@ List of classes this class extends.
 =item with
 
 List of roles this class consumes.
+
+=item test_more
+
+Create a Perl.Test.More for this class.
+
+=item test_class
+
+Create a Perl.Test.Class for this class.
+
+=item test_class_name
+
+Class name for test if test_class is set. Default is to prefix Test:: to class name.
 
 =back
 
