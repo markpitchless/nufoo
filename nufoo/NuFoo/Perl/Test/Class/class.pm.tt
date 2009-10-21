@@ -1,0 +1,13 @@
+package [% class %];
+
+use strict;
+use warnings;
+
+use base qw(Test::Class);
+use Test::More;
+
+sub test : Test(1) {
+    # TODO - Add tests, ok?
+}
+
+1;
