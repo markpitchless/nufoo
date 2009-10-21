@@ -11,18 +11,18 @@ use Moose;
 
 extends 'NuFoo::Core::Builder';
 
-[%- FOREACH attr IN attributes %]
-has [% attr %] => (
-    is            => "rw",
-    isa           => "Str",
-    documentation => qq{},
+[%- FOREACH attr IN has  %]
+has [% attr.name %] => (
+    is      => "[% attr.is %]",
+    isa     => "[% attr.isa %]",
+    [%- IF attr.default %]
+    default => "[% attr.default %]",
+    [%- END %]
 );
 
 [%- END %]
 
-sub build {
-    my $self = shift;
-
+method build {
     # TODO - Add builder here
 }
 
@@ -34,7 +34,7 @@ __END__
 
 =head1 SYNOPSIS
 
- $ nufoo [% name %] 
+ $ nufoo [% name %] ATTRIBUTES 
 
 =head1 DESCRIPTION
 
@@ -42,11 +42,16 @@ Builds...
 
 =head1 ATTRIBUTES 
 
-[%- FOREACH attr IN attributes %]
-=head2 [% attr %]
+=over 4
+
+[%- FOREACH attr IN has %]
+=item [% attr.name %]
 
 [%- END %]
-=head1 METHODS 
+
+=back
+
+=head1 EXAMPLES 
 
 =head1 SEE ALSO
 
@@ -55,7 +60,6 @@ L<NuFoo>, L<NuFoo::Core::Builder>.
 =head1 BUGS
 
 All complex software has bugs lurking in it, and this module is no exception.
-
 See L<NuFoo/BUGS> for details of how to report bugs.
 
 =head1 AUTHOR

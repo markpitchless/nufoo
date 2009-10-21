@@ -9,6 +9,13 @@ NuFoo::NuFoo::Builder::Builder - Create a new NuFoo builder.
 use CLASS;
 use Moose;
 use MooseX::Method::Signatures;
+use MooseX::Types::Moose qw( :all );
+use NuFoo::Core::Types qw(
+    PerlPackageName
+    PerlPackageList
+    PerlMooseAttributeSpec
+    PerlMooseAttributeSpecList
+);
 use Log::Any qw($log);
 use Template;
 
@@ -29,10 +36,12 @@ has class_name => (
     documentation => qq{Class name of the builder. You do not normally set as it is derived from the name by default.},
 );
 
-has attributes => (
+has has => (
     is            => "rw",
-    isa           => "ArrayRef",
-    documentation => qq{Add attributes to the new builder. Give more than once.},
+    isa           => PerlMooseAttributeSpecList,
+    default       => sub { [] },
+    coerce        => 1,
+    documentation => qq{Attributes for the class. Mutiple allowed.},
 );
 
 sub _build_class_name {
