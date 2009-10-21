@@ -31,7 +31,14 @@ has name => (
 has uses => (
     is      => "rw",
     isa     => PerlPackageList,
+    default => sub { [] },
     documentation => qq{List of packages to use.},
+);
+
+has use_test => (
+    is      => "rw",
+    isa     => Str,
+    documentation => qq{Str list seperated by comma or space of Test:: modules to use.},
 );
 
 has deep => (
@@ -49,6 +56,16 @@ method build {
         }
     }
 
+    if ( $self->use_test ) {
+        my $uses = $self->uses;
+        my @mods = split /[, ]/, $self->use_test;
+        $_ = "Test::$_" foreach @mods;
+        foreach (@mods) { 
+            $self->uses( [ "Test::$_", @{$self->uses} ] )
+                unless ( @$uses ~~ "Test::Deep" );
+        }
+    }
+
     my $file = $self->name . ".t";
     my $out  = $self->tt_process( 'test.t.tt' );
     $self->write_file( $file, \$out );
@@ -62,7 +79,7 @@ __END__
 
 =head1 SYNOPSIS
 
- $ nufoo Perl.Test.More ATTRIBUTES 
+ $ nufoo Perl.Test.More --name NAME [ATTRIBUTES] 
 
 =head1 DESCRIPTION
 
@@ -74,14 +91,31 @@ Builds Test::More .t files.
 
 =item name
 
+Name of the test. Used to create the test file name as <name>.t.
+
 =item uses
+
+Package names to use in the test.
 
 =item deep
 
+Use Test::Deep
+
+=item use_test
+
+String of package names (seperated by comma or space) under Test:: to use. E.g.
+"Deep,Exception" would "use Test::Deep; use Test::Exception;" in the built
+test.
 
 =back
 
 =head1 EXAMPLES 
+
+ nufoo Perl.Test.More --name test
+ 
+ nufoo Perl.Test.More --name basic --deep
+ 
+ nufoo Perl.Test.More --name foo --use_test Deep,Exception --uses My::Foo
 
 =head1 SEE ALSO
 
