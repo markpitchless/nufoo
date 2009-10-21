@@ -37,6 +37,13 @@ has uses => (
     documentation => qq{List of packages to use.},
 );
 
+has uses_ok => (
+    is      => "rw",
+    isa     => PerlPackageList,
+    default => sub { [] },
+    documentation => qq{List of packages to use_ok.},
+);
+
 has use_test => (
     is      => "rw",
     isa     => Str,
@@ -102,6 +109,11 @@ Name of the test. Used to create the test file name as <name>.t.
 =item uses
 
 Package names to use in the test.
+
+=item uses_ok
+
+List of packages to use_ok. Creates a BEGIN block and use_ok the packages
+given.
 
 =item deep
 

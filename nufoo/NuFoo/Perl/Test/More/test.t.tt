@@ -9,5 +9,13 @@ use Test::More qw/no_plan/;
 use [% package %];
     [%- END %]
 [%- END %]
+[%- IF uses_ok.size %]
+
+BEGIN {
+    [%- FOREACH package IN uses_ok %]
+    use_ok '[% package %]';
+    [%- END %]
+}
+[%- END %]
 
 # TODO : Test goes here, ok?
