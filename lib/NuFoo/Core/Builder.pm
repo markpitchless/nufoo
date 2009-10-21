@@ -21,8 +21,12 @@ use File::Spec::Functions qw(rel2abs splitpath);
 
 with 'MooseX::Getopt';
 
-has nufoo => ( is => "ro", isa => "NuFoo", required => 1,
-    traits => ['NoGetopt']
+has nufoo => (
+    is       => "ro",
+    isa      => "NuFoo",
+    required => 1,
+    traits   => ['NoGetopt'],
+    handles  => [qw(write_file)],
 );
 
 has force => (
@@ -59,8 +63,6 @@ method build() {
     my $class = blessed $self;
     confess "method build is abstract, $class must impliment";
 }
-
-sub write_file { shift->nufoo->write_file(@_); }
 
 1;
 __END__
