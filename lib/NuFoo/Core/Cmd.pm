@@ -45,6 +45,9 @@ has include => (
     predicate     => 'has_include',
     documentation => qq{Additional directories to search for builders. Give mutiple directories as multiple options.} );
 
+has list => ( is => 'rw', isa => 'Bool', default => 0,
+    documentation => "List availiable builders." );
+
 sub _usage_format {
     return "usage: %c [OPTIONS] [BUILDER [BUILDER_OPTIONS]]";
 }
@@ -87,6 +90,11 @@ method run() {
 
     if ( $self->has_include) {
         $self->include_path( [ $self->include, $self->include_path ] );
+    }
+    
+    if ( $self->list ) {
+        $self->show_list;
+        return 0;
     }
 
     my $name = shift @argv;
@@ -138,6 +146,10 @@ method run() {
             }
         }
     }
+}
+
+method show_list {
+    print map { "$_\n" } $self->builder_names;
 }
 
 1;

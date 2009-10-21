@@ -15,8 +15,9 @@ our $VERSION = '0.02';
 use Moose;
 use MooseX::Method::Signatures;
 use Log::Any qw($log);
-use File::Spec::Functions qw( rel2abs splitpath );
+use File::Spec::Functions qw( rel2abs splitpath splitdir catfile );
 use File::Path qw(make_path);
+use File::Find;
 use MooseX::Getopt::Meta::Attribute::Trait;
 
 has include_path => (
@@ -81,6 +82,28 @@ method builder_class_to_name($class: Str $name) {
     $name =~ s/::Builder$//;
     $name =~ s/::/\./g;
     return $name;
+}
+
+method builder_names {
+    local @INC = @INC;
+    unshift @INC, $self->include_path;
+    my @builder_files;
+    foreach my $dir ( @INC ) {
+        $log->debug("Searching: $dir");
+        $dir = catfile($dir, "NuFoo");
+        next unless -d $dir;
+        find( sub {
+            return if $File::Find::dir =~ m/NuFoo\/Core/;
+            push @builder_files, $File::Find::name if $_ eq "Builder.pm";
+        }, $dir );
+    }
+    return map {
+        s/^.*?NuFoo.//;
+        my (undef, $dir, undef) = splitpath($_);
+        my $name = join ".", splitdir($dir);
+        $name =~ s/\.$//;
+        $name;
+    } @builder_files;
 }
 
 method write_file (Str $file, Str|ScalarRef $content, Bool :$force?) {

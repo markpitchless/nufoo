@@ -1,5 +1,7 @@
 Revision history for NuFoo
 
+        --list option.
+
 0.02    21st Oct 2009
         Starting to get usable, basic command line, builder and Template set up
         in place.
