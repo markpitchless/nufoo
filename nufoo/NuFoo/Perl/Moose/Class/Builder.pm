@@ -58,6 +58,7 @@ has test_more => (
     documentation => qq{Ceate a test file for this class.},
 );
 
+
 method build {
     my $out  = $self->tt_process( 'class.pm.tt' );
     my $file = $self->class2file( $self->class );
@@ -71,8 +72,8 @@ method build {
         my $name = lc $self->class;
         $name =~ s/::/-/g;
         $self->nufoo->build( "Perl.Test.More", {
-            name => $name,
-            uses => [ $self->class ],
+            name    => $name,
+            uses_ok => [ $self->class ],
         } );
     }
 }
