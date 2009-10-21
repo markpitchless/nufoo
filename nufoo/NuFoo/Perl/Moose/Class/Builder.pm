@@ -72,6 +72,20 @@ has test_class_name => (
     documentation => qq{Class name for test if test_class is set. Default is to prefix Test:: to class name.},
 );
 
+has t_file => (
+    is      => "rw",
+    isa     => "Bool",
+    default => 0,
+    documentation => qq{Create a normal .t file to run the Test::Class when using test_class option.},
+);
+
+has t_file_name => (
+    is        => "rw",
+    isa       => "Str",
+    predicate => "has_t_file_name",
+    documentation => qq{Name for .t file when is using t_file option. Defaults to sensible name.},
+);
+
 sub _build_test_class_name {
     my $self = shift;
     return "Test::" . $self->class;
@@ -96,10 +110,13 @@ method build {
     }
 
     if ( $self->test_class ) {
-        $self->nufoo->build( "Perl.Test.Class", {
+        my $args = {
             class   => $self->test_class_name,
             uses    => [ $self->class ],
-        } );
+            t_file  => $self->t_file,
+        };
+        $args->{t_file_name} = $self->t_file_name if $self->has_t_file_name;
+        $self->nufoo->build( "Perl.Test.Class", $args );
     }
 }
 
@@ -162,6 +179,14 @@ Create a Perl.Test.Class for this class.
 
 Class name for test if test_class is set. Default is to prefix Test:: to class name.
 
+=item t_file
+
+Create a normal .t file to run the Test::Class when using test_class option.
+
+=item t_file_name
+
+Name for .t file when is using t_file option. Defaults to sensible name.
+
 =back
 
 =head1 EXAMPLES
@@ -173,6 +198,10 @@ Class name for test if test_class is set. Default is to prefix Test:: to class n
  nufoo Perl.Moose.Class --class=Point3D --extends=Point --has=Int:z
 
  nufoo Perl.Moose.Class --class=My::Cmd --with=MooseX::Getopt --has=Bool:force=1
+
+ nufoo Perl.Moose.Class --class=User --has=name --test_class
+ 
+ nufoo Perl.Moose.Class --class=User --has=name --test_more
 
 =head1 SEE ALSO
 
