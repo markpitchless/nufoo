@@ -43,6 +43,26 @@ has deep => (
     documentation => qq{Use Test::Deep.},
 );
 
+has t_file => (
+    is      => "rw",
+    isa     => "Bool",
+    default => 0,
+    documentation => qq{Create a normal .t file to run this Test::Class},
+);
+
+has t_file_name => (
+    is      => "rw",
+    isa     => "Str",
+    lazy_build => 1,
+    documentation => qq{Name for .t file when is using t_file option.},
+);
+
+sub _build_t_file_name {
+    my $self = shift;
+    my $name = lc $self->class;
+    $name =~ s/::/-/g;
+    return "$name.t";
+}
 
 method build {
     if ( $self->deep ) {
@@ -55,7 +75,6 @@ method build {
     if ( $self->use_test ) {
         my $uses = $self->uses;
         my @mods = split /[, ]/, $self->use_test;
-        $_ = "Test::$_" foreach @mods;
         foreach (@mods) { 
             $self->uses( [ "Test::$_", @{$self->uses} ] )
                 unless ( @$uses ~~ "Test::Deep" );
@@ -67,8 +86,17 @@ method build {
         $log->info( "Using local '".catfile('t','lib')."' directory" );
         $file = catfile( 't', 'lib', $file );
     }
-    my $out  = $self->tt_process( "class.pm.tt" );
-    $self->write_file( $file, \$out );
+    $self->write_file( $file, $self->tt_process( "class.pm.tt" ) );
+
+    if ( $self->t_file ) {
+        my $file = $self->t_file_name;
+        if ( -d 't' ) {
+            $log->info("Using local 't' directory");
+            $file = catfile( 't', $file );
+        }
+        $file .= ".t" unless $file ~~ /\.t$/;
+        $self->write_file( $file, $self->tt_process( "test.t.tt" ) );
+    }
 }
 
 method class2file (Str $name) {
