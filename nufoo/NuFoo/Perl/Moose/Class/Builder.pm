@@ -55,7 +55,14 @@ has test_more => (
     is            => "rw",
     isa           => Bool,
     default       => 0,
-    documentation => qq{Ceate a test file for this class.},
+    documentation => qq{Ceate a test file (Perl.Test.More) for this class.},
+);
+
+has test_class => (
+    is            => "rw",
+    isa           => Bool|PerlPackageName,
+    default       => 0,
+    documentation => qq{Ceate a test (Perl.Test.More) for this class.},
 );
 
 
@@ -74,6 +81,16 @@ method build {
         $self->nufoo->build( "Perl.Test.More", {
             name    => $name,
             uses_ok => [ $self->class ],
+        } );
+    }
+
+    if ( $self->test_class ) {
+        my $name = lc $self->class;
+        $name =~ s/::/-/g;
+        my $class = "Test::" . $self->class;
+        $self->nufoo->build( "Perl.Test.Class", {
+            class   => $class,
+            uses    => [ $self->class ],
         } );
     }
 }
