@@ -62,11 +62,6 @@ method load_builder (Str $name) {
 method new_builder ( Str $name, HashRef $args? = {} ) {
     my $class = $self->load_builder($name) || return undef;
     $args->{nufoo} = $self;
-    return $self->_new_builder($class, $args);
-}
-
-# Here for subclassers who may want to new differently e.g. new_with_options
-method _new_builder ( Str $class, HashRef $args? = {} ) {
     return $class->new($args);
 }
 

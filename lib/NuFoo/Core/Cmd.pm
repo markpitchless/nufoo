@@ -76,12 +76,6 @@ method builder_usage_error( Str|Object $class, Str $msg, Int $verbose = 99 ) {
     );
 }
 
-override _new_builder => sub {
-    my ($self, $class, $args) = @_;
-    $args ||= {};
-    return $class->new_with_options(%$args); 
-};
-
 method run() {
     my @argv = @{$self->extra_argv};
 
@@ -102,11 +96,14 @@ method run() {
 
     my ($builder, $builder_class);
     eval { 
-        # See _new_builder above, we new using new_with_options
-        # Load first as we need the class for error messages below.
-        local @ARGV = @argv;
         $builder_class = $self->load_builder( $name );
-        $builder = $self->new_builder( $name );
+        # XXX - This should really be $self->new_builder but we need to use
+        # new_with_options, so must remember to emulate any logic from that
+        # method. e.g. passing nufoo object.
+        $builder = $builder_class->new_with_options( 
+            argv  => \@argv, 
+            nufoo => $self 
+        );
         $self->builder_usage_error( $builder, "", 2 ) if $self->man;
         $builder->build
     };
