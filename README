@@ -2,6 +2,12 @@ NuFoo
 
 Command line tool for developers for creating new boilerplace files.
 
+e.g. to create a new Moose based class:
+
+ nufoo Perl.Moose.Class --class My::User --has name --has Bool:logged_in
+
+Comes with a library of various builders and an easy way to add your own.
+
 
 INSTALLATION
 

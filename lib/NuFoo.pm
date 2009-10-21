@@ -6,11 +6,11 @@ NuFoo - Developer tool for creating new boilerplace files using a set of builder
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use Moose;
 use MooseX::Method::Signatures;

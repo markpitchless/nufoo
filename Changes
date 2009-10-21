@@ -1,5 +1,16 @@
 Revision history for NuFoo
 
+0.02    21st Oct 2009
+        Starting to get usable, basic command line, builder and Template set up
+        in place.
+
+        Builders:
+         * NuFoo.Builder
+         * Per.Test.More
+         * Perl.Test.Class
+         * Perl.Moose.Class
+
+
 0.01    4th Oct 2009
         First version, never released on an unsuspecting world.
 
