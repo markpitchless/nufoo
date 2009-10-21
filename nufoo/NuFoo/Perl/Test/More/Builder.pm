@@ -16,6 +16,8 @@ use NuFoo::Core::Types qw(
     PerlMooseAttributeSpec
     PerlMooseAttributeSpecList
 );
+use Log::Any qw($log);
+use File::Spec::Functions qw/catfile/;
 
 extends 'NuFoo::Core::Builder';
 
@@ -67,6 +69,11 @@ method build {
     }
 
     my $file = $self->name . ".t";
+    if ( -d "t" ) {
+        $log->info( "Using local 't' directory" );
+        $file = catfile( 't', $file );
+    }
+
     my $out  = $self->tt_process( 'test.t.tt' );
     $self->write_file( $file, \$out );
 }
