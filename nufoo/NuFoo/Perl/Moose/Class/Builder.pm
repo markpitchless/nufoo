@@ -51,6 +51,12 @@ has with => (
     documentation => qq{Roles this class does. Multiple allowed.},
 );
 
+has test_more => (
+    is            => "rw",
+    isa           => Bool,
+    default       => 0,
+    documentation => qq{Ceate a test file for this class.},
+);
 
 method build {
     my $out  = $self->tt_process( 'class.pm.tt' );
@@ -60,6 +66,15 @@ method build {
         $file = "lib/$file";
     }
     $self->write_file( $file, \$out );
+
+    if ( $self->test_more ) {
+        my $name = lc $self->class;
+        $name =~ s/::/-/g;
+        $self->nufoo->build( "Perl.Test.More", {
+            name => $name,
+            uses => [ $self->class ],
+        } );
+    }
 }
 
 method class2file (Str $name) {
