@@ -158,6 +158,14 @@ Name for .t file when is using t_file option.
 =head1 EXAMPLES 
 
  nufoo Perl.Test.Class --class=NuFoo::Test::Role::TT
+ 
+ nufoo Perl.Test.Class --class My::Foo --use_test Deep,Exception
+ 
+ nufoo Perl.Test.Class --class My::Foo --deep -uses My::Test
+ 
+ nufoo Perl.Test.Class --class My::Foo --deep --t_file
+ 
+ nufoo Perl.Test.Class --class My::Foo --deep --t_file --t_file_name=foo
 
 =head1 SEE ALSO
 
