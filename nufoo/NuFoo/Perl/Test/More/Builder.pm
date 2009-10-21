@@ -61,7 +61,6 @@ method build {
     if ( $self->use_test ) {
         my $uses = $self->uses;
         my @mods = split /[, ]/, $self->use_test;
-        $_ = "Test::$_" foreach @mods;
         foreach (@mods) { 
             $self->uses( [ "Test::$_", @{$self->uses} ] )
                 unless ( @$uses ~~ "Test::Deep" );
