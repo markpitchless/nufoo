@@ -1,0 +1,13 @@
+#!perl -T
+
+use strict;
+use warnings;
+
+use Test::More qw/no_plan/;
+[%- IF uses.size %]
+    [%- FOREACH package IN uses %]
+use [% package %];
+    [%- END %]
+[%- END %]
+
+# TODO : Test goes here, ok?
