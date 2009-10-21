@@ -8,6 +8,7 @@ package [% class_name %];
 
 use CLASS;
 use Moose;
+use MooseX::Method::Signatures;
 
 extends 'NuFoo::Core::Builder';
 
@@ -17,11 +18,12 @@ with '[% with.join("', '") %]';
 [%- END %]
 [%- FOREACH attr IN has  %]
 has [% attr.name %] => (
-    is      => "[% attr.is %]",
-    isa     => "[% attr.isa %]",
+    is            => "[% attr.is %]",
+    isa           => "[% attr.isa %]",
     [%- IF attr.default %]
-    default => "[% attr.default %]",
+    default       => "[% attr.default %]",
     [%- END %]
+    documentation => qq{},
 );
 
 [%- END %]
