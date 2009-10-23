@@ -83,7 +83,7 @@ method build () {
             last;
         }
     }
-    $self->tt_write( 'builder.tt' => $file );
+    $self->tt_write( $file => 'builder.tt' );
 }
 
 method class2file (Str $name) {

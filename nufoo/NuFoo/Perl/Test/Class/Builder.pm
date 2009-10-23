@@ -86,7 +86,7 @@ method build {
         $log->info( "Using local '".catfile('t','lib')."' directory" );
         $file = catfile( 't', 'lib', $file );
     }
-    $self->tt_write( "class.pm.tt", $file  );
+    $self->tt_write( $file => "class.pm.tt" );
 
     if ( $self->t_file ) {
         my $file = $self->t_file_name;
@@ -95,7 +95,7 @@ method build {
             $file = catfile( 't', $file );
         }
         $file .= ".t" unless $file ~~ /\.t$/;
-        $self->tt_write( "test.t.tt", $file  );
+        $self->tt_write( $file => "test.t.tt" );
     }
 }
 

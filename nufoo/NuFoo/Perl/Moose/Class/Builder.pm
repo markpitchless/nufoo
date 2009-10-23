@@ -97,7 +97,7 @@ method build {
         $log->info("Using local 'lib' directory");
         $file = "lib/$file";
     }
-    $self->tt_write( 'class.pm.tt' => $file  );
+    $self->tt_write( $file => 'class.pm.tt' );
 
     if ( $self->test_more ) {
         my $name = lc $self->class;

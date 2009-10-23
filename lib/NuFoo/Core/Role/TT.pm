@@ -63,7 +63,7 @@ sub tt_process {
 
 sub tt_write {
     my $self = shift;
-    my ($tmpl,$file,%args) = @_;
+    my ($file,$tmpl,%args) = @_;
     $args{vars} ||= {};
     my $out  = $self->tt_process( $tmpl, $args{vars} );
     $self->write_file( $file, \$out );
@@ -77,8 +77,11 @@ __END__
  sub build {
     my $self = shift;
 
-    my $out = $self->tt_process( 'foo.tt' );
-    ...
+    $self->tt_write( 'index.html' => 'index.html.tt' );
+
+    my $file = $self->compute_file_name;
+    my $out  = $self->tt_process( 'hello.html.tt' );
+    $self->write_file( $file => $out );
  }
 
 =head1 DESCRIPTION
@@ -86,11 +89,11 @@ __END__
 A role for builders to use that want to build using Template Toolkit. This
 deals with setting the include path to include the builders home directory. So
 just drop your templates into the same dir as F<Builder.pm> and call the
-L<tt_process> method.
+L<tt_write> method or L<tt_process> method.
 
 By default all of you classes attributes that don't start with an _ will be
 passed to the template as variables. You can add the trait C<NoTT> to a
-attribute to stop if getting added.
+attribute to stop it getting added.
 See L<NuFoo::Core::Meta::Attribute::Trait::NoTT>.
 
 For even more control override L<tt_attribs> or L<tt_vars>.
@@ -101,11 +104,6 @@ For even more control override L<tt_attribs> or L<tt_vars>.
 
 The L<Template> object to use for processing. Default creates an object with the builders home dir as the include path, so you dont need to normally worry about this. If you want to change it then override C<_build_tt>. 
 
-Automatically passes all of your classes attributes to the template. Attributes
-that begin with underscore (_) are not passed. You can also explicitly exclude
-an attribute by using a C<NoTT> trait.
-See L<NuFoo::Core::Meta::Attribute::Trait::NoTT>.
-
 =head1 METHODS 
 
 =head2 tt_process
@@ -114,6 +112,8 @@ Process the template given as the first arg returning the result as a string.
 tt_vars is called to get data to pass to the template.
 
 =head2 tt_write
+
+ $self->tt_write( $file => $template );
 
 Combine template processing and writing.
 
