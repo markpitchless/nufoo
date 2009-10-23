@@ -59,29 +59,6 @@ method build {
     Module::Starter->create_distro( %$config );
 }
 
-sub build_attribs {
-    my $class = shift;
-    grep {
-        # Ready for when we add a specific trait for Build attributes.
-        #$_->does("NuFoo::Core::Meta::Attribute::Trait::Build")
-        #    or
-        $_->name !~ /^_/
-    } grep {
-        !$_->does('NuFoo::Core::Meta::Attribute::Trait::NoBuild')
-    } $class->meta->get_all_attributes
-}
-
-sub build_vars {
-    my $self = shift;
-    my $vars = {};
-    foreach my $attr ($self->build_attribs) {
-        my $name = $attr->name;
-        my $meth = $attr->get_read_method;
-        $vars->{$name} = $self->$meth;
-    } 
-    return $vars;
-}
-
 CLASS->meta->make_immutable;
 no Moose;
 

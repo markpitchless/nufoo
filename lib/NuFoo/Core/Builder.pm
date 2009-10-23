@@ -54,6 +54,29 @@ method build() {
     confess "method build is abstract, $class must impliment";
 }
 
+sub build_attribs {
+    my $class = shift;
+    grep {
+        # Ready for when we add a specific trait for Build attributes.
+        #$_->does("NuFoo::Core::Meta::Attribute::Trait::Build")
+        #    or
+        $_->name !~ /^_/
+    } grep {
+        !$_->does('NuFoo::Core::Meta::Attribute::Trait::NoBuild')
+    } $class->meta->get_all_attributes
+}
+
+sub build_vars {
+    my $self = shift;
+    my $vars = {};
+    foreach my $attr ($self->build_attribs) {
+        my $name = $attr->name;
+        my $meth = $attr->get_read_method;
+        $vars->{$name} = $self->$meth;
+    } 
+    return $vars;
+}
+
 1;
 __END__
 
@@ -66,16 +89,25 @@ base class all builders must be based on.
 
 =head1 METHODS 
 
-=head2 home_dir
-
-Return the home directory for this builder. This is the dir for resources such
-as template.
-
-Path returned as absolute path string.
-
 =head2 build 
 
 Sub classers must impliment with their build logic.
+
+=head2 home_dir
+
+Return the home directory for this builder. This is the dir for resources such
+as templates.
+
+Path returned as absolute path string.
+
+=head2 build_attribs
+
+Return list of attributes (meta objects) that are used to control the build.
+
+=head2 build_vars
+
+Util method that returns a HashRef of the builder args with values from their
+accessors.
 
 =head1 SEE ALSO
 
