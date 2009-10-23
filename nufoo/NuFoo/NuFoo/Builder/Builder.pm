@@ -43,12 +43,11 @@ has 'with' => (
     documentation => qq{Roles this class does. Multiple allowed.},
 );
 
-has is_tt => (
+has tt => (
     traits        => ['Getopt'],
     is            => "rw",
     isa           => Bool,
     default       => 0,
-    cmd_aliases   => ['tt'],
     documentation => qq{Setup builder for Template use.},
 );
 
@@ -68,7 +67,7 @@ sub _build_class_name {
 }
 
 method build () {
-    if ( $self->is_tt ) {
+    if ( $self->tt ) {
         my $with = $self->with;
         unless ( "NuFoo::Core::Role::TT" ~~ @$with ) {
             $self->with( [ @$with, "NuFoo::Core::Role::TT"] );
