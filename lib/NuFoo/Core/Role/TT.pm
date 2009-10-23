@@ -102,7 +102,9 @@ For even more control override L<tt_attribs> or L<tt_vars>.
 
 =head2 tt_template
 
-The L<Template> object to use for processing. Default creates an object with the builders home dir as the include path, so you dont normally need to worry about this. If you want to change it then override C<_build_tt>. 
+The L<Template> object to use for processing. Default creates an object with
+the builders home dir as the include path, so you dont normally need to worry
+about this. If you want to change it then override C<_build_tt>. 
 
 =head1 METHODS 
 
