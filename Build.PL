@@ -18,6 +18,7 @@ my $builder = Module::Build->new(
         'Template'        => 0,
         'Log::Any'        => 0,
         'Term::ANSIColor' => 0,
+        'Module::Starter' => 0,
     },
     build_requires => {
         'Test::More'  => 0,
