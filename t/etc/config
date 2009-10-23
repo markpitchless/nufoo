@@ -1,2 +1,3 @@
 [core]
+force = 0
 hello = world
