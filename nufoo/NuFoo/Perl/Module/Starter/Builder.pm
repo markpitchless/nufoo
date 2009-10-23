@@ -5,6 +5,7 @@ use Moose;
 use MooseX::Method::Signatures;
 use Log::Any qw($log);
 use Module::Starter;
+use NuFoo::Core::Types qw(PerlLicense);
 
 extends 'NuFoo::Core::Builder';
 
@@ -39,7 +40,7 @@ has email => (
 
 has license => (
     is            => "rw",
-    isa           => "Str",
+    isa           => PerlLicense,
     documentation => qq{License under which the module will be distributed (default is the same license as perl)},
 );
 

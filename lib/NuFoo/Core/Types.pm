@@ -14,6 +14,7 @@ use MooseX::Types -declare => [qw(
     PerlPackageList
     PerlMooseAttributeSpec
     PerlMooseAttributeSpecList
+    PerlLicense
 )];
 
 use MooseX::Types::Moose qw( :all );
@@ -64,6 +65,12 @@ coerce PerlMooseAttributeSpecList,
     from ArrayRefOfStr,
     via { [ map { str_to_moose_attribute_spec($_); } @$_ ]; }
 ;
+
+subtype PerlLicense,
+    as Str,
+    where   { m/perl|bsd|gpl|lgpl|mit/ },
+    message { "Perl License must be one of perl, bsd, gpl, lgpl or mit" };
+
 
 no Moose::Util::TypeConstraints;
 
