@@ -6,6 +6,7 @@ use warnings;
 use base qw(Test::Class);
 use FindBin qw($RealBin);
 use Test::More;
+use Test::Deep;
 
 use NuFoo::Core::Conf;
 
@@ -34,6 +35,14 @@ sub stacked : Test(3) {
     ok $conf, "Got a config object for etc/config, etc/config.user";
     is $conf->get('core.hello'), "world", "Got core.hello from conf";
     is $conf->get('core.force'), 1, "Got core.force from conf (over ridden)";
+}
+
+sub get_all : Test(1) {
+    my $self = shift;
+
+    my $conf = NuFoo::Core::Conf->new( files => ["$RealBin/etc/config"] );
+    my $all  = $conf->get_all('core');
+    cmp_deeply $all, { force => 0, hello => "world" }, "get_all";
 }
 
 1;

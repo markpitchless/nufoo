@@ -66,6 +66,16 @@ method get (Str $path) {
     return $self->_conf->val( $section, $name );
 }
 
+method get_all (Str $section) {
+    my $conf = $self->_conf;
+    my $out  = {};
+    my @names = $conf->Parameters( $section );
+    foreach (@names) {
+        $out->{$_} = $conf->val( $section, $_ );
+    }
+    return $out;
+}
+
 __PACKAGE__->meta->make_immutable;
 no Moose;
 
