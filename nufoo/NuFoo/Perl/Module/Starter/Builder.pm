@@ -1,11 +1,5 @@
 package NuFoo::Perl::Module::Starter::Builder;
 
-=head1 NAME
-
-NuFoo::Perl::Module::Starter::Builder - Builds...
-
-=cut
-
 use CLASS;
 use Moose;
 use MooseX::Method::Signatures;
@@ -92,6 +86,11 @@ no Moose;
 
 1;
 __END__
+
+=head1 NAME
+
+Perl.Module.Starter - Uses module-starter to create new perl
+distributions.
 
 =head1 SYNOPSIS
 
