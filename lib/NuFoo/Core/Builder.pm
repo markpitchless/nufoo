@@ -28,15 +28,6 @@ has nufoo => (
     handles  => [qw(write_file)],
 );
 
-has force => (
-    traits        => ['Getopt'],
-    is            => 'rw',
-    isa           => 'Bool',
-    required      => 1,
-    default       => 0,
-    cmd_aliases   => ['f'],
-    documentation => qq{Overright existing files} );
-
 before new_with_options => sub {
     Getopt::Long::Configure('no_pass_through'); 
 };
