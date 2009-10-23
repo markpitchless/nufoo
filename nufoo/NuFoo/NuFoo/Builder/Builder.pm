@@ -83,8 +83,7 @@ method build () {
             last;
         }
     }
-    my $out = $self->tt_process( "builder.tt" );
-    $self->write_file( $file, \$out );
+    $self->tt_write( 'builder.tt' => $file );
 }
 
 method class2file (Str $name) {

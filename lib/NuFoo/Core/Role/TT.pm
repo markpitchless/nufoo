@@ -61,6 +61,14 @@ sub tt_process {
     return $out;
 }
 
+sub tt_write {
+    my $self = shift;
+    my ($tmpl,$file,%args) = @_;
+    $args{vars} ||= {};
+    my $out  = $self->tt_process( $tmpl, $args{vars} );
+    $self->write_file( $file, \$out );
+}
+
 1;
 __END__
 
@@ -93,22 +101,32 @@ For even more control override L<tt_attribs> or L<tt_vars>.
 
 The L<Template> object to use for processing. Default creates an object with the builders home dir as the include path, so you dont need to normally worry about this. If you want to change it then override C<_build_tt>. 
 
+Automatically passes all of your classes attributes to the template. Attributes
+that begin with underscore (_) are not passed. You can also explicitly exclude
+an attribute by using a C<NoTT> trait.
+See L<NuFoo::Core::Meta::Attribute::Trait::NoTT>.
+
 =head1 METHODS 
 
 =head2 tt_process
 
 Process the template given as the first arg returning the result as a string.
+tt_vars is called to get data to pass to the template.
+
+=head2 tt_write
+
+Combine template processing and writing.
+
+=head2 tt_vars
+
+Return HashRef of data to parse to the template. Uses tt_attribs to work out
+what data to add.
 
 =head2 tt_attribs
 
 Returns a list of the attributes (as meta objects) that should be added to the
 template. Filters out attributes whose names start with underscore or have the
 NoTT trait.
-
-=head2 tt_vars
-
-Return HashRef of data to parse to the template. Uses tt_attribs to work out
-what data to add.
 
 =head1 SEE ALSO
 

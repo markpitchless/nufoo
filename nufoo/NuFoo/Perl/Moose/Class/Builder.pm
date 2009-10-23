@@ -92,13 +92,12 @@ sub _build_test_class_name {
 }
 
 method build {
-    my $out  = $self->tt_process( 'class.pm.tt' );
     my $file = $self->class2file( $self->class );
     if ( -d "lib" ) {
         $log->info("Using local 'lib' directory");
         $file = "lib/$file";
     }
-    $self->write_file( $file, \$out );
+    $self->tt_write( 'class.pm.tt' => $file  );
 
     if ( $self->test_more ) {
         my $name = lc $self->class;

@@ -80,8 +80,7 @@ method build {
         $file = catfile( 't', $file );
     }
 
-    my $out  = $self->tt_process( 'test.t.tt' );
-    $self->write_file( $file, \$out );
+    $self->tt_write( 'test.t.tt' => $file );
 }
 
 CLASS->meta->make_immutable;
