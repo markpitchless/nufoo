@@ -10,15 +10,15 @@ use Moose::Role;
 use NuFoo::Core::Meta::Attribute::Trait::NoTT;
 use Template;
 
-requires 'home_dir';
+requires 'home_dir', 'write_file';
 
-has tt => ( is => "ro", isa => "Template", required => 1,
+has tt_template => ( is => "ro", isa => "Template", required => 1,
     traits  => ["NoGetopt"],
     lazy    => 1,
-    builder => '_build_tt',
+    builder => '_build_tt_template',
 );
 
-sub _build_tt {
+sub _build_tt_template {
     my $self = shift;
     my $tt   = Template->new({
         INCLUDE_PATH => $self->home_dir,
@@ -53,7 +53,7 @@ sub tt_process {
     my $self = shift;
     my ($tmpl, $extra_vars) = @_;
     
-    my $tt   = $self->tt;
+    my $tt   = $self->tt_template;
     my $vars = $self->tt_vars;
     %$vars   = (%$vars, %$extra_vars) if $extra_vars;
     my $out  = "";
@@ -100,9 +100,9 @@ For even more control override L<tt_attribs> or L<tt_vars>.
 
 =head1 ATTRIBUTES 
 
-=head2 tt
+=head2 tt_template
 
-The L<Template> object to use for processing. Default creates an object with the builders home dir as the include path, so you dont need to normally worry about this. If you want to change it then override C<_build_tt>. 
+The L<Template> object to use for processing. Default creates an object with the builders home dir as the include path, so you dont normally need to worry about this. If you want to change it then override C<_build_tt>. 
 
 =head1 METHODS 
 
