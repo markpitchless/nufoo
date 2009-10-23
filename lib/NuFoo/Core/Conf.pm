@@ -38,14 +38,19 @@ method BUILD {
     my $conf;
     foreach my $file ( @{ $self->files } ) {
         next unless -f $file;
-        $conf = Config::IniFiles->new(
-            '-import' => $conf,
-            -file     => $file,
-        );
+        $self->load_file($file);
     }
+}
+
+method load_file (Str $file) {
+    my $conf = Config::IniFiles->new(
+        '-import' => $self->_conf,
+        -file     => $file,
+    );
     confess "Config loading: @Config::IniFiles::errors"
         if @Config::IniFiles::errors;
     $self->_conf($conf) if $conf;
+    return $conf;
 }
 
 method get (Str $path) {
