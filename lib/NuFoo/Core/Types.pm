@@ -15,7 +15,9 @@ use MooseX::Types -declare => [qw(
     PerlMooseAttributeSpec
     PerlMooseAttributeSpecList
     PerlLicense
+    FileList
 )];
+use MooseX::Types::Path::Class qw(Dir File);
 
 use MooseX::Types::Moose qw( :all );
 
@@ -39,7 +41,8 @@ subtype PerlMooseAttributeSpec,
     message { "Must have at least have a valid name" },
 ;
 
-subtype PerlMooseAttributeSpecList, as ArrayRef[PerlMooseAttributeSpec];
+subtype PerlMooseAttributeSpecList,
+    as ArrayRef[PerlMooseAttributeSpec];
 
 sub str_to_moose_attribute_spec {
     my ($isa,$name,$def) = $_[0] =~ m/
@@ -71,6 +74,15 @@ subtype PerlLicense,
     where   { m/perl|bsd|gpl|lgpl|mit/ },
     message { "Perl License must be one of perl, bsd, gpl, lgpl or mit" };
 
+
+subtype FileList,
+    as ArrayRef[File],
+;
+
+coerce FileList,
+    from ArrayRefOfStr,
+    via { [ map { Path::Class::File->new($_) } @$_ ] }
+;
 
 no Moose::Util::TypeConstraints;
 

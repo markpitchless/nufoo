@@ -10,11 +10,14 @@ our $VERSION = '0.01';
 
 use Moose;
 use MooseX::Method::Signatures;
+use MooseX::Types::Path::Class qw(Dir File);
+use NuFoo::Core::Types qw(FileList);
 use Config::IniFiles;
 
 has files => (
     is         => "ro",
-    isa        => "ArrayRef",
+    isa        => FileList,
+    coerce     => 1,
     required   => 1,
     lazy_build => 1,
 );
@@ -42,10 +45,10 @@ method BUILD {
     }
 }
 
-method load_file (Str $file) {
+method load_file (File $file does coerce) {
     my $conf = Config::IniFiles->new(
         '-import' => $self->_conf,
-        -file     => $file,
+        -file     => "$file",
     );
     confess "Config loading: @Config::IniFiles::errors"
         if @Config::IniFiles::errors;
