@@ -46,4 +46,11 @@ sub new_builder : Test(8) {
     isa_ok( $builder->nufoo, "NuFoo", "builder->nufoo" );
 }
 
+sub conf : Test(2) {
+    my $self = shift;
+    my $nufoo = NuFoo->new( include_path => ["$Bin/nufoo"] );
+    ok $nufoo->conf, "New NuFoo has conf";
+    isa_ok $nufoo->conf, "NuFoo::Core::Conf";
+}
+
 1;

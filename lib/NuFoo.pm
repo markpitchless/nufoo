@@ -19,6 +19,7 @@ use File::Spec::Functions qw( rel2abs splitpath splitdir catfile );
 use File::Path qw(make_path);
 use File::Find;
 use MooseX::Getopt::Meta::Attribute::Trait;
+use NuFoo::Core::Conf;
 
 has include_path => (
     is         => 'rw',
@@ -26,15 +27,6 @@ has include_path => (
     lazy_build => 1,
     auto_deref => 1
 );
-
-has force => (
-    traits        => ['Getopt'],
-    is            => 'rw',
-    isa           => 'Bool',
-    required      => 1,
-    default       => 0,
-    cmd_aliases   => ['f'],
-    documentation => qq{Overright existing files} );
 
 method _build_include_path () {
     # Paths to use in ISA must be absolute.
@@ -45,6 +37,24 @@ method _build_include_path () {
         '/usr/local/share/nufoo',
     ];
 }
+
+has force => (
+    traits        => ['Getopt'],
+    is            => 'rw',
+    isa           => 'Bool',
+    required      => 1,
+    default       => 0,
+    cmd_aliases   => ['f'],
+    documentation => qq{Overright existing files} );
+
+has conf => (
+    is  => "ro",
+    isa => "NuFoo::Core::Conf",
+    lazy_build => 1,
+);
+
+method _build_conf { return NuFoo::Core::Conf->new(); }
+
 
 method load_builder (Str $name) {
     my $class = $self->builder_name_to_class($name);
