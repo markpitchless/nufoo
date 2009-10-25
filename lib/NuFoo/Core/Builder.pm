@@ -39,9 +39,15 @@ around BUILDARGS => sub {
     my %args  = ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
 
     if ($args{nufoo}) {
-        my $conf  = $args{nufoo}->conf;
-        my $extra = $conf->get_all( $class->build_name );
-        %args = ( %args, %$extra ) if keys %$extra; 
+        my $conf    = $args{nufoo}->conf;
+        my $section = $class->build_name;
+        my %extra;
+        foreach ( $class->build_attribs ) {
+            my $name = $section . "." . $_->name;
+            my $val  = $conf->get($name);
+            $extra{$_->name} = $val if defined $val;
+        }
+        %args = ( %args, %extra ) if keys %extra; 
     }
     return $class->$orig(%args);
 };
