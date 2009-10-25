@@ -25,7 +25,8 @@ has files => (
 
 has _conf => (
     is  => "rw",
-    isa => "Config::IniFiles"
+    # Tied to a "Config::IniFiles"
+    isa => "HashRef"
 );
 
 sub _build_files {
@@ -47,18 +48,20 @@ method BUILD {
 }
 
 method load_file (File $file does coerce) {
-    my $conf = Config::IniFiles->new(
-        '-import' => $self->_conf,
+    my %conf;
+    my $parent = $self->_conf;
+    $parent = tied %$parent if $parent;
+    tie %conf, 'Config::IniFiles', (
+        '-import' => $parent,
         -file     => "$file",
     );
     confess "Config loading: @Config::IniFiles::errors"
         if @Config::IniFiles::errors;
-    $self->_conf($conf) if $conf;
-    return $conf;
+    $self->_conf(\%conf);
 }
 
 method get (Str $path) {
-    return unless $self->_conf; # No config loaded
+    my $conf = $self->_conf || return; # No config loaded
     my ($section, $name) = $path =~ m/
         ^
         (.*)
@@ -67,13 +70,16 @@ method get (Str $path) {
         $/x
     ;
     return unless $section && $name;
-    return $self->_conf->val( $section, $name );
+    return unless exists $conf->{$section}{$name};
+    return $conf->{$section}{$name};
 }
 
 method get_all (Str $section) {
     my $conf = $self->_conf || return; # No config loaded
     my $out  = {};
-    my @names = $conf->Parameters( $section );
+    return unless exists $conf->{$section};
+    return { %{$conf->{$section}} };
+    my @names = keys %{$conf->{$section}};
     foreach (@names) {
         $out->{$_} = $conf->val( $section, $_ );
     }
