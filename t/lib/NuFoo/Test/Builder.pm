@@ -25,6 +25,24 @@ sub construct : Test(3) {
     isa_ok $builder, "NuFoo::Core::Builder";
 }
 
+sub config_loading : Test(2) {
+    my ($nufoo, $builder);
+
+    $nufoo = NuFoo->new(
+        config_files => [],
+        include_path => ["$Bin/nufoo"]
+    );
+    $builder = $nufoo->new_builder("NuFoo.Hello.World");
+    is $builder->who, "World", "Builder uses default who attrib when no config";
+
+    $nufoo = NuFoo->new(
+        config_files => ["$Bin/etc/config"],
+        include_path => ["$Bin/nufoo"]
+    );
+    $builder = $nufoo->new_builder("NuFoo.Hello.World");
+    is $builder->who, "Galaxy", "Builder loaded who attrib from config";
+}
+
 sub home_dir : Test(2) {
     # Load from a absolute include path
     my $nufoo   = NuFoo->new( include_path => ["$Bin/nufoo"] );

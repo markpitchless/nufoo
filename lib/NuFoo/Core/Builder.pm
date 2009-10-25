@@ -17,6 +17,7 @@ use MooseX::Method::Signatures;
 use MooseX::StrictConstructor;
 use Log::Any qw($log);
 use File::Spec::Functions qw(rel2abs splitpath);
+use NuFoo;
 
 with 'MooseX::Getopt';
 
@@ -30,6 +31,19 @@ has nufoo => (
 
 before new_with_options => sub {
     Getopt::Long::Configure('no_pass_through'); 
+};
+
+around BUILDARGS => sub {
+    my $orig  = shift;
+    my $class = shift;
+    my %args  = ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
+
+    if ($args{nufoo}) {
+        my $conf  = $args{nufoo}->conf;
+        my $extra = $conf->get_all( $class->build_name );
+        %args = ( %args, %$extra ) if keys %$extra; 
+    }
+    return $class->$orig(%args);
 };
 
 # Override method from the role to show the builder name in the usage.
@@ -52,6 +66,12 @@ method home_dir($self:) {
 method build() {
     my $class = blessed $self;
     confess "method build is abstract, $class must impliment";
+}
+
+sub build_name {
+    my $class = shift;
+    $class = blessed $class || $class;
+    return NuFoo->builder_class_to_name($class);
 }
 
 sub build_attribs {

@@ -13,6 +13,7 @@ use MooseX::Method::Signatures;
 use MooseX::Types::Path::Class qw(Dir File);
 use NuFoo::Core::Types qw(FileList);
 use Config::IniFiles;
+use Log::Any qw($log);
 
 has files => (
     is         => "ro",
@@ -70,7 +71,7 @@ method get (Str $path) {
 }
 
 method get_all (Str $section) {
-    my $conf = $self->_conf;
+    my $conf = $self->_conf || return; # No config loaded
     my $out  = {};
     my @names = $conf->Parameters( $section );
     foreach (@names) {

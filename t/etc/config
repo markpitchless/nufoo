@@ -1,3 +1,6 @@
 [core]
 force = 0
 hello = world
+
+[NuFoo.Hello.World]
+who = Galaxy
