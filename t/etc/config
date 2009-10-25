@@ -4,3 +4,9 @@ hello = world
 
 [NuFoo.Hello.World]
 who = Galaxy
+
+[Perl]
+license = perl
+
+[Perl.Moose.Class]
+license = mit

@@ -37,6 +37,24 @@ sub stacked : Test(3) {
     is $conf->get('core.force'), 1, "Got core.force from conf (over ridden)";
 }
 
+sub inherited : Test(5) {
+    my $self = shift;
+    my ($conf);
+
+    $conf = NuFoo::Core::Conf->new( files => [
+        "$RealBin/etc/config",
+        "$RealBin/etc/config.user"
+    ] );
+    ok $conf, "Got a config object for etc/config, etc/config.user";
+    is $conf->get('Perl.license'), "perl", "Got Perl.license";
+    is $conf->get('Perl.Moose.license'), "perl",
+        "Got Perl.Moose.license (inherited)";
+    is $conf->get('Perl.Module.Starter.license'), "perl",
+        "Got Perl.Module.Starter.license (inherited)";
+    is $conf->get('Perl.Moose.Class.license'), "mit",
+        "Got Perl.Class.license (overridden)";
+}
+
 sub get_all : Test(1) {
     my $self = shift;
 

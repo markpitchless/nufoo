@@ -70,8 +70,10 @@ method get (Str $path) {
         $/x
     ;
     return unless $section && $name;
-    return unless exists $conf->{$section}{$name};
-    return $conf->{$section}{$name};
+    return $conf->{$section}{$name} if exists $conf->{$section}{$name};
+    my ($parent) = $section =~ /^(.*)\./;
+    return unless $parent;
+    return $self->get( "$parent.$name" );
 }
 
 method get_all (Str $section) {
