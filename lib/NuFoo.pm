@@ -20,12 +20,20 @@ use File::Path qw(make_path);
 use File::Find;
 use MooseX::Getopt::Meta::Attribute::Trait;
 use NuFoo::Core::Conf;
+use NuFoo::Core::Types qw(FileList);
 
 has include_path => (
     is         => 'rw',
     isa        => 'ArrayRef',
     lazy_build => 1,
     auto_deref => 1
+);
+
+has config_files => (
+    is         => "ro",
+    isa        => FileList,
+    coerce     => 1,
+    predicate  => "has_config_files",
 );
 
 method _build_include_path () {
@@ -53,7 +61,11 @@ has conf => (
     lazy_build => 1,
 );
 
-method _build_conf { return NuFoo::Core::Conf->new(); }
+method _build_conf {
+    my %args;
+    $args{files} = $self->config_files if $self->has_config_files;
+    return NuFoo::Core::Conf->new(%args); 
+}
 
 
 method load_builder (Str $name) {

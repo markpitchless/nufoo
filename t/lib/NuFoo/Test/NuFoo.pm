@@ -6,7 +6,9 @@ use FindBin qw/$Bin/;
 
 use base qw(Test::Class);
 use Test::More;
+use Test::Deep;
 use Test::Exception;
+use Path::Class;
 
 use NuFoo;
 
@@ -46,11 +48,21 @@ sub new_builder : Test(8) {
     isa_ok( $builder->nufoo, "NuFoo", "builder->nufoo" );
 }
 
-sub conf : Test(2) {
+sub conf : Test(6) {
     my $self = shift;
     my $nufoo = NuFoo->new( include_path => ["$Bin/nufoo"] );
     ok $nufoo->conf, "New NuFoo has conf";
     isa_ok $nufoo->conf, "NuFoo::Core::Conf";
+
+    my @conf_files = ("$Bin/etc/config");
+    $nufoo = NuFoo->new( 
+        config_files => [@conf_files],
+        include_path => ["$Bin/nufoo"] 
+    );
+    ok $nufoo->conf, "New NuFoo has conf";
+    isa_ok $nufoo->conf, "NuFoo::Core::Conf";
+    cmp_deeply $nufoo->conf->files, [file($Bin,"etc","config")] , "Files passed on";
+    is $nufoo->conf->get('core.hello'), "world", "Can read core.hello from conf";
 }
 
 1;
