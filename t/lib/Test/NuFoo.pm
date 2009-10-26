@@ -1,4 +1,4 @@
-package NuFoo::Test::NuFoo;
+package Test::NuFoo;
 
 use strict;
 use warnings;

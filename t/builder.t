@@ -2,5 +2,5 @@
 
 use FindBin qw($Bin);
 use lib ("$Bin/lib");
-use NuFoo::Test::Builder;
+use Test::NuFoo::Core::Builder;
 Test::Class->runtests;
