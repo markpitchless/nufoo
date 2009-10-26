@@ -50,6 +50,7 @@ method BUILD {
 method load_file (File $file does coerce) {
     my %conf;
     my $parent = $self->_conf;
+    $log->debug("Loading '$file'");
     $parent = tied %$parent if $parent;
     tie %conf, 'Config::IniFiles', (
         '-import' => $parent,
