@@ -12,12 +12,14 @@ use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
 use NuFoo::Core::Types qw(
     EmailAddress
+    PerlLicense
     PerlPackageName
     PerlPackageList
     PerlMooseAttributeSpec
     PerlMooseAttributeSpecList
 );
 use Log::Any qw($log);
+use Module::Starter::Simple;
 
 extends 'NuFoo::Core::Builder';
 
@@ -62,6 +64,13 @@ has email => (
     is            => "rw",
     isa           => EmailAddress,
     documentation => qq{Author's email},
+);
+
+has licenses => (
+    is            => "rw",
+    isa           => ArrayRef[PerlLicense],
+    default       => sub { ["perl"] },
+    documentation => qq{License(s) under which the module will be distributed (default is the same license as perl)},
 );
 
 has test_more => (
@@ -135,6 +144,20 @@ method build {
 method class2file (Str $name) {
     $name =~ s/::/\//g;
     $name . ".pm";
+}
+
+method license_blurb {
+    my $blurb = "";
+    my @licenses = @{$self->licenses};
+    return $blurb unless @licenses;
+    my $mapping = Module::Starter::Simple::_get_licenses_mapping({
+        author => $self->author
+    });
+    foreach (@$mapping) {
+        $blurb .= ($blurb ? "\n\n" : "") . $_->{blurb}
+            if $_->{license} ~~ @licenses;
+    }
+    return $blurb;
 }
 
 CLASS->meta->make_immutable;
