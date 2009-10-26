@@ -105,11 +105,9 @@ method run() {
     my ($builder, $builder_class);
     eval { 
         $builder_class = $self->load_builder( $name );
-        # XXX - This should really be $self->new_builder but we need to use
-        # new_with_options, so must remember to emulate any logic from that
-        # method. e.g. passing nufoo object.
         $self->builder_usage_error( $builder_class, "", 2 ) if $self->man;
-        $builder = $builder_class->new_with_options( 
+        # Should possible be using new_builder if we go with that setup.
+        $builder = $builder_class->new(
             argv  => \@argv, 
             nufoo => $self 
         );

@@ -29,15 +29,12 @@ has nufoo => (
     handles  => [qw(write_file)],
 );
 
-before new_with_options => sub {
-    Getopt::Long::Configure('no_pass_through'); 
-};
-
 around BUILDARGS => sub {
     my $orig  = shift;
     my $class = shift;
     my %args  = ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
 
+    # Load config from the NuFoo object
     if ($args{nufoo}) {
         my $conf    = $args{nufoo}->conf;
         my $section = $class->build_name;
@@ -49,6 +46,20 @@ around BUILDARGS => sub {
         }
         %args = ( %args, %extra ) if keys %extra; 
     }
+
+    # Process an argv (command line args), if we got one.
+    # Note we pass the current args, with conf included, to stop
+    # _attrs_to_options from generating required options (which cause a die)
+    # for options we already have.
+    if ( my $argv = delete $args{argv} ) {
+        Getopt::Long::Configure('no_pass_through');
+        my %processed = $class->_parse_argv(
+            options => [ $class->_attrs_to_options( \%args ) ],
+            params  => { argv => $argv },
+        );
+        %args = ( %args, %{$processed{params}} ) if ref $processed{params};
+    }
+
     return $class->$orig(%args);
 };
 
