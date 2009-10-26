@@ -82,10 +82,13 @@ method load_builder (Str $name) {
     return $class;
 }
 
-method new_builder ( Str $name, HashRef $args? = {} ) {
+sub new_builder {
+    my $self = shift;
+    my $name = shift || confess "No name";
     my $class = $self->load_builder($name) || return undef;
-    $args->{nufoo} = $self;
-    return $class->new($args);
+    my %args  = ref $_[0] ? %{$_[0]} : @_;
+    $args{nufoo} = $self;
+    return $class->new(%args);
 }
 
 method build ( Str $name, HashRef $args? ) {
@@ -180,6 +183,20 @@ Array of directories to search for builders in.
 
 =head1 METHODS 
 
+=head2 build
+
+ build( Str $name, HashRef $args? )
+
+Run a builder.
+
+=head2 new_builder
+
+ my $builder = $nufoo->new_builder( $name, $args );
+ my $builder = $nufoo->new_builder( $name, @args );
+
+Load and construct a builder for the name given, returing the object.
+Args can be a hashref or list.
+
 =head2 load_builder
 
  load_builder( Str $name );
@@ -205,6 +222,14 @@ e.g.
  Perl.Moose.Class -> NuFoo::Perl::Moose::Class::Builder
  NuFoo.Builder    -> NuFoo::NuFoo::Builder::Builder
  HTML/Page        -> NuFoo::HTML::Page::Builder
+
+=head2 builder_class_to_name
+
+=head2 builder_names
+
+Return list of availiable builder names.
+
+=head2 write_file
 
 =head1 AUTHOR
 

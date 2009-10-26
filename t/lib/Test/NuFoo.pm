@@ -31,7 +31,7 @@ sub load_builder : Test(4) {
         "NuFoo::Hello::World loaded";
 }
 
-sub new_builder : Test(8) {
+sub new_builder : Test(9) {
     my $nufoo = NuFoo->new( include_path => ["$Bin/nufoo"] );
     my ($builder);
 
@@ -46,6 +46,9 @@ sub new_builder : Test(8) {
     isa_ok( $builder, "NuFoo::NuFoo::Hello::World::Builder", "With args" );
     is( $builder->who, "Me", "Who attrib set via new call." );
     isa_ok( $builder->nufoo, "NuFoo", "builder->nufoo" );
+
+    $builder = $nufoo->new_builder( 'NuFoo.Hello.World', who => "You" );
+    is $builder->who, "You", "Args passed as list" 
 }
 
 sub conf : Test(6) {
