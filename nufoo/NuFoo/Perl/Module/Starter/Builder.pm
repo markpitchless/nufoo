@@ -5,7 +5,7 @@ use Moose;
 use MooseX::Method::Signatures;
 use Log::Any qw($log);
 use Module::Starter;
-use NuFoo::Core::Types qw(PerlLicense);
+use NuFoo::Core::Types qw(PerlLicense EmailAddress);
 
 extends 'NuFoo::Core::Builder';
 
@@ -33,7 +33,7 @@ has author => (
 
 has email => (
     is            => "rw",
-    isa           => "Str",
+    isa           => EmailAddress,
     required      => 1,
     documentation => qq{Author's email (required)},
 );

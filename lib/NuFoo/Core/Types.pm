@@ -10,6 +10,7 @@ our $VERSION = '0.01';
 
 use MooseX::Types -declare => [qw(
     ArrayRefOfStr
+    EmailAddress
     PerlPackageName
     PerlPackageList
     PerlMooseAttributeSpec
@@ -18,11 +19,16 @@ use MooseX::Types -declare => [qw(
     FileList
 )];
 use MooseX::Types::Path::Class qw(Dir File);
-
 use MooseX::Types::Moose qw( :all );
+use Email::Valid;
 
 # Needed for defining deep coercion
 subtype ArrayRefOfStr, as ArrayRef[Str];
+
+subtype EmailAddress,
+    as Str,
+    where { Email::Valid->address($_) ? 1 : 0; },
+    message { "The string ($_) is not a valid email address." };
 
 subtype PerlPackageName,
     as Str,

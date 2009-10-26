@@ -19,6 +19,7 @@ my $builder = Module::Build->new(
         'Log::Any'        => 0,
         'Term::ANSIColor' => 0,
         'Module::Starter' => 0,
+        'Email::Valid'    => 0,
     },
     build_requires => {
         'Test::More'  => 0,

@@ -11,6 +11,7 @@ use Moose;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
 use NuFoo::Core::Types qw(
+    EmailAddress
     PerlPackageName
     PerlPackageList
     PerlMooseAttributeSpec
@@ -59,7 +60,7 @@ has author => (
 
 has email => (
     is            => "rw",
-    isa           => "Str",
+    isa           => EmailAddress,
     documentation => qq{Author's email},
 );
 
@@ -177,6 +178,16 @@ List of classes this class extends.
 =item with
 
 List of roles this class consumes.
+
+=item author
+
+The authors name. It is recommened you set C<Perl.author> in the config for
+this.
+
+=item email
+
+The authors email address. It is recommened you set C<Perl.email> in the config
+for this.
 
 =item test_more
 
