@@ -11,7 +11,6 @@ use Moose;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
 use NuFoo::Core::Types qw(
-    EmailAddress
     PerlLicense
     PerlPackageName
     PerlPackageList
@@ -23,7 +22,8 @@ use Module::Starter::Simple;
 
 extends 'NuFoo::Core::Builder';
 
-with 'NuFoo::Core::Role::TT';
+with 'NuFoo::Core::Role::TT',
+    'NuFoo::Core::Role::Authorship';
 
 has class => (
     is            => "rw",
@@ -52,18 +52,6 @@ has with => (
     isa           => PerlPackageList,
     default       => sub { [] },
     documentation => qq{Roles this class does. Multiple allowed.},
-);
-
-has author => (
-    is            => "rw",
-    isa           => "Str",
-    documentation => qq{Author's name},
-);
-
-has email => (
-    is            => "rw",
-    isa           => EmailAddress,
-    documentation => qq{Author's email},
 );
 
 has licenses => (
