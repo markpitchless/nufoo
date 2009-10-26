@@ -51,6 +51,18 @@ has with => (
     documentation => qq{Roles this class does. Multiple allowed.},
 );
 
+has author => (
+    is            => "rw",
+    isa           => "Str",
+    documentation => qq{Author's name},
+);
+
+has email => (
+    is            => "rw",
+    isa           => "Str",
+    documentation => qq{Author's email},
+);
+
 has test_more => (
     is            => "rw",
     isa           => Bool,
