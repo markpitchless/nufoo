@@ -151,7 +151,7 @@ method license_blurb {
     my @licenses = @{$self->licenses};
     return $blurb unless @licenses;
     my $mapping = Module::Starter::Simple::_get_licenses_mapping({
-        author => $self->author
+        author => ($self->author || "")
     });
     foreach (@$mapping) {
         $blurb .= ($blurb ? "\n\n" : "") . $_->{blurb}
