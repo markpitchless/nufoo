@@ -11,19 +11,19 @@ use Moose;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
 use NuFoo::Core::Types qw(
-    PerlLicense
     PerlPackageName
     PerlPackageList
     PerlMooseAttributeSpec
     PerlMooseAttributeSpecList
 );
 use Log::Any qw($log);
-use Module::Starter::Simple;
 
 extends 'NuFoo::Core::Builder';
 
 with 'NuFoo::Core::Role::TT',
-    'NuFoo::Core::Role::Authorship';
+    'NuFoo::Core::Role::Authorship',
+    'NuFoo::Core::Role::Licensing',
+;
 
 has class => (
     is            => "rw",
@@ -54,12 +54,7 @@ has with => (
     documentation => qq{Roles this class does. Multiple allowed.},
 );
 
-has licenses => (
-    is            => "rw",
-    isa           => ArrayRef[PerlLicense],
-    default       => sub { ["perl"] },
-    documentation => qq{License(s) under which the module will be distributed (default is the same license as perl)},
-);
+has '+licenses' => ( default => sub { ["perl"] } );
 
 has test_more => (
     is            => "rw",
@@ -132,20 +127,6 @@ method build {
 method class2file (Str $name) {
     $name =~ s/::/\//g;
     $name . ".pm";
-}
-
-method license_blurb {
-    my $blurb = "";
-    my @licenses = @{$self->licenses};
-    return $blurb unless @licenses;
-    my $mapping = Module::Starter::Simple::_get_licenses_mapping({
-        author => ($self->author || "")
-    });
-    foreach (@$mapping) {
-        $blurb .= ($blurb ? "\n\n" : "") . $_->{blurb}
-            if $_->{license} ~~ @licenses;
-    }
-    return $blurb;
 }
 
 CLASS->meta->make_immutable;
