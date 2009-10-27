@@ -34,6 +34,8 @@ has '+class' => (
     documentation => qq{Class name of the builder. You do not normally set as it is derived from the name by default.},
 );
 
+has '+extends' => ( default => sub { ["NuFoo::Core::Builder"] } );
+
 has tt => (
     traits        => ['Getopt'],
     is            => "rw",

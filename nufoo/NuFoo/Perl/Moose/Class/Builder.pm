@@ -36,7 +36,7 @@ has test_class => (
     is            => "rw",
     isa           => Bool|PerlPackageName,
     default       => 0,
-    documentation => qq{Ceate a test (Perl.Test.More) for this class.},
+    documentation => qq{Ceate a test (Perl.Test.Class) for this class.},
 );
 
 has test_class_name => (
