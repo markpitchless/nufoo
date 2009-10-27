@@ -21,6 +21,8 @@ with 'NuFoo::Core::Role::TT',
     'NuFoo::Core::Role::Perl::Moose::Thing',
 ;
 
+has '+class' => ( required => 1 );
+
 has '+licenses' => ( default => sub { ["perl"] } );
 
 has test_more => (

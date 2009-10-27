@@ -21,26 +21,17 @@ use Template;
 
 extends 'NuFoo::Core::Builder';
 
-with 'NuFoo::Core::Role::TT';
+with 'NuFoo::Core::Role::TT', 'NuFoo::Core::Role::Perl::Moose::Thing';
 
 has name => ( is => "rw", isa => "Str", required => 1,
     documentation => qq{Name of the new builder},
 );
 
-has class_name => (
-    traits  => ["NoGetopt"],
-    is      => "rw",
-    isa     => "Str",
-    lazy    => 1,
-    builder => '_build_class_name',
+has '+class' => (
+    required => 1,
+    lazy     => 1,
+    builder  => '_build_class_name',
     documentation => qq{Class name of the builder. You do not normally set as it is derived from the name by default.},
-);
-
-has 'with' => (
-    is            => "rw",
-    isa           => PerlPackageList,
-    default       => sub { [] },
-    documentation => qq{Roles this class does. Multiple allowed.},
 );
 
 has tt => (
@@ -49,14 +40,6 @@ has tt => (
     isa           => Bool,
     default       => 0,
     documentation => qq{Setup builder for Template use.},
-);
-
-has 'has' => (
-    is            => "rw",
-    isa           => PerlMooseAttributeSpecList,
-    default       => sub { [] },
-    coerce        => 1,
-    documentation => qq{Attributes for the class. Mutiple allowed.},
 );
 
 sub _build_class_name {
@@ -74,7 +57,7 @@ method build () {
         }
     }
 
-    my $file = $self->class2file( $self->class_name );
+    my $file = $self->class2file( $self->class );
     foreach (qw/nufoo .nufoo/) {
         if ( -d $_ ) {
             $log->info("Using local nufoo directory '$_'");
@@ -97,7 +80,7 @@ CLASS->meta->make_immutable;
 __END__
 =head1 SYNOPSIS
 
- nufoo NuFoo.Builder  ATTRIBUTES 
+ nufoo NuFoo.Builder --name NAME [ATTRIBUTES]
  
 =head1 DESCRIPTION
 

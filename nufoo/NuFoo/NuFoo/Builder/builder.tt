@@ -1,8 +1,8 @@
-package [% class_name %];
+package [% class %];
 
 =head1 NAME
 
-[% class_name %] - Builds...
+[% class %] - Builds...
 
 =cut
 

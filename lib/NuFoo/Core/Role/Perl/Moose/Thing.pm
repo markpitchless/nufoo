@@ -17,7 +17,6 @@ use NuFoo::Core::Types qw(
 has class => (
     is            => "rw",
     isa           => PerlPackageName,
-    required      => 1,
     documentation => qq{The class name.},
 );
 
@@ -26,6 +25,7 @@ has extends => (
     is            => "rw",
     isa           => PerlPackageList,
     default       => sub { [] },
+    accessor      => "class_extends", # Don't stomp on the Moose keyword
     documentation => qq{Class names the new class extends. Multiple allowed.},
 );
 
@@ -33,6 +33,7 @@ has with => (
     is            => "rw",
     isa           => PerlPackageList,
     default       => sub { [] },
+    accessor      => "class_with", # Don't stomp on the Moose keyword
     documentation => qq{Roles this class does. Multiple allowed.},
 );
 
@@ -41,6 +42,7 @@ has has => (
     isa           => PerlMooseAttributeSpecList,
     default       => sub { [] },
     coerce        => 1,
+    accessor      => "class_has", # Don't stomp on the Moose keyword
     documentation => qq{Attributes for the class. Mutiple allowed.},
 );
 
