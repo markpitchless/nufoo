@@ -5,6 +5,7 @@ Revision history for NuFoo
 
         New Builders:
          * Perl.Module.Starter
+         * Perl.Moose.Role
 
 
 0.02    21st Oct 2009

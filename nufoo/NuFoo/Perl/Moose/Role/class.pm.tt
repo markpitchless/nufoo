@@ -1,0 +1,72 @@
+[%- USE date %]
+package [% class %];
+
+=head1 NAME
+
+[% class %] -  
+
+=cut
+
+our $VERSION = '0.01';
+
+use Moose::Role;
+
+[%- IF with.size %]
+with '[% with.join("', '") %]';
+
+[%- END %]
+[%- FOREACH attr IN has  %]
+has [% attr.name %] => (
+    is      => "[% attr.is %]",
+    isa     => "[% attr.isa %]",
+    [%- IF attr.default %]
+    default => "[% attr.default %]",
+    [%- END %]
+);
+
+[%- END %]
+
+__PACKAGE__->meta->make_immutable;
+no Moose;
+
+1;
+__END__
+
+=head1 SYNOPSIS
+
+ use Moose;
+
+ does '[% class %]';
+
+=head1 DESCRIPTION
+
+=head1 ATTRIBUTES 
+
+[%- FOREACH attr IN has %]
+=head2 [% attr.name %]
+
+[%- END %]
+=head1 METHODS 
+
+=head1 SEE ALSO
+
+L<perl>, L<Moose>.
+
+=head1 BUGS
+
+All complex software has bugs lurking in it, and this module is no exception.
+See L<NuFoo/BUGS> for details of how to report bugs.
+
+[%- IF author OR email %]
+=head1 AUTHOR
+
+[% IF author; "$author, "; END; IF email %]C<< <[% email.replace('@',' at ') %]> >>[% END %]
+[% END %]
+=head1 ACKNOWLEDGEMENTS
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright [% date.format(date.now, "%Y") %] [% author %]
+
+[% builder.license_blurb %]
+=cut
