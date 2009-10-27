@@ -10,12 +10,7 @@ use CLASS;
 use Moose;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
-use NuFoo::Core::Types qw(
-    PerlPackageName
-    PerlPackageList
-    PerlMooseAttributeSpec
-    PerlMooseAttributeSpecList
-);
+use NuFoo::Core::Types qw( PerlPackageName );
 use Log::Any qw($log);
 
 extends 'NuFoo::Core::Builder';
@@ -23,36 +18,8 @@ extends 'NuFoo::Core::Builder';
 with 'NuFoo::Core::Role::TT',
     'NuFoo::Core::Role::Authorship',
     'NuFoo::Core::Role::Licensing',
+    'NuFoo::Core::Role::Perl::Moose::Thing',
 ;
-
-has class => (
-    is            => "rw",
-    isa           => PerlPackageName,
-    required      => 1,
-    documentation => qq{The class name.},
-);
-
-has has => (
-    is            => "rw",
-    isa           => PerlMooseAttributeSpecList,
-    default       => sub { [] },
-    coerce        => 1,
-    documentation => qq{Attributes for the class. Mutiple allowed.},
-);
-
-has extends => (
-    is            => "rw",
-    isa           => PerlPackageList,
-    default       => sub { [] },
-    documentation => qq{Class names the new class extends. Multiple allowed.},
-);
-
-has with => (
-    is            => "rw",
-    isa           => PerlPackageList,
-    default       => sub { [] },
-    documentation => qq{Roles this class does. Multiple allowed.},
-);
 
 has '+licenses' => ( default => sub { ["perl"] } );
 
