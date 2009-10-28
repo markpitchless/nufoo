@@ -1,2 +1,5 @@
+[NuFoo]
+include = /home/me/extrafoo
+
 [core]
 force = 1

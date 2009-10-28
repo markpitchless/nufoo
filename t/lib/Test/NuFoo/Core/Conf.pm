@@ -63,4 +63,16 @@ sub get_all : Test(1) {
     cmp_deeply $all, { force => 0, hello => "world" }, "get_all";
 }
 
+sub from_env : Test(2) {
+    my $self = shift;
+    my $conf = NuFoo::Core::Conf->new( files => [
+        "$RealBin/etc/config",
+        "$RealBin/etc/config.user"
+    ] );
+
+    is $conf->get("NuFoo.include"), "/home/me/extrafoo", "Got NuFoo.include";
+    local $ENV{NUFOO_INCLUDE} = "OK";
+    is $conf->get("NuFoo.include"), "OK", "Got NuFoo.include from ENV";
+}
+
 1;

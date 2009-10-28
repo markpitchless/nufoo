@@ -51,7 +51,7 @@ sub new_builder : Test(9) {
     is $builder->who, "You", "Args passed as list" 
 }
 
-sub conf : Test(6) {
+sub conf : Test(8) {
     my $self = shift;
     my $nufoo = NuFoo->new( include_path => ["$Bin/nufoo"] );
     ok $nufoo->conf, "New NuFoo has conf";
@@ -66,6 +66,11 @@ sub conf : Test(6) {
     isa_ok $nufoo->conf, "NuFoo::Core::Conf";
     cmp_deeply $nufoo->conf->files, [file($Bin,"etc","config")] , "Files passed on";
     is $nufoo->conf->get('core.hello'), "world", "Can read core.hello from conf";
+
+    ok !$nufoo->force, "force is default.";
+    local $ENV{NUFOO_FORCE} = 1;
+    $nufoo = NuFoo->new( config_files => [@conf_files] );
+    ok $nufoo->force, "force is set via env.";
 }
 
 1;

@@ -67,6 +67,17 @@ method _build_conf {
     return NuFoo::Core::Conf->new(%args); 
 }
 
+method BUILD {
+    my $conf = $self->conf; # Causes load
+    use Data::Dumper;
+    foreach ( $self->meta->get_all_attributes ) {
+        my $name = $_->name;
+        next if $name =~ /^_/;
+        next if $name eq "conf";
+        my $val = $conf->get( "NuFoo.$name" ) || next;
+        $_->set_value( $self, $val );
+    }
+};
 
 method load_builder (Str $name) {
     my $class = $self->builder_name_to_class($name);

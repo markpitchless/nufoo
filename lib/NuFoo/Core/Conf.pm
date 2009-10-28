@@ -71,7 +71,15 @@ method get (Str $path) {
         $/x
     ;
     return unless $section && $name;
+
+    if ( $section eq "NuFoo" ) {
+        my $env_name = "NUFOO_" . uc($name);
+        return $ENV{$env_name} if exists $ENV{$env_name}; 
+    }
+
     return $conf->{$section}{$name} if exists $conf->{$section}{$name};
+
+    # Look for config in parent sections.
     my ($parent) = $section =~ /^(.*)\./;
     return unless $parent;
     return $self->get( "$parent.$name" );
@@ -120,8 +128,8 @@ files config overriding that of earlier.
 
 Get a config item. e.g.
 
- my $force = $conf->get( 'core.force' );
- my @path  = $conf->get( 'core.include_path' );
+ my $force = $conf->get( 'NuFoo.force' );
+ my @path  = $conf->get( 'NuFoo.include_path' );
 
 =head1 SEE ALSO
 

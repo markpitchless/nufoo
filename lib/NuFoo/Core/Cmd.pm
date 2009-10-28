@@ -16,6 +16,7 @@ use Moose;
 use MooseX::Method::Signatures;
 use Log::Any;
 use NuFoo::Core::Cmd::Logger;
+use NuFoo::Core::Types qw(IncludeList);
 use Log::Any qw($log);
 use Pod::Usage;
 
@@ -40,7 +41,8 @@ has quiet => ( is => 'rw', isa => 'Bool', default => 0,
 
 has include => (
     is            => 'rw',
-    isa           => 'ArrayRef',
+    isa           => IncludeList,
+    coerce        => 1,
     auto_deref    => 1,
     predicate     => 'has_include',
     documentation => qq{Additional directories to search for builders. Give mutiple directories as multiple options.} );

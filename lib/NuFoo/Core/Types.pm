@@ -10,6 +10,7 @@ our $VERSION = '0.01';
 
 use MooseX::Types -declare => [qw(
     ArrayRefOfStr
+    IncludeList
     EmailAddress
     PerlPackageName
     PerlPackageList
@@ -24,6 +25,13 @@ use Email::Valid;
 
 # Needed for defining deep coercion
 subtype ArrayRefOfStr, as ArrayRef[Str];
+
+subtype IncludeList,
+    as ArrayRef[Str];
+
+coerce IncludeList,
+    from Str,
+    via { [ split(/:/, $_) ] };
 
 subtype EmailAddress,
     as Str,
