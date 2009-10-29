@@ -57,6 +57,7 @@ method build {
     $config->{class} ||= 'Module::Starter';
     $config->{force} = $self->nufoo->force ? 1 : 0;
     Module::Starter->create_distro( %$config );
+    $log->info("Created distro");
 }
 
 CLASS->meta->make_immutable;
