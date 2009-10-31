@@ -22,14 +22,20 @@ has name => (
     is            => "rw",
     isa           => "Str",
     lazy_build    => 1,
-    documentation => qq{},
+    documentation => qq{Name of the new application/project.},
 );
 
 has dir => (
     is            => "rw",
     isa           => DirName,
     lazy_build    => 1,
-    documentation => qq{},
+    documentation => qq{Top level directory name to contain project. Uses name as default.},
+);
+
+has theme => (
+    is            => "rw",
+    isa           => "Str",
+    documentation => qq{Name of theme file to include. Give with extension.},
 );
 
 method _build_name {
@@ -52,6 +58,7 @@ method build {
     $self->nufoo->mkdir( [$dir, 'img', 'icon'] );
     $self->tt_write( [$dir, "index.html"], 'index.html.tt' );
     $self->tt_write( [$dir, "js", "Application.js"], 'Application.js.tt' );
+    $self->tt_write( [$dir, "css", "application.css"], 'application.css.tt' );
 }
 
 CLASS->meta->make_immutable;

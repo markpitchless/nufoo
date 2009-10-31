@@ -10,6 +10,7 @@ our $VERSION = '0.01';
 
 use MooseX::Types -declare => [qw(
     ArrayRefOfStr
+    Word
     IncludeList
     File
     Dir
@@ -28,6 +29,11 @@ use Email::Valid;
 
 # Needed for defining deep coercion
 subtype ArrayRefOfStr, as ArrayRef[Str];
+
+subtype Word,
+    as Str,
+    where   { /^\w+$/ },
+    message { "$_ is not a word, only contain alphanumeric plus '_'" };
 
 subtype IncludeList,
     as ArrayRef[Str];
