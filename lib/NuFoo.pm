@@ -164,16 +164,16 @@ method write_file (
     Bool :$force?
 ) {
     $force = $self->force if !defined $force;
-    my (undef, $dir, $filename) = splitpath( "$file" );
-
-    $self->mkdir($dir);
+    
+    $self->mkdir( $file->dir );
 
     my $exists = -f "$file" ? 1 : 0;
     if ( $exists && !$force ) {
         $log->warning( "Skipped '$file' : Already exists" );
     }
     else {
-        open my $out, ">", "$file" or do {
+        my $out = $file->open(">") or do {
+        #open my $out, ">", "$file" or do {
             $log->error( "Failed to open '$file' to write : $!" );
             return;
         };
