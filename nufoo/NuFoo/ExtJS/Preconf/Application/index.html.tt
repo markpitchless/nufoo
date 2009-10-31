@@ -5,7 +5,7 @@
   <link rel="stylesheet" type="text/css" href="./css/application.css">
   <script type="text/javascript" src="./ext/adapter/ext/ext-base.js"></script>
   <script type="text/javascript" src="./ext/ext-all-debug.js"></script>
-  <script type="text/javascript" src="./application.js"></script>
+  <script type="text/javascript" src="./js/Application.js"></script>
   <title>[% name %]</title>
 </head>
 <body></body>

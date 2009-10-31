@@ -15,7 +15,8 @@ use NuFoo::Core::Types qw(DirName);
 
 extends 'NuFoo::Core::Builder';
 
-with 'NuFoo::Core::Role::TT';
+with 'NuFoo::Core::Role::TT',
+    "NuFoo::Core::Role::Authorship";
 
 has name => (
     is            => "rw",
@@ -50,6 +51,7 @@ method build {
     $self->nufoo->mkdir( [$dir, 'img'] );
     $self->nufoo->mkdir( [$dir, 'img', 'icon'] );
     $self->tt_write( [$dir, "index.html"], 'index.html.tt' );
+    $self->tt_write( [$dir, "js", "Application.js"], 'Application.js.tt' );
 }
 
 CLASS->meta->make_immutable;
