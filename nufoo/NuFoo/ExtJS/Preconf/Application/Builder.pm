@@ -49,7 +49,7 @@ method build {
     $self->nufoo->mkdir( [$dir, 'js'] );
     $self->nufoo->mkdir( [$dir, 'img'] );
     $self->nufoo->mkdir( [$dir, 'img', 'icon'] );
-    $self->tt_write( "$dir/index.html", 'index.html.tt' );
+    $self->tt_write( [$dir, "index.html"], 'index.html.tt' );
 }
 
 CLASS->meta->make_immutable;

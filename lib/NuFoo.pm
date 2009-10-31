@@ -158,18 +158,22 @@ method mkdir (Dir $dir does coerce) {
     return @created == 0 ? "0E0" : @created;
 }
 
-method write_file (Str $file, Str|ScalarRef $content, Bool :$force?) {
+method write_file (
+    File $file does coerce,
+    Str|ScalarRef $content,
+    Bool :$force?
+) {
     $force = $self->force if !defined $force;
-    my (undef, $dir, $filename) = splitpath( $file );
+    my (undef, $dir, $filename) = splitpath( "$file" );
 
     $self->mkdir($dir);
 
-    my $exists = -f $file ? 1 : 0;
+    my $exists = -f "$file" ? 1 : 0;
     if ( $exists && !$force ) {
         $log->warning( "Skipped '$file' : Already exists" );
     }
     else {
-        open my $out, ">", $file or do {
+        open my $out, ">", "$file" or do {
             $log->error( "Failed to open '$file' to write : $!" );
             return;
         };
