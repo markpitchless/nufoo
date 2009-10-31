@@ -7,9 +7,10 @@ package [% class %];
 =cut
 
 use CLASS;
+use Log::Any qw($log);
 use Moose;
 use MooseX::Method::Signatures;
-use Log::Any qw($log);
+use NuFoo::Core::Types qw();
 
 extends '[% extends.join("', '") %]';
 
@@ -41,7 +42,7 @@ __END__
 
 =head1 SYNOPSIS
 
- $ nufoo [% name %] ATTRIBUTES 
+ nufoo [% name %] [ATTRIBUTES] 
 
 =head1 DESCRIPTION
 
@@ -59,6 +60,8 @@ Builds...
 =back
 
 =head1 EXAMPLES 
+
+ nufoo [% name %]
 
 =head1 SEE ALSO
 
