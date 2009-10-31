@@ -63,6 +63,10 @@ method javascript_class2file (Str $class) {
 
 method build {
     $self->tt_write( $self->class_file, "class.js.tt" ); 
+    my $help = "Don't forget to load this class in your index.html. e.g.\n"
+        . '<script type="text/javascript" src="./js/' . $self->class_file
+        . '"><script>';
+    $log->info($help);
 }
 
 CLASS->meta->make_immutable;
