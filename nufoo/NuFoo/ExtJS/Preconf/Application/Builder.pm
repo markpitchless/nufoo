@@ -92,7 +92,7 @@ __END__
 
 =head1 SYNOPSIS
 
- $ nufoo ExtJS.Preconf.Application ATTRIBUTES 
+ $ nufoo ExtJS.Preconf.Application [ATTRIBUTES] 
 
 =head1 DESCRIPTION
 
@@ -105,10 +105,21 @@ configured component setup.
 
 =item name
 
+=item author
+
+=item email
 
 =back
 
 =head1 EXAMPLES 
+
+ nufoo ExtJS.Preconf.Application --email hello@world.com --author=mda --name NuFoo
+
+=head1 ACKNOWLEDGEMENTS
+
+Many thanks to Saki for the preconf idea this is based on.
+
+TODO - Links to tutorial.
 
 =head1 SEE ALSO
 
