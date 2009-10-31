@@ -13,13 +13,14 @@ use MooseX::Types -declare => [qw(
     IncludeList
     File
     Dir
+    FileList
+    DirName
     EmailAddress
     PerlPackageName
     PerlPackageList
     PerlMooseAttributeSpec
     PerlMooseAttributeSpecList
     PerlLicense
-    FileList
 )];
 use MooseX::Types::Path::Class;
 use MooseX::Types::Moose qw( :all );
@@ -61,6 +62,12 @@ coerce FileList,
     from ArrayRefOfStr,
     via { [ map { Path::Class::File->new($_) } @$_ ] }
 ;
+
+# XXX : This needs more and should be platform specific.
+subtype DirName,
+    as Str,
+    where { m/^[^:\/\\]+$/ },
+    message { "Bad directory name ($_)." };
 
 
 subtype EmailAddress,
