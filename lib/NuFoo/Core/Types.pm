@@ -11,6 +11,8 @@ our $VERSION = '0.01';
 use MooseX::Types -declare => [qw(
     ArrayRefOfStr
     IncludeList
+    File
+    Dir
     EmailAddress
     PerlPackageName
     PerlPackageList
@@ -19,7 +21,7 @@ use MooseX::Types -declare => [qw(
     PerlLicense
     FileList
 )];
-use MooseX::Types::Path::Class qw(Dir File);
+use MooseX::Types::Path::Class;
 use MooseX::Types::Moose qw( :all );
 use Email::Valid;
 
@@ -32,6 +34,34 @@ subtype IncludeList,
 coerce IncludeList,
     from Str,
     via { [ split(/:/, $_) ] };
+
+# I just want to have the File and Dir from MooseX::Types::Path:Class exported
+# by this mod. There must be an easier way?
+subtype File,
+    as 'Path::Class::File';
+
+coerce File,
+    from Str,      via { Path::Class::File->new($_) },
+    from ArrayRef, via { Path::Class::File->new(@$_) },
+;
+
+subtype Dir,
+    as 'Path::Class::Dir';
+
+coerce Dir,
+    from Str,      via { Path::Class::Dir->new($_) },
+    from ArrayRef, via { Path::Class::Dir->new(@$_) },
+;
+
+subtype FileList,
+    as ArrayRef[File],
+;
+
+coerce FileList,
+    from ArrayRefOfStr,
+    via { [ map { Path::Class::File->new($_) } @$_ ] }
+;
+
 
 subtype EmailAddress,
     as Str,
@@ -88,15 +118,6 @@ subtype PerlLicense,
     where   { m/perl|bsd|gpl|lgpl|mit/ },
     message { "Perl License must be one of perl, bsd, gpl, lgpl or mit" };
 
-
-subtype FileList,
-    as ArrayRef[File],
-;
-
-coerce FileList,
-    from ArrayRefOfStr,
-    via { [ map { Path::Class::File->new($_) } @$_ ] }
-;
 
 no Moose::Util::TypeConstraints;
 

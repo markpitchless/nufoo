@@ -20,7 +20,7 @@ use File::Path qw(make_path);
 use File::Find;
 use MooseX::Getopt::Meta::Attribute::Trait;
 use NuFoo::Core::Conf;
-use NuFoo::Core::Types qw(FileList);
+use NuFoo::Core::Types qw(File Dir FileList);
 
 has include_path => (
     is         => 'rw',
@@ -142,22 +142,27 @@ method builder_names {
     } @builder_files;
 }
 
+method mkdir (Dir $dir does coerce) {
+    return 1 if -d "$dir";
+    my @created = eval { make_path("$dir") };
+    if ($@) {
+        (my $err = $@) =~ s/ at .*\.pm line \d+\n?//;
+        $log->error("Failed creating '$dir' : $err");
+        return 0;
+    }
+    else {
+        foreach (@created) {
+            $log->info( "Created directory '$_'");
+        }
+    }
+    return @created == 0 ? "0E0" : @created;
+}
+
 method write_file (Str $file, Str|ScalarRef $content, Bool :$force?) {
     $force = $self->force if !defined $force;
     my (undef, $dir, $filename) = splitpath( $file );
 
-    unless ( -d $dir ) {
-        my @created = eval { make_path($dir) };
-        if ($@) {
-            (my $err = $@) =~ s/ at .*\.pm line \d+\n?//;
-            $log->error("Failed creating '$dir' : $err");
-        }
-        else {
-            foreach (@created) {
-                $log->info( "Created directory '$_'");
-            }
-        }
-    }
+    $self->mkdir($dir);
 
     my $exists = -f $file ? 1 : 0;
     if ( $exists && !$force ) {
@@ -241,6 +246,8 @@ e.g.
 Return list of availiable builder names.
 
 =head2 write_file
+
+=head2 mkdir
 
 =head1 AUTHOR
 
