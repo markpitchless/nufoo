@@ -10,7 +10,7 @@
   <link rel="stylesheet" type="text/css" href="./extjs/resources/css/[% theme %].css" />
   [%- END %]
   <!-- overrides to base css -->
-  <link rel="stylesheet" type="text/css" href="./css/application.css">
+  <link rel="stylesheet" type="text/css" href="./css/[% css_file_name %].css">
 
   <!-- base library -->
   <script type="text/javascript" src="./ext/adapter/ext/ext-base.js"></script>
@@ -18,7 +18,7 @@
   <!-- overrides to base library -->
   <!-- extensions -->
   <!-- page specific -->
-  <script type="text/javascript" src="./js/Application.js"></script>
+  <script type="text/javascript" src="./js/[% application_class %].js"></script>
 </head>
 <body></body>
 </html>

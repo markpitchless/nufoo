@@ -18,7 +18,7 @@
 /*global Ext, Application */
  
 Ext.BLANK_IMAGE_URL = './ext/resources/images/default/s.gif';
-Ext.ns('Application');
+Ext.ns('[% application_class %]');
  
 // application main entry point
 Ext.onReady(function() {

@@ -38,15 +38,36 @@ has theme => (
     documentation => qq{Name of theme file to include. Give with extension.},
 );
 
+has application_class => (
+    is            => "rw",
+    isa           => "Str",
+    lazy_build    => 1,
+    documentation => qq{Class for the main application. Default is to use name.},
+);
+
+has css_file_name => (
+    is            => "rw",
+    isa           => "Str",
+    lazy_build    => 1,
+    documentation => qq{Name of the css file for ext overrides. Default derived from name.},
+);
+
 method _build_name {
-    return "ExtProject";
+    return "Application";
 }
 
 method _build_dir {
-    if ( $self->has_name ) {
-        return $self->name;
-    }
-    return "ExtProject";
+    return $self->name if $self->name;
+    return "Application";
+}
+
+method _build_application_class {
+    return $self->name;
+}
+
+method _build_css_file_name {
+    my $name = $self->name;
+    $name = lc($name) . "-ext.css";
 }
 
 method build {
@@ -57,8 +78,10 @@ method build {
     $self->nufoo->mkdir( [$dir, 'img'] );
     $self->nufoo->mkdir( [$dir, 'img', 'icon'] );
     $self->tt_write( [$dir, "index.html"], 'index.html.tt' );
-    $self->tt_write( [$dir, "js", "Application.js"], 'Application.js.tt' );
-    $self->tt_write( [$dir, "css", "application.css"], 'application.css.tt' );
+    $self->tt_write( [$dir, "js", $self->application_class.".js"],
+        'Application.js.tt' );
+    $self->tt_write( [$dir, "css", $self->css_file_name], 'application.css.tt' );
+    $log->info("You need to copy ext code into $dir/ext directory.");
 }
 
 CLASS->meta->make_immutable;
