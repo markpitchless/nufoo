@@ -53,9 +53,9 @@ sub _build_class_name {
 
 method build () {
     if ( $self->tt ) {
-        my $with = $self->with;
+        my $with = $self->class_with;
         unless ( "NuFoo::Core::Role::TT" ~~ @$with ) {
-            $self->with( [ @$with, "NuFoo::Core::Role::TT"] );
+            $self->class_with( [ @$with, "NuFoo::Core::Role::TT"] );
         }
     }
 
@@ -76,6 +76,7 @@ method class2file (Str $name) {
 }
 
 CLASS->meta->make_immutable;
+no Moose;
 
 1;
 
