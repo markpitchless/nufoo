@@ -1,0 +1,22 @@
+
+Add a method for setting template options to Role::TT.
+
+Sort out the usage mess.
+
+Is BUILDARGS the place to be processing config and argv. Instead maybe we
+should have a new_with_nufoo constructor.
+
+Should Perl.Module.Starter be getting a list of licenses.
+
+Perl.Moose.Role - Needs some refactoring for Moose::Thing
+
+Change the PerlLicense type to License, CodeLicense?
+
+Add coerce for LicenseList via Str.
+
+--vim option to add vim line (maybe via vim_modeline) e.g.
+// vim: sw=4:ts=4:nu:nospell:fdc=4
+
+Fix does use in synopsis of Roles. Should be with.
+
+Charsets. Output control. HTML pages can then set.
