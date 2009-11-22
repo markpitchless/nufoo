@@ -9,12 +9,13 @@ NuFoo::Core::Role::Licensing - Role for builders that want licensing information
 use Moose::Role;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( ArrayRef );
-use NuFoo::Core::Types qw( PerlLicense );
+use NuFoo::Core::Types qw( PerlLicenseList );
 use Module::Starter::Simple;
 
 has licenses => (
     is            => "rw",
-    isa           => ArrayRef[PerlLicense],
+    isa           => PerlLicenseList,
+    coerce        => 1,
     predicate     => "has_licenses",
     documentation => qq{License(s) under which the code will be distributed.},
 );

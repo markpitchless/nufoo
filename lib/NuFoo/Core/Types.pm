@@ -22,6 +22,7 @@ use MooseX::Types -declare => [qw(
     PerlMooseAttributeSpec
     PerlMooseAttributeSpecList
     PerlLicense
+    PerlLicenseList
 )];
 use MooseX::Types::Path::Class;
 use MooseX::Types::Moose qw( :all );
@@ -131,6 +132,12 @@ subtype PerlLicense,
     where   { m/perl|bsd|gpl|lgpl|mit/ },
     message { "Perl License must be one of perl, bsd, gpl, lgpl or mit" };
 
+subtype PerlLicenseList,
+    as ArrayRef[PerlLicense];
+
+coerce PerlLicenseList,
+    from Str,
+    via { [$_] };
 
 no Moose::Util::TypeConstraints;
 
