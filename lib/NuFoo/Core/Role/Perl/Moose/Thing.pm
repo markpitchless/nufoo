@@ -20,6 +20,12 @@ has class => (
     documentation => qq{The class name.},
 );
 
+has uses => (
+    is            => "rw",
+    isa           => PerlPackageList,
+    documentation => qq{Classs this class should use.},
+);
+
 # Can not be used by roles.
 has extends => (
     is            => "rw",

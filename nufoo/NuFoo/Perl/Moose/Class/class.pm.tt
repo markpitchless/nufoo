@@ -4,7 +4,12 @@ package [% class %];
 our $VERSION = '0.01';
 
 use Moose;
-
+[%- IF uses.size %]
+    [%- FOREACH use_class IN uses %]
+use [% use_class %];
+    [%- END %]
+[%- END %]
+[% PROCESS "class-uses.pl.tt" %]
 [%- IF extends.size %]
 extends '[% extends.join("', '") %]';
 

@@ -1,0 +1,5 @@
+use MooseX::Types -declare => [qw(
+    # Pre-declare type names.
+    Foo
+)];
+use MooseX::Types::Moose qw( :all );
