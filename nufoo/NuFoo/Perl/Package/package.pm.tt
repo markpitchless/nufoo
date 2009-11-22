@@ -3,7 +3,7 @@ package [% package %];
 
 our $VERSION = '0.01';
 
-# Code here
+[% PROCESS "package-body.pl.tt" -%]
 
 1;
 __END__

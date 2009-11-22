@@ -12,7 +12,7 @@ use Moose;
 use MooseX::Method::Signatures;
 use NuFoo::Core::Types qw();
 
-extends 'NuFoo::Perl::Moose::Class::Builder';
+extends 'NuFoo::Perl::Package::Builder';
 
 # We just override some of the templates.
 

@@ -1,5 +1,5 @@
  use Moose;
  use MooseX::Types::Moose qw(:all);
- use [% class %] qw( Foo );
+ use [% class %] qw( PositiveInt );
 
- has foo => ( is => 'rw', isa => Foo );
+ has foo => ( is => 'rw', isa => PositiveInt );

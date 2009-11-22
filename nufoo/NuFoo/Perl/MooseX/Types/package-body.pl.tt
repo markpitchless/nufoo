@@ -1,0 +1,16 @@
+use strict;
+use warnings;
+
+use MooseX::Types -declare => [qw(
+    PositiveInt
+)];
+use MooseX::Types::Moose qw( :all );
+
+subtype PositiveInt,
+    as Int,
+    where { $_ > 0 },
+    message { "Value $_ is not positive" };
+
+coerce PositiveInt,
+    from Int,
+    via { abs };
