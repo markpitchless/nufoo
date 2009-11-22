@@ -98,6 +98,13 @@ deals with setting the include path to include the builders home directory. So
 just drop your templates into the same dir as F<Builder.pm> and call the
 L<tt_write> method or L<tt_process> method.
 
+The home dir of any parent classes that do this role also getting added to the
+include path in method dispatch order. This means when you inherit from a class
+that does this role you also inheit it's template path, hence templates. You
+can override templates with your own places in your home dir. Because of this
+authors are encoraged to split the templates into smaller includes that provide
+useful points to override. Also please add a TEMPLATES section to the docs.
+
 By default all of you classes attributes that don't start with an _ will be
 passed to the template as variables. You can add the trait C<NoTT> to a
 attribute to stop it getting added.
