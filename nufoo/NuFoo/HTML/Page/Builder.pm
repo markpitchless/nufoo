@@ -12,17 +12,11 @@ use Moose;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw(:all);
 use NuFoo::Core::Types qw(File);
+use NuFoo::HTML::Types qw( HtmlDocType );
 
 extends 'NuFoo::Core::Builder';
 
 with 'NuFoo::Core::Role::TT';
-
-has title => (
-    is            => "rw",
-    isa           => Str,
-    required      => 1,
-    documentation => qq{Page title},
-);
 
 has file => (
     is            => "rw",
@@ -32,6 +26,32 @@ has file => (
     documentation => qq{File to write to. Default is index.html},
 );
 
+has title => (
+    is            => "rw",
+    isa           => Str,
+    required      => 1,
+    documentation => qq{Page title},
+);
+
+has doctype => (
+    is            => "rw",
+    isa           => HtmlDocType,
+    required      => 1,
+    default       => "transitional",
+    documentation => qq{Doc type to use, one of strict, transitional or frameset},
+);
+
+has lang => (
+    is            => "rw",
+    isa           => Str,
+    documentation => qq{Set language tag on html element},
+);
+
+has dir => (
+    is            => "rw",
+    isa           => Str,
+    documentation => qq{Set dir tag on html element},
+);
 
 method build {
     $self->tt_write( $self->file, "page.html.tt" ); 
@@ -69,6 +89,9 @@ Builds...
 =head1 SEE ALSO
 
 L<NuFoo>, L<NuFoo::Core::Builder>.
+
+L<http://www.w3.org/MarkUp/Guide/>,
+L<http://www.w3.org/TR/REC-html40/struct/global.html>
 
 =head1 BUGS
 

@@ -34,3 +34,5 @@ EXTENDS section in pod.
 
 Perl.Moose.Class needs option to control quoting of type names. Maybe --xtypes
 could add MooseX::Types support and not quote type names.
+
+--file should support - to mean stdout.
