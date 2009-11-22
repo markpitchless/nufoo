@@ -20,3 +20,17 @@ Add coerce for LicenseList via Str.
 Fix does use in synopsis of Roles. Should be with.
 
 Charsets. Output control. HTML pages can then set.
+
+Doctype setting for HTML.Page.
+
+NuFoo.Builder should be a subclass of Perl.Moose.Class
+
+TEMPLATES sections in docs.
+
+--tt option for NuFoo.Builder should create a template and write line for
+$self->file. Template named after end of build name. What extension?
+
+EXTENDS section in pod.
+
+Perl.Moose.Class needs option to control quoting of type names. Maybe --xtypes
+could add MooseX::Types support and not quote type names.
