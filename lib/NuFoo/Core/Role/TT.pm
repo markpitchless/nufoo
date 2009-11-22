@@ -20,8 +20,13 @@ has tt_template => ( is => "ro", isa => "Template", required => 1,
 
 sub _build_tt_template {
     my $self = shift;
+    my @include = $self->home_dir;
+    foreach ($self->meta->linearized_isa) {
+        next unless $_->meta->does_role("NuFoo::Core::Role::TT");
+        push @include, $_->home_dir;
+    }
     my $tt   = Template->new({
-        INCLUDE_PATH => $self->home_dir,
+        INCLUDE_PATH => \@include, 
     });
     return $tt;
 }
