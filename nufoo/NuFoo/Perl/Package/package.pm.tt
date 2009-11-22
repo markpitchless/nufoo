@@ -1,0 +1,47 @@
+[%- USE date %]
+package [% package %];
+
+our $VERSION = '0.01';
+
+# Code here
+
+1;
+__END__
+
+=pod
+
+=head1 NAME
+
+[% package %] -  
+
+=cut
+
+=head1 SYNOPSIS
+
+[% PROCESS "synopsis.pod.tt" -%]
+
+=head1 DESCRIPTION
+
+=head1 SEE ALSO
+
+L<perl>.
+
+=head1 BUGS
+
+All complex software has bugs lurking in it, and this module is no exception.
+See L<NuFoo/BUGS> for details of how to report bugs.
+
+=head1 ACKNOWLEDGEMENTS
+
+[%- IF author OR email %]
+=head1 AUTHOR
+
+[% IF author; "$author, "; END; IF email %]C<< <[% email.replace('@',' at ') %]> >>[% END %]
+[% END %]
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright [% date.format(date.now, "%Y") %] [% author %]
+
+[% builder.license_blurb %]
+=cut
