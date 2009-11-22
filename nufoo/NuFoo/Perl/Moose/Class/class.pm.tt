@@ -1,12 +1,6 @@
 [%- USE date %]
 package [% class %];
 
-=head1 NAME
-
-[% class %] -  
-
-=cut
-
 our $VERSION = '0.01';
 
 use Moose;
@@ -36,9 +30,17 @@ no Moose;
 1;
 __END__
 
+=pod
+
+=head1 NAME
+
+[% class %] -  
+
+=cut
+
 =head1 SYNOPSIS
 
- my $obj = [% class %]->new();
+[% PROCESS "synopsis.pod.tt" -%]
 
 =head1 DESCRIPTION
 
