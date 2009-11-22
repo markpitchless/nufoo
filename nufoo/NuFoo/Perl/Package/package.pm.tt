@@ -22,26 +22,23 @@ __END__
 
 =head1 DESCRIPTION
 
+[% PROCESS "description.pod.tt" %]
 =head1 SEE ALSO
 
-L<perl>.
-
+[% PROCESS "see_also.pod.tt" %]
 =head1 BUGS
 
-All complex software has bugs lurking in it, and this module is no exception.
-See L<NuFoo/BUGS> for details of how to report bugs.
-
+[% PROCESS "bugs.pod.tt" %]
 =head1 ACKNOWLEDGEMENTS
 
-[%- IF author OR email %]
+[% PROCESS "description.pod.tt" %]
 =head1 AUTHOR
 
-[% IF author; "$author, "; END; IF email %]C<< <[% email.replace('@',' at ') %]> >>[% END %]
-[% END %]
+[% PROCESS "author.pod.tt" %]
+=head1 COPYRIGHT
 
-=head1 COPYRIGHT & LICENSE
+[% PROCESS "copyright.pod.tt" %]
+=head1 LICENSE
 
-Copyright [% date.format(date.now, "%Y") %] [% author %]
-
-[% builder.license_blurb %]
+[% PROCESS "license.pod.tt" %]
 =cut

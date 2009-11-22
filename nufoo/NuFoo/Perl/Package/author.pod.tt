@@ -1,0 +1,1 @@
+[% IF author; "$author, "; END; IF email %]C<< <[% email.replace('@',' at ') %]> >>[% END %]
