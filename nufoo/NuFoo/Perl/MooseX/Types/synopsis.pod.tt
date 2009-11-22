@@ -1,0 +1,5 @@
+ use Moose;
+ use MooseX::Types::Moose qw(:all);
+ use [% class %] qw( Foo );
+
+ has foo => ( is => 'rw', isa => Foo );
