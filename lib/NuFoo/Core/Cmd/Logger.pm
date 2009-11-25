@@ -1,6 +1,6 @@
 package NuFoo::Core::Cmd::Logger;
 use Carp qw(croak confess);
-use Log::Any::Util qw(make_method);
+use Log::Any::Adapter::Util qw(make_method);
 use strict;
 use warnings;
 use Term::ANSIColor;
