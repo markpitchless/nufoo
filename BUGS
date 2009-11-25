@@ -1,0 +1,4 @@
+Setting NUFOO_INCLUDE doesn't work unless at least one config file has been
+read.
+
+--list often doubles up the list. Run in build dir to see.
