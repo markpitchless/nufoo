@@ -1,0 +1,2 @@
+ use [% package %];
+ my $obj = [% package %]->new( foo => "hello" );
