@@ -2,8 +2,6 @@ bin/nufoo
 Build.PL
 Changes
 lib/NuFoo.pm
-lib/NuFoo/Builder.pm
-lib/NuFoo/Cmd.pm
 lib/NuFoo/Core/Builder.pm
 lib/NuFoo/Core/Cmd.pm
 lib/NuFoo/Core/Cmd/Logger.pm
