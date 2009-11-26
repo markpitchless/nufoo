@@ -62,7 +62,7 @@ method load_file (File $file does coerce) {
 }
 
 method get (Str $path) {
-    my $conf = $self->_conf || return; # No config loaded
+    my $conf = $self->_conf;
     my ($section, $name) = $path =~ m/
         ^
         (.*)
@@ -76,6 +76,8 @@ method get (Str $path) {
         my $env_name = "NUFOO_" . uc($name);
         return $ENV{$env_name} if exists $ENV{$env_name}; 
     }
+    
+    return unless $conf; # No config loaded
 
     return $conf->{$section}{$name} if exists $conf->{$section}{$name};
 
