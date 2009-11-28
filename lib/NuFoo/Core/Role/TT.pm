@@ -47,6 +47,7 @@ sub tt_vars {
     my $self = shift;
     my $vars = {
         builder => $self,
+        build   => $self,
     };
     foreach my $attr ($self->tt_attribs) {
         my $name = $attr->name;

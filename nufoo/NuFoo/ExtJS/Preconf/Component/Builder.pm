@@ -75,6 +75,13 @@ method _build_xtype {
     return lc $xtype;
 }
 
+method namespace {
+    my $ns = $self->class;
+    return "" unless $ns =~ /\./;
+    $ns =~ s/\.(\w+)$//;
+    return $ns;
+}
+
 method javascript_class2file (Str $class) {
     return catdir(split(/\./, $class)).".js";
 }

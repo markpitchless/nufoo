@@ -1,7 +1,7 @@
 /**
   * [% class %] - Preconfigured class
   *
-  * TODO - Description... 
+  * TODO - Description...
   *
   * @author  [% author %] [% IF email; %]<[% email.replace('@',' at ') %]>[% END %]
   * @version 0.1
@@ -12,21 +12,22 @@
   * @param {Object} config Configuration options
   */
 
-//Ext.namespace('Ext.ux');
- 
+[%- IF build.namespace %]
+Ext.namespace('[% build.namespace %]');
+[% END %]
 [% class %] = Ext.extend( [% extends %], {
 
     initComponent:function() {
         var config = {
-            // TODO - Pre-configure component 
+            // TODO - Pre-configure component
         }; // eo config object
- 
+
         // apply config
         Ext.apply(this, Ext.apply(this.initialConfig, config));
- 
+
         [% class %].superclass.initComponent.apply(this, arguments);
     } // eo function initComponent
- 
+
 }); // eo [% class %]
- 
+
 Ext.reg('[% xtype %]', [% class %]);
