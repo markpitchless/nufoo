@@ -21,7 +21,7 @@ with 'NuFoo::Core::Role::TT',
 has name => (
     is            => "rw",
     isa           => "Str",
-    lazy_build    => 1,
+    required      => 1,
     documentation => qq{Name of the new application/project.},
 );
 
@@ -51,10 +51,6 @@ has css_file_name => (
     lazy_build    => 1,
     documentation => qq{Name of the css file for ext overrides. Default derived from name.},
 );
-
-method _build_name {
-    return "Application";
-}
 
 method _build_dir {
     return $self->name if $self->name;
@@ -92,7 +88,7 @@ __END__
 
 =head1 SYNOPSIS
 
- $ nufoo ExtJS.Preconf.Application [ATTRIBUTES] 
+ $ nufoo ExtJS.Preconf.Application --name NAME [ATTRIBUTES] 
 
 =head1 DESCRIPTION
 
