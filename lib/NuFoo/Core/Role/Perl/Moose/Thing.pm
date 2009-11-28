@@ -63,9 +63,15 @@ __END__
 
 =head1 ATTRIBUTES 
 
-=head2 author
+=head2 class
 
-=head2 email
+=head2 uses
+
+=head2 extends
+
+=head2 with
+
+=head2 has
 
 =head1 METHODS 
 

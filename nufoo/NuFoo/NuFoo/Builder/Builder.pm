@@ -106,9 +106,13 @@ Attributes for the class.
 
 List of roles to consume.
 
+=item extends
+
+List of classes to extend. Default is NuFoo::Core::Builder.
+
 =item tt
 
-Setup class for Template use. Includes the TT role.
+Setup class for Template use. Includes the TT role. Default is on.
 
 =back
 
