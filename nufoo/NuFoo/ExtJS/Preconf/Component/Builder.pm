@@ -10,7 +10,7 @@ use CLASS;
 use Log::Any qw($log);
 use Moose;
 use MooseX::Method::Signatures;
-use NuFoo::Core::Types qw(File);
+use NuFoo::Core::Types qw(File Dir);
 use File::Spec::Functions qw(catdir);
 
 extends 'NuFoo::Core::Builder';
@@ -34,7 +34,25 @@ has class_file => (
 );
 
 method _build_class_file {
-    return $self->javascript_class2file($self->class);
+    return [$self->js_lib_dir, $self->javascript_class2file($self->class)];
+}
+
+has js_lib_dir => (
+    is            => "rw",
+    isa           => Dir,
+    coerce        => 1,
+    lazy_build    => 1,
+    documentation => qq{Directory for Javascript source files. Looks for suitable dir or uses current as default.},
+);
+
+method _build_js_lib_dir {
+    foreach (qw(js htdocs/js)) {
+        if (-d $_) {
+            $log->info("Using local js lib dir '$_'");
+            return $_
+        }
+    }
+    return ".";
 }
 
 has extends => (
@@ -64,9 +82,9 @@ method javascript_class2file (Str $class) {
 method build {
     $self->tt_write( $self->class_file, "class.js.tt" ); 
     my $help = "Don't forget to load this class in your index.html. e.g.\n"
-        . '<script type="text/javascript" src="./js/' . $self->class_file
+        . '<script type="text/javascript" src="./' . $self->class_file
         . '"><script>';
-    $log->info($help);
+    $log->notice($help);
 }
 
 CLASS->meta->make_immutable;
