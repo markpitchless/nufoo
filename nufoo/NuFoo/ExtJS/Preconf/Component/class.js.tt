@@ -16,18 +16,7 @@
 Ext.namespace('[% build.namespace %]');
 [% END %]
 [% class %] = Ext.extend( [% extends %], {
-
-    initComponent:function() {
-        var config = {
-            // TODO - Pre-configure component
-        }; // eo config object
-
-        // apply config
-        Ext.apply(this, Ext.apply(this.initialConfig, config));
-
-        [% class %].superclass.initComponent.apply(this, arguments);
-    } // eo function initComponent
-
+    [% PROCESS "class-extend.js.tt" %]
 }); // eo [% class %]
 
 Ext.reg('[% xtype %]', [% class %]);

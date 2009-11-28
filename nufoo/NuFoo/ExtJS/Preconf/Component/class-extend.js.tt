@@ -1,0 +1,11 @@
+
+    initComponent:function() {
+        var config = {
+            // TODO - Pre-configure component
+        }; // eo config object
+
+        // apply config
+        Ext.apply(this, Ext.apply(this.initialConfig, config));
+
+        [% class %].superclass.initComponent.apply(this, arguments);
+    } // eo function initComponent
