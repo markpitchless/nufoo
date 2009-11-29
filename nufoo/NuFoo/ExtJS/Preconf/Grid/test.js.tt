@@ -1,0 +1,36 @@
+[% class_id = class.replace("\\.","-") | lower -%]
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>[% class %]</title>
+
+  <!-- ExtJS -->
+  <!-- base css -->
+  <link rel="stylesheet" type="text/css" href="../ext/resources/css/ext-all.css">
+  <!-- overrides to base css -->
+  <link rel="stylesheet" type="text/css" href="../css/sandpit-ext.css.css">
+
+  <!-- base library -->
+  <script type="text/javascript" src="../ext/adapter/ext/ext-base.js"></script>
+  <script type="text/javascript" src="../ext/ext-all-debug.js"></script>
+  <!-- overrides to base library -->
+  <!-- extensions -->
+  <script type="text/javascript" src="../[% class_file %]"></script>
+  <!-- page specific -->
+  <script type="text/javascript">
+    Ext.onReady(function(){
+        Ext.QuickTips.init();
+        
+        var grid = new [% class %]({
+          width:  300,
+          height: 300,
+          renderTo: '[% class_id %]'
+        });
+    }); // onReady
+  </script>
+</head>
+<body>
+  <h1>[% class %]</h1>
+  <div id="[% class_id %]" ><div>
+</body>
+</html>

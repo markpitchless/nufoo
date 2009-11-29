@@ -10,16 +10,54 @@ use CLASS;
 use Log::Any qw($log);
 use Moose;
 use MooseX::Method::Signatures;
-use NuFoo::Core::Types qw();
+use NuFoo::Core::Types qw(File Dir);
 
 extends 'NuFoo::ExtJS::Preconf::Component::Builder';
 
 has '+extends' => ( default => "Ext.grid.GridPanel");
 
+has html_dir => (
+    is            => "rw",
+    isa           => Dir,
+    coerce        => 1,
+    lazy_build    => 1,
+    documentation => qq{Directory for HTML files. Looks for suitable dir or uses current as default.},
+);
+
+method _build_html_dir {
+    foreach (qw(htdocs www)) {
+        if (-d $_) {
+            $log->info("Using local html dir '$_'");
+            return $_
+        }
+    }
+    return ".";
+}
+
+has test => (
+    is         => "rw",
+    isa        => "Bool",
+    default    => 1,
+    documentation => qq{True to create a test file.},
+);
+
+has t_file => (
+    is         => "rw",
+    isa        => File,
+    coerce     => 1,
+    lazy_build => 1,
+    documentation => qq{File to write test to when --test is set. Default is built from class name.},
+);
+
+method _build_t_file {
+    return [$self->html_dir, "t", $self->class.".html" ];
+}
+
 # class-extends.js.tt
-#method build {
-#    # TODO - Add builder here
-#}
+method build {
+    $self->SUPER::build(@_); 
+    $self->tt_write( $self->t_file, "test.js.tt" ) if $self->test;
+}
 
 CLASS->meta->make_immutable;
 no Moose;
