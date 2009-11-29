@@ -1,0 +1,59 @@
+
+    initComponent:function() {
+        var store = new Ext.data.SimpleStore({
+            fields:   ['name'],
+            data:     [ ['Foo'], ['Bar'] ],
+            autoLoad: false
+        });
+
+        var config = {
+            // Sets height to all data unless we have a container
+            //autoHeight: true,
+            // Must set width and height unless we are in a container
+            //width:      400
+            //height:     400,
+            cls:          "x-[% class.replace("\\.","-") %]",
+            // Icon to go in the title bar or tab.
+            //iconCls:      'x-icon-[% class.replace("\\.","-") %]',
+            title:        "[% class %]",
+            frame:        true,
+            stripeRows:   true,
+            loadMask:     true,
+            store:        store,
+            columns: [
+                {
+                    id:         "name"
+                    ,dataIndex: "name"
+                    ,header:    "Name"
+                    ,tooltip:   "Name"
+                    ,width:     200
+                    ,sortable:  true
+                    // Custom function to render cell contents
+                    // See Ext.util.Format for some presets.
+                    //,renderer: function(value,metadata,record,rowIndex,colIndex){}
+                }
+            ],
+            autoExpandColumn: 'name',
+            viewConfig: {
+                forceFit: true
+                // Return CSS class to apply to rows depending upon data values 
+                ,getRowClass: function(record, index) {
+                    var name = record.get('name');
+                    if ( name == "Foo" ) { return 'x-foo' };
+                    return "";
+                }
+            },
+            sm: new Ext.grid.RowSelectionModel({ singleSelect:true })
+        }; // config
+
+        // apply config
+        Ext.apply(this, Ext.apply(this.initialConfig, config));
+        [% class %].superclass.initComponent.apply(this, arguments);
+    } // initComponent
+ 
+    // No point loading the store until we are rendered. Do after, not on, render
+    // so that we get the load mask.
+    ,afterRender: function() {
+        [% class %].superclass.afterRender.apply(this, arguments);
+        this.store.loadData([ ['Foo'], ['Bar'] ]);
+    }
