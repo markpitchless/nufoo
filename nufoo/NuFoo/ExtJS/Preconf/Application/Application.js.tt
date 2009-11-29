@@ -1,9 +1,9 @@
 [%- USE date %]
 /**
-* An Application
+* [% application_class %]
 *
 * @author    [% author %]
-* @copyright (c) [% date.format(date.now, '%Y') %], by [% author %] <[% email %]> 
+* @copyright (c) [% date.format(date.now, '%Y') %], by [% author %] <[% email %]>
 * @date      [% date.format(date.now, '%d %b %Y') %]
 * @version   $Id$
 *
@@ -14,19 +14,19 @@
 *
 * License details: http://www.gnu.org/licenses/lgpl.html
 */
- 
+
 /*global Ext, Application */
- 
+
 Ext.BLANK_IMAGE_URL = './ext/resources/images/default/s.gif';
-Ext.ns('[% application_class %]');
- 
+Ext.namespace('[% application_class %]');
+
 // application main entry point
 Ext.onReady(function() {
- 
+
     Ext.QuickTips.init();
- 
+
     // code here
- 
+
 }); // eo function onReady
- 
+
 // eof
