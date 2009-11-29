@@ -2,7 +2,7 @@ package NuFoo::ExtJS::Preconf::Grid::Builder;
 
 =head1 NAME
 
-NuFoo::ExtJS::Preconf::Grid::Builder - Builds...
+NuFoo::ExtJS::Preconf::Grid::Builder - Builds a Ext.grid.GridPanel sub class.
 
 =cut
 
@@ -14,50 +14,9 @@ use NuFoo::Core::Types qw(File Dir);
 
 extends 'NuFoo::ExtJS::Preconf::Component::Builder';
 
-has '+extends' => ( default => "Ext.grid.GridPanel");
-
-has html_dir => (
-    is            => "rw",
-    isa           => Dir,
-    coerce        => 1,
-    lazy_build    => 1,
-    documentation => qq{Directory for HTML files. Looks for suitable dir or uses current as default.},
-);
-
-method _build_html_dir {
-    foreach (qw(htdocs www)) {
-        if (-d $_) {
-            $log->info("Using local html dir '$_'");
-            return $_
-        }
-    }
-    return ".";
-}
-
-has test => (
-    is         => "rw",
-    isa        => "Bool",
-    default    => 1,
-    documentation => qq{True to create a test file.},
-);
-
-has t_file => (
-    is         => "rw",
-    isa        => File,
-    coerce     => 1,
-    lazy_build => 1,
-    documentation => qq{File to write test to when --test is set. Default is built from class name.},
-);
-
-method _build_t_file {
-    return [$self->html_dir, "t", $self->class.".html" ];
-}
+has '+extends' => ( default => "Ext.grid.GridPanel" );
 
 # class-extends.js.tt
-method build {
-    $self->SUPER::build(@_); 
-    $self->tt_write( $self->t_file, "test.js.tt" ) if $self->test;
-}
 
 CLASS->meta->make_immutable;
 no Moose;
@@ -67,22 +26,23 @@ __END__
 
 =head1 SYNOPSIS
 
- nufoo ExtJS.Preconf.Grid [ATTRIBUTES] 
+ nufoo ExtJS.Preconf.Grid --class CLASS [ATTRIBUTES] 
 
 =head1 DESCRIPTION
 
-Builds...
+Builds an Ext.grid.GridPanel sub class.
 
 =head1 ATTRIBUTES 
 
 =over 4
 
+=item class
 
 =back
 
 =head1 EXAMPLES 
 
- nufoo ExtJS.Preconf.Grid
+ nufoo ExtJS.Preconf.Grid --class Foo.UserGrid
 
 =head1 SEE ALSO
 
