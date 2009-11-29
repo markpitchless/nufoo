@@ -26,8 +26,7 @@ has [% attr.name %] => (
 
 [%- END %]
 
-__PACKAGE__->meta->make_immutable;
-no Moose;
+no Moose::Role;
 
 1;
 __END__
