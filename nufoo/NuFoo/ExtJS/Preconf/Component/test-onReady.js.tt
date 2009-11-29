@@ -1,0 +1,6 @@
+
+        var comp = new [% class %]({
+          width:  300,
+          height: 300,
+          renderTo: '[% class_id %]'
+        });

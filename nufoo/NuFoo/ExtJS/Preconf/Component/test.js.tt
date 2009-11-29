@@ -18,12 +18,7 @@
   <script type="text/javascript">
     Ext.onReady(function(){
         Ext.QuickTips.init();
-        
-        var comp = new [% class %]({
-          width:  300,
-          height: 300,
-          renderTo: '[% class_id %]'
-        });
+        [% PROCESS "test-onReady.js.tt" -%]
     }); // onReady
   </script>
 </head>
