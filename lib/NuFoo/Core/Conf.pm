@@ -83,8 +83,15 @@ method get (Str $path) {
 
     # Look for config in parent sections.
     my ($parent) = $section =~ /^(.*)\./;
-    return unless $parent;
-    return $self->get( "$parent.$name" );
+    if ($parent) {
+        my $val = $self->get( "$parent.$name" );
+        return $val if defined $val;
+    }
+
+    # Check the all category
+    return $conf->{"All"}{$name} if exists $conf->{"All"}{$name};
+
+    return undef;
 }
 
 method get_all (Str $section) {
