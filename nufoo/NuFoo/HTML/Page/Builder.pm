@@ -2,7 +2,7 @@ package NuFoo::HTML::Page::Builder;
 
 =head1 NAME
 
-NuFoo::HTML::Page::Builder - Builds...
+NuFoo::HTML::Page::Builder - Builds a basic HTML page.
 
 =cut
 
@@ -52,10 +52,10 @@ has lang => (
     documentation => qq{Set language tag on html element},
 );
 
-has dir => (
+has lang_dir => (
     is            => "rw",
     isa           => Str,
-    documentation => qq{Set dir tag on html element},
+    documentation => qq{Set langauge 'dir' attribute on html element},
 );
 
 method build {
@@ -74,7 +74,7 @@ __END__
 
 =head1 DESCRIPTION
 
-Builds...
+Builds a basic HTML page.
 
 =head1 ATTRIBUTES 
 
@@ -84,12 +84,19 @@ Builds...
 
 =item file
 
+=item doctype
+
+=item lang
+
+=item lang_dir
 
 =back
 
 =head1 EXAMPLES 
 
- nufoo HTML.Page
+ nufoo HTML.Page --title "It's the nufoo!"
+ 
+ nufoo HTML.Page --title "The nufoo!" --dtd strict
 
 =head1 SEE ALSO
 

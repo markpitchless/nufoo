@@ -8,7 +8,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
     "http://www.w3.org/TR/html4/frameset.dtd">
 [% END -%]
-<html[% " lang=\"$lang\"" IF lang; " dir=\"$dir\"" IF dir %]>
+<html[% " lang=\"$lang\"" IF lang; " dir=\"$lang_dir\"" IF dir %]>
 <head>
     <title>[% title %]</title>
 </head>
