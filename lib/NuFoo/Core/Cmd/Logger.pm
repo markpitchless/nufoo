@@ -14,6 +14,8 @@ our %LOG_LEVEL;
     %LOG_LEVEL = map { ($_ => $num++) } Log::Any->logging_methods;
 }
 
+$Term::ANSIColor::EACHLINE = "\n";
+
 our %LEVEL_COLOR = (
     #debug     => ['blue'],
     info      => ['green'],
@@ -85,6 +87,16 @@ NuFoo::Core::Cmd::Logger - A Log::Any screen logger.
 This L<Log::Any|Log::Any> adapter logs to the screen, for use with a command
 line app. There is a single required parameter, I<level>, which is the minimum
 level to log at.
+
+=head1 ENVIRONMENT
+
+=over 4
+
+=item ANSI_COLORS_DISABLED
+
+Set to a true value to disable coloring of log output.
+
+=back
 
 =head1 SEE ALSO
 

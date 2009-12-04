@@ -29,7 +29,7 @@ method _build_js_dir {
         my $dir = dir($outdir, $_);
         if (-d $dir) {
             $log->info("Using js dir '$dir'");
-            return $_;
+            return $_; # return relative to $dir
         }
     }
     return ".";
@@ -39,7 +39,6 @@ method js_class2file (Str $class) {
     my @parts = split(/\./, $class);
     $parts[$#parts] .= ".js";
     return file( $self->js_dir, @parts );
-    #return file( $self->js_dir, split(/\./, $class) ).".js";
 }
 
 
