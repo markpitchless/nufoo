@@ -18,9 +18,11 @@ use Log::Any qw($log);
 use File::Spec::Functions qw( rel2abs abs2rel splitpath splitdir catfile );
 use File::Path qw(make_path);
 use File::Find;
+use Path::Class;
 use MooseX::Getopt::Meta::Attribute::Trait;
 use NuFoo::Core::Conf;
 use NuFoo::Core::Types qw(File Dir FileList);
+use Cwd qw(getcwd);
 
 has include_path => (
     is         => 'rw',
@@ -66,6 +68,16 @@ method _build_conf {
     $args{files} = $self->config_files if $self->has_config_files;
     return NuFoo::Core::Conf->new(%args); 
 }
+
+has dir => (
+    is            => "rw",
+    isa           => Dir,
+    coerce        => 1,
+    lazy_build    => 1,
+    documentation => qq{Output dir. Default is pwd.},
+);
+
+method _build_dir { getcwd() }
 
 method BUILD {
     my $conf = $self->conf; # Causes load
@@ -143,6 +155,7 @@ method builder_names {
 }
 
 method mkdir (Dir $dir does coerce) {
+    $dir = Path::Class::File->new($self->dir, $dir);
     return 1 if -d "$dir";
     my @created = eval { make_path("$dir") };
     if ($@) {
@@ -155,7 +168,7 @@ method mkdir (Dir $dir does coerce) {
             $log->info( "Created directory '$_'");
         }
     }
-    return @created == 0 ? "0E0" : @created;
+    return $dir;
 }
 
 method write_file (
@@ -165,21 +178,25 @@ method write_file (
 ) {
     $force = $self->force if !defined $force;
     
+    # ->mkdir also works relative to $self->dir
     $self->mkdir( $file->dir );
+
+    $file = file($self->dir, $file);
 
     my $exists = -f "$file" ? 1 : 0;
     if ( $exists && !$force ) {
         $log->warning( "Skipped '$file' : Already exists" );
+        return;
     }
     else {
         my $out = $file->open(">") or do {
-        #open my $out, ">", "$file" or do {
             $log->error( "Failed to open '$file' to write : $!" );
             return;
         };
         print $out (ref $content ? $$content : $content);
         $log->info( ($exists ? "Over wrote" : "Created") . " file '$file'" );
     }
+    return $file;
 } 
 
 1;

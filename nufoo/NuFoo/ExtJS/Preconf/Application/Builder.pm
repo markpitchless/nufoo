@@ -16,20 +16,14 @@ use NuFoo::Core::Types qw(DirName);
 extends 'NuFoo::Core::Builder';
 
 with 'NuFoo::Core::Role::TT',
-    "NuFoo::Core::Role::Authorship";
+    "NuFoo::Core::Role::Authorship",
+    "NuFoo::Role::JS";
 
 has name => (
     is            => "rw",
     isa           => "Str",
     required      => 1,
     documentation => qq{Name of the new application/project.},
-);
-
-has dir => (
-    is            => "rw",
-    isa           => DirName,
-    lazy_build    => 1,
-    documentation => qq{Top level directory name to contain project. Uses name as default.},
 );
 
 has theme => (
@@ -52,13 +46,10 @@ has css_file_name => (
     documentation => qq{Name of the css file for ext overrides. Default derived from name.},
 );
 
-method _build_dir {
-    return $self->name if $self->name;
-    return "Application";
-}
+method _build_dir { $self->name; }
 
 method _build_application_class {
-    return $self->name;
+    return $self->name . ".Application";
 }
 
 method _build_css_file_name {
@@ -67,17 +58,17 @@ method _build_css_file_name {
 }
 
 method build {
-    my $dir = $self->dir;
-    $self->nufoo->mkdir( [$dir, 'css'] );
-    $self->nufoo->mkdir( [$dir, 'ext'] );
-    $self->nufoo->mkdir( [$dir, 'js'] );
-    $self->nufoo->mkdir( [$dir, 'img'] );
-    $self->nufoo->mkdir( [$dir, 'img', 'icon'] );
-    $self->tt_write( [$dir, "index.html"], 'index.html.tt' );
-    $self->tt_write( [$dir, "js", $self->application_class.".js"],
-        'Application.js.tt' );
-    $self->tt_write( [$dir, "css", $self->css_file_name], 'application.css.tt' );
-    $log->info("You need to copy ext code into $dir/ext directory.");
+    $self->nufoo->mkdir( ['css'] );
+    $self->nufoo->mkdir( ['ext'] );
+    $self->nufoo->mkdir( ['js'] );
+    $self->nufoo->mkdir( ['img'] );
+    $self->nufoo->mkdir( ['img', 'icon'] );
+    $self->tt_write( "index.html", 'index.html.tt' );
+    $self->tt_write($self->js_class2file($self->application_class), 'Application.js.tt');
+    $self->tt_write( ["css", $self->css_file_name], 'application.css.tt' );
+
+    my $dir = $self->nufoo->dir;
+    $log->notice("You need to copy ext code into $dir/ext directory.");
 }
 
 CLASS->meta->make_immutable;

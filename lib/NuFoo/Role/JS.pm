@@ -24,9 +24,11 @@ has js_dir => (
 );
 
 method _build_js_dir {
+    my $outdir = $self->nufoo->dir;
     foreach (qw(js htdocs/js)) {
-        if (-d $_) {
-            $log->info("Using local js dir '$_'");
+        my $dir = dir($outdir, $_);
+        if (-d $dir) {
+            $log->info("Using js dir '$dir'");
             return $_;
         }
     }
