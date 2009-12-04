@@ -13,6 +13,7 @@ use Moose::Role;
 use MooseX::Method::Signatures;
 use NuFoo::Core::Types qw(Dir);
 use Log::Any qw($log);
+use Path::Class;
 
 has html_dir => (
     is            => "rw",
@@ -23,10 +24,12 @@ has html_dir => (
 );
 
 method _build_html_dir {
+    my $outdir = $self->nufoo->dir;
     foreach (qw(htdocs www)) {
-        if (-d $_) {
-            $log->info("Using local html dir '$_'");
-            return $_
+        my $dir = dir($outdir, $_);
+        if (-d $dir) {
+            $log->info("Using html dir '$dir'");
+            return $_; # return relative to $dir
         }
     }
     return ".";

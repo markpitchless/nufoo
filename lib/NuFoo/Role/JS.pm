@@ -25,8 +25,8 @@ has js_dir => (
 
 method _build_js_dir {
     my $outdir = $self->nufoo->dir;
-    foreach (qw(js htdocs/js)) {
-        my $dir = dir($outdir, $_);
+    foreach ('js', ['htdocs','js'], ['www','js']) {
+        my $dir = dir($outdir, ref $_ ? @$_ : $_);
         if (-d $dir) {
             $log->info("Using js dir '$dir'");
             return $_; # return relative to $dir

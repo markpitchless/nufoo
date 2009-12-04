@@ -16,15 +16,20 @@ use NuFoo::HTML::Types qw( HtmlDocType );
 
 extends 'NuFoo::Core::Builder';
 
-with 'NuFoo::Core::Role::TT';
+with 'NuFoo::Core::Role::TT',
+    'NuFoo::Role::HTML';
 
 has file => (
     is            => "rw",
     isa           => File,
     coerce        => 1,
-    default       => "index.html",
-    documentation => qq{File to write to. Default is index.html},
+    lazy_build    => 1,
+    documentation => qq{File to write to. Default is index.html in the html dir or build dir.},
 );
+
+method _build_file {
+    [ $self->html_dir, "index.html" ];
+}
 
 has title => (
     is            => "rw",
