@@ -18,7 +18,7 @@
   <!-- overrides to base library -->
   <!-- extensions -->
   <!-- page specific -->
-  <script type="text/javascript" src="./js/[% application_class %].js"></script>
+  <script type="text/javascript" src="[% build.js_class2file(application_class) %]"></script>
 </head>
 <body></body>
 </html>

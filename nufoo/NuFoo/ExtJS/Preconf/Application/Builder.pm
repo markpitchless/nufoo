@@ -57,6 +57,13 @@ method _build_css_file_name {
     $name = lc($name) . "-ext.css";
 }
 
+method namespace {
+    my $ns = $self->application_class;
+    return "" unless $ns =~ /\./;
+    $ns =~ s/\.(\w+)$//;
+    return $ns;
+}
+
 method build {
     $self->nufoo->mkdir( ['css'] );
     $self->nufoo->mkdir( ['ext'] );
@@ -107,6 +114,9 @@ configured component setup.
 Many thanks to Saki for the preconf idea this is based on.
 
 TODO - Links to tutorial.
+
+L<http://www.extjs.com/learn/Manual:Basic_Application_Design>,
+L<http://www.extjs.com/learn/Manual:Advanced_Application_Design>
 
 =head1 SEE ALSO
 

@@ -18,15 +18,36 @@
 /*global Ext, Application */
 
 Ext.BLANK_IMAGE_URL = './ext/resources/images/default/s.gif';
-Ext.namespace('[% application_class %]');
+Ext.namespace('[% build.namespace %]');
+
+[% application_class %] = function() {
+
+    // Private vars and functions here
+
+    return new Ext.Viewport({
+        layout: 'border'
+        ,items: [
+            {
+                region: 'center'
+                ,autoEl: {tag: 'div'}
+                ,layout: 'fit'
+            }
+        ]
+
+        // Public functions
+
+        // Set up, now DOM is ready
+        ,init: function(){
+        }
+
+    }); // viewport
+}(); // [% application_class %]
 
 // application main entry point
 Ext.onReady(function() {
 
     Ext.QuickTips.init();
 
-    // code here
+    [% application_class %].init();
 
-}); // eo function onReady
-
-// eof
+}); // onReady

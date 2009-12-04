@@ -95,7 +95,7 @@ method build {
     $self->tt_write( $self->t_file,     "test.js.tt"  ) if $self->test;
     my $help = "Don't forget to load this class in your index.html. e.g.\n"
         . '<script type="text/javascript" src="./' . $self->class_file
-        . '"><script>';
+        . '"></script>';
     $log->notice($help);
 }
 
