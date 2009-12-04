@@ -17,7 +17,7 @@ our %LOG_LEVEL;
 our %LEVEL_COLOR = (
     #debug     => ['blue'],
     info      => ['green'],
-    notice    => ['green'],
+    notice    => ['magenta'],
     warning   => ['yellow'],
     error     => ['red'],
     critical  => ['red'],
