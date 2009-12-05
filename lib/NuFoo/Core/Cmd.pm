@@ -74,11 +74,38 @@ method usage_error (Str $msg, Int $verbose = 1) {
 method builder_usage_error( Str|Object $class, Str $msg, Int $verbose = 99 ) {
     $class = blessed $class || $class;
     $log->error($msg) if $msg;
-    pod2usage(
-        -verbose  => $verbose,
-        -input    => $class->home_dir . "/Builder.pm",
-        -sections => "SYNOPSIS|ATTRIBUTES",
-    );
+    #pod2usage(
+    #    -verbose  => $verbose,
+    #    -input    => $class->home_dir . "/Builder.pm",
+    #    -sections => "SYNOPSIS|ATTRIBUTES",
+    #);
+    say "Usage: nufoo " . $class->build_name . " [OPTIONS]";
+    my @attrs = $class->_compute_getopt_attrs;
+    my $max_len = 0;
+    foreach (@attrs) {
+        my $len = length($_->name);
+        $max_len = $len if $len > $max_len;
+    }
+    say "  required:";
+    $self->_attr_usage($_, max_len => $max_len, class => $class) foreach
+        grep { $_->is_required && !$_->has_default && !$_->has_builder }
+        @attrs;
+    say "  optional:";
+    $self->_attr_usage($_, max_len => $max_len, class => $class) foreach
+        sort { $a->name cmp $b->name }
+        grep { !($_->is_required && !$_->has_default && !$_->has_builder) }
+        @attrs;
+    print "\n";
+}
+
+method _attr_usage ( Object $attr, Int :$max_len, Str :$class ) {
+    my ( $flag, @aliases ) = $class->_get_cmd_flags_for_attr($attr);
+    my $docs = $attr->documentation;
+    my $pad  = $max_len + 2 - length($flag);
+    my $def  = $attr->has_default ? $attr->default : "";
+    $docs .= " Default: $def" if $def && ! ref $def;
+    ;
+    say "    ".(join " ", map { "--$_" } @aliases), " --$flag".( " " x $pad )." - $docs";
 }
 
 method run() {
