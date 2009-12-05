@@ -88,7 +88,7 @@ method namespace {
 }
 
 method build {
-    $self->tt_write( $self->class_file,  "class.js.tt" ); 
+    $self->tt_write( $self->class_file,  "class.js.tt" );
     $self->tt_write( $self->html_t_file, "test.js.tt"  ) if $self->test;
     my $help = "Don't forget to load this class in your index.html. e.g.\n"
         . '<script type="text/javascript" src="./' . $self->class_file
@@ -104,13 +104,13 @@ __END__
 
 =head1 SYNOPSIS
 
- nufoo ExtJS.Preconf.Component --class=CLASS [ATTRIBUTES] 
+ nufoo ExtJS.Component --class=CLASS [ATTRIBUTES]
 
 =head1 DESCRIPTION
 
 Build pre-configured component skeleton.
 
-=head1 ATTRIBUTES 
+=head1 ATTRIBUTES
 
 =over 4
 
@@ -122,13 +122,13 @@ Build pre-configured component skeleton.
 
 =back
 
-=head1 EXAMPLES 
+=head1 EXAMPLES
 
- nufoo ExtJS.Preconf.Component --class Hello
+ nufoo ExtJS.Component --class Hello
 
- nufoo ExtJS.Preconf.Component --class HelloGrid --extends Ext.data.GridPanel
- 
- nufoo ExtJS.Preconf.Component --class HelloGrid --email mark@foo.com --author mda --extends Ext.grid.GridPanel
+ nufoo ExtJS.Component --class HelloGrid --extends Ext.data.GridPanel
+
+ nufoo ExtJS.Component --class HelloGrid --email mark@foo.com --author mda --extends Ext.grid.GridPanel
 
 =head1 SEE ALSO
 
