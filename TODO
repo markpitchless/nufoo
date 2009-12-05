@@ -38,3 +38,6 @@ could add MooseX::Types support and not quote type names.
 --file should support - to mean stdout.
 
 NuFoo.Builder needs to be a Perl.Moose.Class sub class.
+
+OPtion extend-builder for NuFoo.Builder to build the right extends class from a
+builder name.
