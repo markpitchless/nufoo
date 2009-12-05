@@ -70,10 +70,16 @@ has t_file => (
     lazy_build => 1,
     documentation => qq{File to write test to when --test is set. Default is built from class name.},
 );
+method _build_t_file { [$self->t_dir, $self->class.".html" ]; }
 
-method _build_t_file {
-    return [$self->html_dir, "t", $self->class.".html" ];
-}
+has t_dir => (
+    is         => "rw",
+    isa        => File,
+    coerce     => 1,
+    lazy_build => 1,
+    documentation => qq{Dir for HTML test files. Default is '<html_dir>/t'.},
+);
+method _build_t_dir { return [$self->html_dir, "t"]; }
 
 has ext_base => (
     is            => "rw",

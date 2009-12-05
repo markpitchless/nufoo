@@ -18,12 +18,13 @@
   <script type="text/javascript">
     Ext.onReady(function(){
         Ext.QuickTips.init();
+        Ext.BLANK_IMAGE_URL = '[% ext_base %]/resources/images/default/s.gif';
         [% PROCESS "test-onReady.js.tt" -%]
     }); // onReady
   </script>
 </head>
 <body>
   <h1>[% class %]</h1>
-  <div id="[% class_id %]" ><div>
+  <div id="[% class_id %]" ></div>
 </body>
 </html>

@@ -1,0 +1,31 @@
+
+    cls:      "x-[% class.replace("\\.","-") %]"
+    ,iconCls: 'x-icon-[% class.replace("\\.","-") %]'
+
+    ,initComponent:function() {
+
+        var root = new Ext.tree.AsyncTreeNode({
+            id:         'root'
+            ,text:      'Root'
+            ,draggable: false
+        });
+
+        var loader = new Ext.tree.TreeLoader({
+            url: this.dataUrl || "tree.json" 
+        });
+
+        var config = {
+            loader: loader
+            ,root:   root
+        }; // config
+
+        // apply config
+        Ext.apply(this, Ext.apply(this.initialConfig, config));
+        [% class %].superclass.initComponent.apply(this, arguments);
+    } // initComponent
+    
+    ,afterRender: function() {
+        [% class %].superclass.afterRender.apply(this, arguments);
+        this.getRootNode().expand(); // triggers load
+    }
+ 

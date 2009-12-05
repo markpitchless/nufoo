@@ -1,0 +1,23 @@
+[
+    {
+        id:    'foo'
+        ,text: "Foo"
+        ,children: [
+            {
+                id: 'Foo/ibble'
+                ,text: 'ibble'
+                ,leaf: true
+            }
+            ,{
+                id: 'Foo/obble'
+                ,text: 'obble'
+                ,leaf: true
+            }
+        ]
+    }
+    ,{
+        id: 'bar'
+        ,text: 'Bar'
+        ,children: []
+    }
+]
