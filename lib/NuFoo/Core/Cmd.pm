@@ -105,12 +105,12 @@ method builder_usage_error( Str|Object $class, Str $msg, Int $verbose = 99 ) {
 
 method _attr_usage ( Object $attr, Int :$max_len, Str :$class ) {
     my ( $flag, @aliases ) = $class->_get_cmd_flags_for_attr($attr);
-    my $docs = $attr->documentation || "";
-    my $pad  = $max_len + 2 - length($flag);
-    my $def  = $attr->has_default ? $attr->default : "";
+    my $label = join " ", map { "--$_" } (@aliases,$flag);
+    my $docs  = $attr->documentation || "";
+    my $pad   = $max_len + 2 - length($label);
+    my $def   = $attr->has_default ? $attr->default : "";
     $docs .= " Default: $def" if $def && ! ref $def;
-    ;
-    say "    ".(join " ", map { "--$_" } (@aliases,$flag)).( " " x $pad )." - $docs";
+    say "    $label".( " " x $pad )." - $docs";
 }
 
 method run() {
