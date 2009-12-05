@@ -80,7 +80,7 @@ method builder_usage_error( Str|Object $class, Str $msg, Int $verbose = 99 ) {
     #    -sections => "SYNOPSIS|ATTRIBUTES",
     #);
     say "Usage: nufoo " . $class->build_name . " [OPTIONS]";
-    my @attrs = $class->_compute_getopt_attrs;
+    my @attrs = ($class->_compute_getopt_attrs, $self->_compute_getopt_attrs);
     my $max_len = 0;
     foreach (@attrs) {
         my $len = length($_->name);
@@ -100,12 +100,12 @@ method builder_usage_error( Str|Object $class, Str $msg, Int $verbose = 99 ) {
 
 method _attr_usage ( Object $attr, Int :$max_len, Str :$class ) {
     my ( $flag, @aliases ) = $class->_get_cmd_flags_for_attr($attr);
-    my $docs = $attr->documentation;
+    my $docs = $attr->documentation || "";
     my $pad  = $max_len + 2 - length($flag);
     my $def  = $attr->has_default ? $attr->default : "";
     $docs .= " Default: $def" if $def && ! ref $def;
     ;
-    say "    ".(join " ", map { "--$_" } @aliases), " --$flag".( " " x $pad )." - $docs";
+    say "    ".(join " ", map { "--$_" } (@aliases,$flag)).( " " x $pad )." - $docs";
 }
 
 method run() {
