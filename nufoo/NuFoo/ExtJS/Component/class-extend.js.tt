@@ -1,4 +1,7 @@
 
+    // Put defaults that can be overridden by constructor.
+    // Don't put ref types, this is the prototype
+
     initComponent:function() {
         var config = {
             // TODO - Pre-configure component

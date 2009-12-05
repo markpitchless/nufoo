@@ -17,6 +17,6 @@ Ext.namespace('[% build.namespace %]');
 [% END %]
 [% class %] = Ext.extend( [% extends %], {
     [% PROCESS "class-extend.js.tt" %]
-}); // eo [% class %]
+}); // [% class %]
 
 Ext.reg('[% xtype %]', [% class %]);
