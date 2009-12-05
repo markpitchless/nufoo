@@ -1,5 +1,20 @@
 
-    initComponent:function() {
+    // Defaults that can be overridden in constructor call.
+    // NB: Do NOT put references here
+
+    cls:           "x-[% class.replace("\\.","-") %]"
+    ,iconCls:      "x-icon-[% class.replace("\\.","-") %]"
+    // Sets height to all data unless we have a container
+    //,autoHeight: true
+    // Must set width and height unless we are in a container
+    //,width:      400
+    //,height:     400
+    ,title:        "[% class %]"
+    ,frame:        true
+    ,stripeRows:   true
+    ,loadMask:     true
+
+    ,initComponent:function() {
         var store = new Ext.data.SimpleStore({
             fields:   ['name'],
             data:     [ ['Foo'], ['Bar'] ],
@@ -7,18 +22,6 @@
         });
 
         var config = {
-            // Sets height to all data unless we have a container
-            //autoHeight: true,
-            // Must set width and height unless we are in a container
-            //width:      400
-            //height:     400,
-            cls:          "x-[% class.replace("\\.","-") %]",
-            // Icon to go in the title bar or tab.
-            //iconCls:      'x-icon-[% class.replace("\\.","-") %]',
-            title:        "[% class %]",
-            frame:        true,
-            stripeRows:   true,
-            loadMask:     true,
             store:        store,
             columns: [
                 {
@@ -56,4 +59,4 @@
     ,afterRender: function() {
         [% class %].superclass.afterRender.apply(this, arguments);
         this.store.loadData([ ['Foo'], ['Bar'] ]);
-    }
+    } // afterRendor
