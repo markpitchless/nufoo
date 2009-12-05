@@ -74,11 +74,6 @@ method usage_error (Str $msg, Int $verbose = 1) {
 method builder_usage_error( Str|Object $class, Str $msg, Int $verbose = 99 ) {
     $class = blessed $class || $class;
     $log->error($msg) if $msg;
-    #pod2usage(
-    #    -verbose  => $verbose,
-    #    -input    => $class->home_dir . "/Builder.pm",
-    #    -sections => "SYNOPSIS|ATTRIBUTES",
-    #);
     say "Usage: nufoo " . $class->build_name . " [OPTIONS]";
     my @attrs   = $class->_compute_getopt_attrs;
     my @g_attrs = $self->_compute_getopt_attrs;
@@ -105,7 +100,7 @@ method builder_usage_error( Str|Object $class, Str $msg, Int $verbose = 99 ) {
 
 method _attr_usage ( Object $attr, Int :$max_len, Str :$class ) {
     my ( $flag, @aliases ) = $class->_get_cmd_flags_for_attr($attr);
-    my $label = join " ", map { "--$_" } (@aliases,$flag);
+    my $label = join " ", map { "--$_" } ($flag, @aliases);
     my $docs  = $attr->documentation || "";
     my $pad   = $max_len + 2 - length($label);
     my $def   = $attr->has_default ? $attr->default : "";
@@ -139,7 +134,12 @@ method run() {
     my ($builder, $builder_class);
     eval { 
         $builder_class = $self->load_builder( $name );
-        $self->builder_usage_error( $builder_class, "", 2 ) if $self->man;
+        if ($self->man) {
+            pod2usage(
+                -verbose  => 2,
+                -input    => $builder_class->home_dir . "/Builder.pm",
+            );
+        }
         # Should possible be using new_builder if we go with that setup.
         $builder = $builder_class->new(
             argv  => \@argv, 
