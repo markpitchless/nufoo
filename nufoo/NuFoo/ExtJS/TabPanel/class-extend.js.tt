@@ -2,8 +2,8 @@
     // Defaults that can be overridden in constructor call.
     // NB: Do NOT put references here
 
-    cls:           "x-[% class.replace("\\.","-") %]"
-    ,iconCls:      "x-icon-[% class.replace("\\.","-") %]"
+    cls:           "[% cls %]"
+    ,iconCls:      "[% iconCls %]"
     // Sets height to all data unless we have a container
     //,autoHeight: true
     // Must set width and height unless we are in a container

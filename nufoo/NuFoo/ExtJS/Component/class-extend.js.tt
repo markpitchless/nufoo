@@ -1,14 +1,16 @@
 
     // Put defaults that can be overridden by constructor.
     // Don't put ref types, this is the prototype
+    cls: "[% cls %]"
 
-    initComponent:function() {
+    ,initComponent:function() {
         var config = {
             // TODO - Pre-configure component
-        }; // eo config object
+        }; // config
 
         // apply config
         Ext.apply(this, Ext.apply(this.initialConfig, config));
 
         [% class %].superclass.initComponent.apply(this, arguments);
-    } // eo function initComponent
+    } // initComponent
+

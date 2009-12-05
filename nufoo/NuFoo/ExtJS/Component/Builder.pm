@@ -79,6 +79,21 @@ has ext_base => (
     documentation => qq{Base url to use for the ext code in the test file.},
 );
 
+has cls => (
+    is            => "rw",
+    isa           => "Str",
+    lazy_build    => 1,
+    documentation => qq{CSS class for the component. Default based on class name.},
+);
+method _build_cls { (my $class = $self->class) =~ s/\./-/g; "x-$class"; }
+
+has iconCls => (
+    is            => "rw",
+    isa           => "Str",
+    lazy_build    => 1,
+    documentation => qq{CSS class for the component icon. Default based on class name.},
+);
+method _build_iconCls { (my $class = $self->class) =~ s/\./-/g; "x-$class-icon"; }
 
 method namespace {
     my $ns = $self->class;

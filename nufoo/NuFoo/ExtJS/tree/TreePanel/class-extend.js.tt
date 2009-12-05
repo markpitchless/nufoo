@@ -1,6 +1,6 @@
 
-    cls:      "x-[% class.replace("\\.","-") %]"
-    ,iconCls: 'x-icon-[% class.replace("\\.","-") %]'
+    cls:      "[% cls %]"
+    ,iconCls: "[% iconCls %]"
 
     ,initComponent:function() {
 
