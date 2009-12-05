@@ -3,11 +3,6 @@ Add a method for setting template options to Role::TT.
 
 Sort out the usage mess.
 
-Is BUILDARGS the place to be processing config and argv. Instead maybe we
-should have a new_with_nufoo constructor.
-
-Should Perl.Module.Starter be getting a list of licenses.
-
 Perl.Moose.Role - Needs some refactoring for Moose::Thing
 
 Change the PerlLicense type to License, CodeLicense?
@@ -20,10 +15,6 @@ Add coerce for LicenseList via Str.
 Fix does use in synopsis of Roles. Should be with.
 
 Charsets. Output control. HTML pages can then set.
-
-Doctype setting for HTML.Page.
-
-NuFoo.Builder should be a subclass of Perl.Moose.Class
 
 TEMPLATES sections in docs.
 
@@ -39,5 +30,19 @@ could add MooseX::Types support and not quote type names.
 
 NuFoo.Builder needs to be a Perl.Moose.Class sub class.
 
-OPtion extend-builder for NuFoo.Builder to build the right extends class from a
+Option extend-builder for NuFoo.Builder to build the right extends class from a
 builder name.
+
+Perl.MooseX.Declare - Subclass Perl.Moose.Class with templates to use
+MooseX::Declare.
+
+Cleanup the package hier and doc it.
+NuFoo
+NuFoo::Core::
+NuFoo::Role::
+NuFoo::Role::HTML
+NuFoo::Role::JS
+NuFoo::Types
+NuFoo::Types::Perl
+NuFoo::Types::HTML
+NuFoo::*                # Builders
