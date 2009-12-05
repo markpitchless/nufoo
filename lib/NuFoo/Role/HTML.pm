@@ -11,7 +11,7 @@ our $VERSION = '0.01';
 
 use Moose::Role;
 use MooseX::Method::Signatures;
-use NuFoo::Core::Types qw(Dir);
+use NuFoo::Core::Types qw(Dir File);
 use Log::Any qw($log);
 use Path::Class;
 
@@ -34,6 +34,16 @@ method _build_html_dir {
     }
     return ".";
 }
+
+has html_t_dir => (
+    is         => "rw",
+    isa        => File,
+    coerce     => 1,
+    lazy_build => 1,
+    documentation => qq{Dir for HTML test files. Default is '<html_dir>/t'.},
+);
+method _build_html_t_dir { return [$self->html_dir, "t"]; }
+
 
 no Moose::Role;
 

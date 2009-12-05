@@ -21,7 +21,7 @@ has '+extends' => ( default => "Ext.tree.TreePanel" );
 override build => sub {
     my $self = shift;
     super;
-    $self->tt_write( [$self->t_dir, 'tree.json'], 'tree.json.tt' );
+    $self->tt_write( [$self->html_t_dir, 'tree.json'], 'tree.json.tt' );
 };
 
 CLASS->meta->make_immutable;

@@ -63,23 +63,14 @@ has test => (
     documentation => qq{True to create a test file.},
 );
 
-has t_file => (
+has html_t_file => (
     is         => "rw",
     isa        => File,
     coerce     => 1,
     lazy_build => 1,
     documentation => qq{File to write test to when --test is set. Default is built from class name.},
 );
-method _build_t_file { [$self->t_dir, $self->class.".html" ]; }
-
-has t_dir => (
-    is         => "rw",
-    isa        => File,
-    coerce     => 1,
-    lazy_build => 1,
-    documentation => qq{Dir for HTML test files. Default is '<html_dir>/t'.},
-);
-method _build_t_dir { return [$self->html_dir, "t"]; }
+method _build_html_t_file { [$self->html_t_dir, $self->class.".html" ]; }
 
 has ext_base => (
     is            => "rw",
@@ -97,8 +88,8 @@ method namespace {
 }
 
 method build {
-    $self->tt_write( $self->class_file, "class.js.tt" ); 
-    $self->tt_write( $self->t_file,     "test.js.tt"  ) if $self->test;
+    $self->tt_write( $self->class_file,  "class.js.tt" ); 
+    $self->tt_write( $self->html_t_file, "test.js.tt"  ) if $self->test;
     my $help = "Don't forget to load this class in your index.html. e.g.\n"
         . '<script type="text/javascript" src="./' . $self->class_file
         . '"></script>';
