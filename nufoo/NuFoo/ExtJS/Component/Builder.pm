@@ -1,8 +1,8 @@
-package NuFoo::ExtJS::Preconf::Component::Builder;
+package NuFoo::ExtJS::Component::Builder;
 
 =head1 NAME
 
-NuFoo::ExtJS::Preconf::Component::Builder - Builds basic skelton for etending an ExtJS component.
+NuFoo::ExtJS::Component::Builder - Builds basic skelton for etending an ExtJS component.
 
 =cut
 
