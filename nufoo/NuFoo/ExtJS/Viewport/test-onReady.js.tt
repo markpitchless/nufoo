@@ -1,0 +1,2 @@
+
+        var viewPort = new [% class %]({});
