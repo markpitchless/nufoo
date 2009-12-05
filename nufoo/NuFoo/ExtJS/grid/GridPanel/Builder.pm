@@ -1,8 +1,8 @@
-package NuFoo::ExtJS::Preconf::Grid::Builder;
+package NuFoo::ExtJS::grid::GridPanel::Builder;
 
 =head1 NAME
 
-NuFoo::ExtJS::Preconf::Grid::Builder - Builds a Ext.grid.GridPanel sub class.
+NuFoo::ExtJS::grid::GridPanel::Builder - Builds a Ext.grid.GridPanel sub class.
 
 =cut
 
