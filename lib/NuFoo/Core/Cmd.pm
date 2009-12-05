@@ -80,9 +80,10 @@ method builder_usage_error( Str|Object $class, Str $msg, Int $verbose = 99 ) {
     #    -sections => "SYNOPSIS|ATTRIBUTES",
     #);
     say "Usage: nufoo " . $class->build_name . " [OPTIONS]";
-    my @attrs = ($class->_compute_getopt_attrs, $self->_compute_getopt_attrs);
+    my @attrs   = $class->_compute_getopt_attrs;
+    my @g_attrs = $self->_compute_getopt_attrs;
     my $max_len = 0;
-    foreach (@attrs) {
+    foreach (@attrs, @g_attrs) {
         my $len = length($_->name);
         $max_len = $len if $len > $max_len;
     }
@@ -95,6 +96,10 @@ method builder_usage_error( Str|Object $class, Str $msg, Int $verbose = 99 ) {
         sort { $a->name cmp $b->name }
         grep { !($_->is_required && !$_->has_default && !$_->has_builder) }
         @attrs;
+    say "  global:";
+    $self->_attr_usage($_, max_len => $max_len, class => $class) foreach
+        sort { $a->name cmp $b->name }
+        @g_attrs;
     print "\n";
 }
 
