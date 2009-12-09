@@ -7,13 +7,20 @@ NuFoo::Role::GetoptUsage - Generate usage message from attribute meta.
 
 =cut
 
+use 5.010;
 our $VERSION = '0.01';
 
 use Moose::Role;
 use MooseX::Method::Signatures;
-use 5.010;
+use Term::ANSIColor;
 
 requires qw(_compute_getopt_attrs _get_cmd_flags_for_attr);
+
+our %Colours = (
+    flag    => ['yellow'],
+    heading => ['bold'],
+    default_value => ['magenta'],
+);
 
 BEGIN {
     # Thanks to Hans Dieter Pearcey for this. See Getopt::Long::Descriptive.
@@ -28,6 +35,7 @@ method _parse_usage_format ( ClassName|Object $self: Str $fmt ) {
     $fmt =~ s/%%/%/g;
     # TODO - Be good to have a include that generates a list of the opts
     #        %r - required  %a - all
+    $fmt =~ s/^(Usage:)/colored $Colours{heading}, "$1"/e;
     return $fmt;
 }
 
@@ -38,15 +46,13 @@ method getopt_usage( ClassName|Object $self: Bool :$no_headings? ) {
     
     say $self->_parse_usage_format($self->_usage_format) if $headings;
     
-    my @attrs   = sort { $a->name cmp $b->name } $self->_compute_getopt_attrs;
-    my $max_len = 0;
-    foreach ( @attrs) {
-        my $len  = length($_->name);
-        $max_len = $len if $len > $max_len;
-    }
+    my @attrs = sort { $a->name cmp $b->name } $self->_compute_getopt_attrs;
 
+    my $max_len = 0;
     my (@req_attrs, @opt_attrs);
     foreach (@attrs) {
+        my $len  = length($_->name);
+        $max_len = $len if $len > $max_len;
         if ( $_->is_required && !$_->has_default && !$_->has_builder ) {
             push @req_attrs, $_;
         }
@@ -55,20 +61,24 @@ method getopt_usage( ClassName|Object $self: Bool :$no_headings? ) {
         }
     }
 
-    say "Required:" if $headings;
+    say colored $Colours{heading}, "Required:" if $headings;
     $self->_getopt_attr_usage($_, max_len => $max_len ) foreach @req_attrs;
-    say "Optional:" if $headings;
+    say colored $Colours{heading}, "Optional:" if $headings;
     $self->_getopt_attr_usage($_, max_len => $max_len ) foreach @opt_attrs;
 }
 
 method _getopt_attr_usage ( ClassName|Object $self: Object $attr, Int :$max_len ) {
     my ( $flag, @aliases ) = $self->_get_cmd_flags_for_attr($attr);
-    my $label = join " ", map { "--$_" } ($flag, @aliases);
+    my $label = join " ", map {
+        length($_) == 1 ? "-$_" : "--$_"
+    } ($flag, @aliases);
     my $docs  = $attr->documentation || "";
     my $pad   = $max_len + 2 - length($label);
     my $def   = $attr->has_default ? $attr->default : "";
-    $docs .= " Default: $def" if $def && ! ref $def;
-    say "    $label".( " " x $pad )." - $docs";
+    $docs = "Default:".colored($Colours{default_value}, $def).". $docs"
+        if $def && ! ref $def;
+    print colored $Colours{flag}, "    $label";
+    say "".( " " x $pad )." - $docs";
 }
 
 no Moose::Role;
