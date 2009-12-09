@@ -13,6 +13,8 @@ our $VERSION = '0.01';
 use Moose::Role;
 use MooseX::Method::Signatures;
 use Term::ANSIColor;
+use Term::ReadKey;
+use Text::Wrap;
 
 requires qw(_compute_getopt_attrs _get_cmd_flags_for_attr);
 
@@ -61,6 +63,8 @@ method getopt_usage( ClassName|Object $self: Bool :$no_headings? ) {
         }
     }
 
+    my ($w) = GetTerminalSize;
+    local $Text::Wrap::columns = $w -1 || 72;
     say colored $Colours{heading}, "Required:" if $headings;
     $self->_getopt_attr_usage($_, max_len => $max_len ) foreach @req_attrs;
     say colored $Colours{heading}, "Optional:" if $headings;
@@ -77,8 +81,11 @@ method _getopt_attr_usage ( ClassName|Object $self: Object $attr, Int :$max_len 
     my $def   = $attr->has_default ? $attr->default : "";
     $docs = "Default:".colored($Colours{default_value}, $def).". $docs"
         if $def && ! ref $def;
-    print colored $Colours{flag}, "    $label";
-    say "".( " " x $pad )." - $docs";
+    my $col1 = "    $label";
+    $col1 .= "".( " " x $pad );
+    my $out = wrap($col1, (" " x ($max_len + 9)), " - $docs" );
+    $out =~ s/(--?\w+)/colored $Colours{flag}, "$1"/ge;
+    say $out;
 }
 
 no Moose::Role;
