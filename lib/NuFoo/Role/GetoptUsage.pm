@@ -3,7 +3,7 @@ package NuFoo::Role::GetoptUsage;
 
 =head1 NAME
 
-NuFoo::Role::GetoptUsage -  
+NuFoo::Role::GetoptUsage - Generate usage message from attribute meta.
 
 =cut
 
@@ -15,13 +15,12 @@ use 5.010;
 
 requires qw(_compute_getopt_attrs _get_cmd_flags_for_attr);
 
-# Thanks to Hans Dieter Pearcey for this. See Getopt::Long::Descriptive. 
-my $prog_name;
-sub _prog_name { @_ ? ($prog_name = shift) : $prog_name }
-
 BEGIN {
-  # grab this before someone decides to change it
-  _prog_name(File::Basename::basename($0));
+    # Thanks to Hans Dieter Pearcey for this. See Getopt::Long::Descriptive.
+    # Grab prog name before someone decides to change it.
+    my $prog_name;
+    sub _prog_name { @_ ? ($prog_name = shift) : $prog_name }
+    _prog_name(File::Basename::basename($0));
 }
 
 method _parse_usage_format ( ClassName|Object $self: Str $fmt ) {
@@ -39,26 +38,30 @@ method getopt_usage( ClassName|Object $self: Bool :$no_headings? ) {
     
     say $self->_parse_usage_format($self->_usage_format) if $headings;
     
-    my @attrs   = $self->_compute_getopt_attrs;
+    my @attrs   = sort { $a->name cmp $b->name } $self->_compute_getopt_attrs;
     my $max_len = 0;
-    foreach (@attrs) {
-        my $len = length($_->name);
+    foreach ( @attrs) {
+        my $len  = length($_->name);
         $max_len = $len if $len > $max_len;
     }
 
-    say "Required:" if $headings;
-    $self->_attr_usage($_, max_len => $max_len ) foreach
-        grep { $_->is_required && !$_->has_default && !$_->has_builder }
-        @attrs;
+    my (@req_attrs, @opt_attrs);
+    foreach (@attrs) {
+        if ( $_->is_required && !$_->has_default && !$_->has_builder ) {
+            push @req_attrs, $_;
+        }
+        else {
+            push @opt_attrs, $_;
+        }
+    }
 
+    say "Required:" if $headings;
+    $self->_getopt_attr_usage($_, max_len => $max_len ) foreach @req_attrs;
     say "Optional:" if $headings;
-    $self->_attr_usage($_, max_len => $max_len ) foreach
-        sort { $a->name cmp $b->name }
-        grep { !($_->is_required && !$_->has_default && !$_->has_builder) }
-        @attrs;
+    $self->_getopt_attr_usage($_, max_len => $max_len ) foreach @opt_attrs;
 }
 
-method _attr_usage ( ClassName|Object $self: Object $attr, Int :$max_len ) {
+method _getopt_attr_usage ( ClassName|Object $self: Object $attr, Int :$max_len ) {
     my ( $flag, @aliases ) = $self->_get_cmd_flags_for_attr($attr);
     my $label = join " ", map { "--$_" } ($flag, @aliases);
     my $docs  = $attr->documentation || "";
@@ -77,17 +80,28 @@ __END__
 
  use Moose;
 
- with 'NuFoo::Role::GetoptUsage';
+ with 'MooseX::Getopt', 'NuFoo::Role::GetoptUsage';
+
+ $self->getopt_usage;
 
 =head1 DESCRIPTION
+
+Role to use along with L<MooseX::Getopt> to provide a usage printing method
+that inspects your classes meta information to build the messsage.
 
 =head1 ATTRIBUTES 
 
 =head1 METHODS 
 
+=head2 getopt_usage( Bool :$no_headings )
+
+Prints the usage message followed by a table of the options. Options are
+printed required first, then optional.  These two sections get a heading unless
+C<no_headers> arg is true.
+
 =head1 SEE ALSO
 
-L<perl>, L<Moose>.
+L<perl>, L<Moose>, L<MooseX::Getopt>.
 
 =head1 BUGS
 
