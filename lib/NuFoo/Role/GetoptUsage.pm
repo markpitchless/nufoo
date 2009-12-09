@@ -65,9 +65,9 @@ method getopt_usage( ClassName|Object $self: Bool :$no_headings? ) {
 
     my ($w) = GetTerminalSize;
     local $Text::Wrap::columns = $w -1 || 72;
-    say colored $Colours{heading}, "Required:" if $headings;
+    say colored $Colours{heading}, "Required:" if $headings && @req_attrs;
     $self->_getopt_attr_usage($_, max_len => $max_len ) foreach @req_attrs;
-    say colored $Colours{heading}, "Optional:" if $headings;
+    say colored $Colours{heading}, "Optional:" if $headings && @opt_attrs;
     $self->_getopt_attr_usage($_, max_len => $max_len ) foreach @opt_attrs;
 }
 
