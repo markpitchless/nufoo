@@ -19,7 +19,7 @@ use Log::Any qw($log);
 use File::Spec::Functions qw(rel2abs splitpath);
 use NuFoo;
 
-with 'MooseX::Getopt';
+with 'MooseX::Getopt', 'NuFoo::Role::GetoptUsage';
 
 has nufoo => (
     is       => "ro",
