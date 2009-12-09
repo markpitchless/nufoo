@@ -51,7 +51,14 @@ has list => ( is => 'rw', isa => 'Bool', default => 0,
     documentation => "List availiable builders." );
 
 sub _usage_format {
-    return "usage: %c [OPTIONS] [BUILDER [BUILDER_OPTIONS]]";
+    return qq{Usage:
+
+    %c
+    %c --man
+    %c --man BUILDER
+
+    %c [OPTIONS] [BUILDER] [BUILDER_OPTIONS]
+};
 }
 
 before new_with_options => sub {
@@ -65,18 +72,17 @@ method exit_error (Str $msg) {
 
 method usage_error (Str $msg, Int $verbose = 1) {
     $log->error($msg) if $msg;
-    pod2usage(
-        -verbose => $verbose,
-        -input   => __FILE__,
-    );
+    $self->getopt_usage;
+    exit ($msg ? 1 : 0);
 }
 
 method builder_usage_error( Str|Object $class, Str $msg ) {
     $class = blessed $class || $class;
     $log->error($msg) if $msg;
     $class->getopt_usage();
-    say "  global:";
+    say "Global:";
     $self->getopt_usage( no_headings => 1 );
+    exit ($msg ? 1 : 0);
 }
 
 method run() {
@@ -98,7 +104,10 @@ method run() {
     }
 
     my $name = shift @argv;
-    $self->usage_error("",2) if $self->man && !$name;
+    pod2usage(
+        -verbose  => 2,
+        -input    => __FILE__,
+    ) if $self->man && !$name;
     
     $self->usage_error("No builder name") if !$name || $name =~ m/^-/;
 

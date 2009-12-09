@@ -68,7 +68,7 @@ sub _usage_format {
     my $proto = shift;
     my $class = ref $proto || $proto;
     my $name  = NuFoo->builder_class_to_name($class);
-    return "usage: %c $name OPTIONS";
+    return "Usage:\n    %c $name OPTIONS";
 }
 
 method home_dir($self:) {

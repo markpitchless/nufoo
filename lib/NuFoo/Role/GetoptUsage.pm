@@ -24,7 +24,17 @@ BEGIN {
   _prog_name(File::Basename::basename($0));
 }
 
-method getopt_usage( ClassName|Object $self: Bool :$no_headings ) {
+method _parse_usage_format ( ClassName|Object $self: Str $fmt ) {
+    $fmt =~ s/%c/_prog_name()/ieg;
+    $fmt =~ s/%%/%/g;
+    # TODO - Be good to have a include that generates a list of the opts
+    #        %r - required  %a - all
+    return $fmt;
+}
+
+method _usage_format (ClassName|Str $self:) { "Usage:\n    %c [OPTIONS]"; }
+
+method getopt_usage( ClassName|Object $self: Bool :$no_headings? ) {
     my $headings = $no_headings ? 0 : 1;
     
     say $self->_parse_usage_format($self->_usage_format) if $headings;
@@ -36,23 +46,16 @@ method getopt_usage( ClassName|Object $self: Bool :$no_headings ) {
         $max_len = $len if $len > $max_len;
     }
 
-    say "  required:" if $headings;
+    say "Required:" if $headings;
     $self->_attr_usage($_, max_len => $max_len ) foreach
         grep { $_->is_required && !$_->has_default && !$_->has_builder }
         @attrs;
-    say "  optional:" if $headings;
+
+    say "Optional:" if $headings;
     $self->_attr_usage($_, max_len => $max_len ) foreach
         sort { $a->name cmp $b->name }
         grep { !($_->is_required && !$_->has_default && !$_->has_builder) }
         @attrs;
-}
-
-method _parse_usage_format ( ClassName|Object $self: Str $fmt ) {
-    $fmt =~ s/%c/_prog_name()/ie;
-    $fmt =~ s/%%/%/;
-    # TODO - Be good to have a include that generates a list of the opts
-    #        %r - required  %a - all
-    return $fmt;
 }
 
 method _attr_usage ( ClassName|Object $self: Object $attr, Int :$max_len ) {
