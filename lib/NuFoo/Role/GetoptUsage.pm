@@ -19,8 +19,9 @@ use Text::Wrap;
 requires qw(_compute_getopt_attrs _get_cmd_flags_for_attr);
 
 our %Colours = (
-    flag    => ['yellow'],
-    heading => ['bold'],
+    flag          => ['yellow'],
+    heading       => ['bold'],
+    command       => ['green'],
     default_value => ['magenta'],
 );
 
@@ -33,11 +34,12 @@ BEGIN {
 }
 
 method _parse_usage_format ( ClassName|Object $self: Str $fmt ) {
-    $fmt =~ s/%c/_prog_name()/ieg;
+    $fmt =~ s/%c/colored $Colours{command}, _prog_name()/ieg;
     $fmt =~ s/%%/%/g;
     # TODO - Be good to have a include that generates a list of the opts
-    #        %r - required  %a - all
+    #        %r - required  %a - all  %o - options
     $fmt =~ s/^(Usage:)/colored $Colours{heading}, "$1"/e;
+    $self->_getopt_colourise(\$fmt);
     return $fmt;
 }
 
@@ -67,7 +69,7 @@ method getopt_usage( ClassName|Object $self: Bool :$no_headings? ) {
     local $Text::Wrap::columns = $w -1 || 72;
     say colored $Colours{heading}, "Required:" if $headings && @req_attrs;
     $self->_getopt_attr_usage($_, max_len => $max_len ) foreach @req_attrs;
-    say colored $Colours{heading}, "Optional:" if $headings && @opt_attrs;
+    say colored $Colours{heading}, "Options:" if $headings && @opt_attrs;
     $self->_getopt_attr_usage($_, max_len => $max_len ) foreach @opt_attrs;
 }
 
@@ -79,13 +81,19 @@ method _getopt_attr_usage ( ClassName|Object $self: Object $attr, Int :$max_len 
     my $docs  = $attr->documentation || "";
     my $pad   = $max_len + 2 - length($label);
     my $def   = $attr->has_default ? $attr->default : "";
-    $docs = "Default:".colored($Colours{default_value}, $def).". $docs"
+    $docs = colored($Colours{default_value}, "Default:$def").". $docs"
         if $def && ! ref $def;
     my $col1 = "    $label";
     $col1 .= "".( " " x $pad );
     my $out = wrap($col1, (" " x ($max_len + 9)), " - $docs" );
-    $out =~ s/(--?\w+)/colored $Colours{flag}, "$1"/ge;
+    $self->_getopt_colourise(\$out);
     say $out;
+}
+
+method _getopt_colourise( ClassName|Object $self: Str|ScalarRef $out ) {
+    my $str = ref $out ? $out : \$out;
+    $$str =~ s/(--?\w+)/colored $Colours{flag}, "$1"/ge;
+    return ref $out ? $out : $$str;
 }
 
 no Moose::Role;

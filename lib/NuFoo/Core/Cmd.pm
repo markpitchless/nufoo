@@ -53,11 +53,17 @@ has list => ( is => 'rw', isa => 'Bool', default => 0,
 sub _usage_format {
     return qq{Usage:
 
+    # Get help
     %c
     %c --man
     %c --man BUILDER
+    %c BUILDER
 
-    %c [OPTIONS] [BUILDER] [BUILDER_OPTIONS]
+    # List availiable builders
+    %c --list
+
+    # Build stuff
+    %c [OPTIONS] BUILDER [BUILDER_OPTIONS]
 };
 }
 
