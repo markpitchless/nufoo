@@ -22,7 +22,8 @@ our %Colours = (
     flag          => ['yellow'],
     heading       => ['bold'],
     command       => ['green'],
-    default_value => ['magenta'],
+    type          => ['magenta'],
+    default_value => ['cyan'],
 );
 
 BEGIN {
@@ -82,11 +83,17 @@ method _getopt_attr_usage ( ClassName|Object $self: Object $attr, Int :$max_len 
     my $label = join " ", map {
         length($_) == 1 ? "-$_" : "--$_"
     } ($flag, @aliases);
-    my $docs  = $attr->documentation || "";
+
+    my $docs  = "";
     my $pad   = $max_len + 2 - length($label);
     my $def   = $attr->has_default ? $attr->default : "";
-    $docs = colored($Colours{default_value}, "Default:$def").". $docs"
+    (my $type = $attr->type_constraint) =~ s/^(\w+::)*//;
+    $docs .= colored($Colours{type}, "$type. ") if $type;
+    $docs .= colored($Colours{default_value}, "Default:$def").". "
         if $def && ! ref $def;
+    $docs  .= $attr->documentation || "";
+    #$docs  .= $attr->documentation ? "\t".$attr->documentation : "";
+
     my $col1 = "    $label";
     $col1 .= "".( " " x $pad );
     my $out = wrap($col1, (" " x ($max_len + 9)), " - $docs" );
