@@ -31,6 +31,10 @@ BEGIN {
     my $prog_name;
     sub _prog_name { @_ ? ($prog_name = shift) : $prog_name }
     _prog_name(File::Basename::basename($0));
+
+    # Only use color when we are a terminal
+    $ENV{ANSI_COLORS_DISABLED} = 1
+        unless (-t STDOUT) && !exists $ENV{ANSI_COLORS_DISABLED};
 }
 
 method _parse_usage_format ( ClassName|Object $self: Str $fmt ) {
