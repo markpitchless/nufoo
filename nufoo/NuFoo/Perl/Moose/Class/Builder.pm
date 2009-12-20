@@ -60,6 +60,14 @@ has t_file_name => (
     documentation => qq{Name for .t file when is using t_file option. Defaults to sensible name.},
 );
 
+has declare => (
+    is      => "rw",
+    isa     => "Bool",
+    default => 0,
+    documentation => qq{Use MooseX::Declare.},
+);
+
+
 sub _build_test_class_name {
     my $self = shift;
     return "Test::" . $self->class;
@@ -71,7 +79,9 @@ method build {
         $log->info("Using local 'lib' directory");
         $file = "lib/$file";
     }
-    $self->tt_write( $file => 'class.pm.tt' );
+
+    my $tmpl = $self->declare ? "declare.pm.tt" : "class.pm.tt";
+    $self->tt_write( $file => $tmpl );
 
     if ( $self->test_more ) {
         my $name = lc $self->class;
@@ -170,6 +180,10 @@ Create a normal .t file to run the Test::Class when using test_class option.
 
 Name for .t file when is using t_file option. Defaults to sensible name.
 
+=item decalre
+
+Use L<MooseX::Declare> with it's excellent new syntax.
+
 =back
 
 =head1 EXAMPLES
@@ -185,6 +199,8 @@ Name for .t file when is using t_file option. Defaults to sensible name.
  nufoo Perl.Moose.Class --class=User --has=name --test_class
  
  nufoo Perl.Moose.Class --class=User --has=name --test_more
+ 
+ nufoo Perl.Moose.Class --declare --class=Point --has=Int:x --has=Int:y
 
 =head1 SEE ALSO
 
