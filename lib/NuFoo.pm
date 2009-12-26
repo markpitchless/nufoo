@@ -165,7 +165,8 @@ method mkdir (Dir $dir does coerce) {
     }
     else {
         foreach (@created) {
-            $log->info( "Created directory '$_'");
+            my $log_dir = Path::Class::Dir->new($_)->relative;
+            $log->info( "Created directory '$log_dir'");
         }
     }
     return $dir;
@@ -182,10 +183,11 @@ method write_file (
     $self->mkdir( $file->dir );
 
     $file = file($self->dir, $file);
+    my $log_file = $file->relative;
 
     my $exists = -f "$file" ? 1 : 0;
     if ( $exists && !$force ) {
-        $log->warning( "Skipped '$file' : Already exists" );
+        $log->warning( "Skipped '$log_file' : Already exists" );
         return;
     }
     else {
@@ -194,7 +196,7 @@ method write_file (
             return;
         };
         print $out (ref $content ? $$content : $content);
-        $log->info( ($exists ? "Over wrote" : "Created") . " file '$file'" );
+        $log->info( ($exists ? "Over wrote" : "Created") . " file '$log_file'" );
     }
     return $file;
 } 
