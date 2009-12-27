@@ -8,14 +8,10 @@ NuFoo::Perl::Test::More::Builder - Builds Test::More .t files.
 
 use CLASS;
 use Moose;
+use Moose::Autobox;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
-use NuFoo::Core::Types qw(
-    PerlPackageName
-    PerlPackageList
-    PerlMooseAttributeSpec
-    PerlMooseAttributeSpecList
-);
+use NuFoo::Core::Types qw( ArrayRefOfStr PerlPackageList );
 use Log::Any qw($log);
 use File::Spec::Functions qw/catfile/;
 
@@ -24,17 +20,17 @@ extends 'NuFoo::Core::Builder';
 with 'NuFoo::Core::Role::TT';
 
 has name => (
-    is      => "rw",
-    isa     => "Str",
+    is       => "rw",
+    isa      => Str,
     required => 1,
     documentation => qq{The test name. Used for filename.},
 );
 
 has uses => (
     is      => "rw",
-    isa     => PerlPackageList,
+    isa     => ArrayRefOfStr,
     default => sub { [] },
-    documentation => qq{List of packages to use.},
+    documentation => qq{List of packages to use. Value is text between use keyword and the semi-colon on the end of the line, to allow you at add args to the use.},
 );
 
 has uses_ok => (
@@ -52,26 +48,17 @@ has use_test => (
 
 has deep => (
     is      => "rw",
-    isa     => "Bool",
+    isa     => Bool,
     documentation => qq{Use Test::Deep.},
 );
 
 
 method build {
-    if ( $self->deep ) {
-        my $uses = $self->uses;
-        unless ( @$uses ~~ "Test::Deep" ) {
-            $self->uses( [ "Test::Deep", @$uses ] );
-        }
-    }
+    $self->uses->unshift("Test::Deep")
+        if $self->deep && !($self->uses ~~ "Test::Deep");
 
     if ( $self->use_test ) {
-        my $uses = $self->uses;
-        my @mods = split /[, ]/, $self->use_test;
-        foreach (@mods) { 
-            $self->uses( [ "Test::$_", @{$self->uses} ] )
-                unless ( @$uses ~~ "Test::Deep" );
-        }
+        $self->uses->push("Test::$_") foreach split /[, ]/, $self->use_test;
     }
 
     my $file = $self->name . ".t";
