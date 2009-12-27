@@ -87,7 +87,7 @@ method _getopt_attr_usage ( ClassName|Object $self: Object $attr, Int :$max_len 
     my $docs  = "";
     my $pad   = $max_len + 2 - length($label);
     my $def   = $attr->has_default ? $attr->default : "";
-    (my $type = $attr->type_constraint) =~ s/^(\w+::)*//;
+    (my $type = $attr->type_constraint) =~ s/(\w+::)*//g;
     $docs .= colored($Colours{type}, "$type. ") if $type;
     $docs .= colored($Colours{default_value}, "Default:$def").". "
         if $def && ! ref $def;
