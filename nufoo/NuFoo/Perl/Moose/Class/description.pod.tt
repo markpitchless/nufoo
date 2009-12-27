@@ -1,0 +1,7 @@
+=head1 ATTRIBUTES
+
+[%- FOREACH attr IN has %]
+=head2 [% attr.name %]
+
+[%- END %]
+=head1 METHODS

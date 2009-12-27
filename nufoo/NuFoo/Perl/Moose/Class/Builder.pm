@@ -13,16 +13,14 @@ use MooseX::Types::Moose qw( :all );
 use NuFoo::Core::Types qw( File PerlPackageName );
 use Log::Any qw($log);
 
-extends 'NuFoo::Core::Builder';
+extends 'NuFoo::Perl::Package::Builder';
 
-with 'NuFoo::Core::Role::TT',
-    'NuFoo::Role::Perl',
-    'NuFoo::Core::Role::Authorship',
-    'NuFoo::Core::Role::Licensing',
-    'NuFoo::Core::Role::Perl::Moose::Thing',
-;
+with 'NuFoo::Core::Role::Perl::Moose::Thing';
 
 has '+class' => ( required => 1 );
+
+has '+package' => ( lazy => 1, builder => '_build_package', traits => ['NoGetopt'] );
+method _build_package { $self->class; }
 
 has '+licenses' => ( default => sub { ["perl"] } );
 
