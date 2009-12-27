@@ -18,6 +18,7 @@ use File::Spec::Functions qw/catfile/;
 extends 'NuFoo::Core::Builder';
 
 with 'NuFoo::Core::Role::TT';
+with 'NuFoo::Role::Perl';
 
 has name => (
     is       => "rw",
@@ -61,12 +62,7 @@ method build {
         $self->uses->push("Test::$_") foreach split /[, ]/, $self->use_test;
     }
 
-    my $file = $self->name . ".t";
-    if ( -d "t" ) {
-        $log->info( "Using local 't' directory" );
-        $file = catfile( 't', $file );
-    }
-
+    my $file = $self->perl_t_dir->file( $self->name.".t" );
     $self->tt_write( $file => 'test.t.tt' );
 }
 

@@ -39,11 +39,11 @@ has perl_t_dir => (
 
 method _build_perl_t_dir {
     my $outdir = $self->nufoo->dir;
-    foreach ('t', [$self->perl_dir, 't']) {
-        my $dir = $outdir->subdir($_);
+    foreach (['t'], [$self->perl_dir, 't']) {
+        my $dir = $outdir->subdir( @$_ );
         if (-d $dir) {
-            $log->info("Using perl dir '$dir'");
-            return dir($_); # return relative to $outdir
+            $log->info("Using perl t dir '$dir'");
+            return dir(@$_); # return relative to $outdir
         }
     }
     return dir(".");
