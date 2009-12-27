@@ -16,6 +16,7 @@ use Path::Class;
 extends 'NuFoo::Core::Builder';
 
 with 'NuFoo::Core::Role::TT';
+with 'NuFoo::Role::Perl';
 with 'NuFoo::Core::Role::Authorship';
 with 'NuFoo::Core::Role::Licensing';
 
@@ -35,18 +36,7 @@ has package_file => (
     documentation => qq{File to write to. Default is to derive from package name},
 );
 
-method _build_package_file {
-    my $file = $self->perl_package2file( $self->package );
-    if ( -d "lib" ) {
-        $log->info("Using local 'lib' directory");
-        $file = ["lib",$file];
-    }
-    return $file;
-}
-
-method perl_package2file (Str $name) {
-    return file(split( /::/, "$name\.pm" ));
-}
+method _build_package_file { $self->perl_package2file( $self->package ); }
 
 method build {
     $self->tt_write( $self->package_file => 'package.pm.tt' );
