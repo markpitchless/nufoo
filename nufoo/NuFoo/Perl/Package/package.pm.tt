@@ -1,44 +1,8 @@
-[%- USE date %]
 package [% package %];
-
+[% WRAPPER "pod-wrap.pod.tt" %]
 our $VERSION = '0.01';
-
-[% PROCESS "package-body.pl.tt" -%]
+[%   PROCESS "package-body.pl.tt" -%]
 
 1;
 __END__
-
-=pod
-
-=head1 NAME
-
-[% package %] -  
-
-=cut
-
-=head1 SYNOPSIS
-
-[% PROCESS "synopsis.pod.tt" -%]
-
-=head1 DESCRIPTION
-
-[% PROCESS "description.pod.tt" %]
-=head1 SEE ALSO
-
-[% PROCESS "see_also.pod.tt" %]
-=head1 BUGS
-
-[% PROCESS "bugs.pod.tt" %]
-=head1 ACKNOWLEDGEMENTS
-
-[% PROCESS "description.pod.tt" %]
-=head1 AUTHOR
-
-[% PROCESS "author.pod.tt" %]
-=head1 COPYRIGHT
-
-[% PROCESS "copyright.pod.tt" %]
-=head1 LICENSE
-
-[% PROCESS "license.pod.tt" %]
-=cut
+[% END # /pod-wrap %]

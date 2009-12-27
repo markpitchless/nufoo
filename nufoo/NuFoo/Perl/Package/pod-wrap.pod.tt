@@ -1,0 +1,34 @@
+[% USE date -%]
+[% content %]
+=pod
+
+=head1 NAME
+
+[% PROCESS "name.pod.tt" -%]
+
+=head1 SYNOPSIS
+
+[% PROCESS "synopsis.pod.tt" -%]
+
+=head1 DESCRIPTION
+
+[% PROCESS "description.pod.tt" %]
+=head1 SEE ALSO
+
+[% PROCESS "see_also.pod.tt" %]
+=head1 BUGS
+
+[% PROCESS "bugs.pod.tt" %]
+=head1 ACKNOWLEDGEMENTS
+
+[% PROCESS "acknowledgements.pod.tt" %]
+=head1 AUTHOR
+
+[% PROCESS "author.pod.tt" %]
+=head1 COPYRIGHT
+
+[% PROCESS "copyright.pod.tt" %]
+=head1 LICENSE
+
+[% PROCESS "license.pod.tt" %]
+=cut
