@@ -8,6 +8,7 @@ NuFoo::NuFoo::Builder::Builder - Create a new NuFoo builder.
 
 use CLASS;
 use Moose;
+use Moose::Autobox;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
 use NuFoo::Core::Types qw(
@@ -19,9 +20,7 @@ use NuFoo::Core::Types qw(
 use Log::Any qw($log);
 use Template;
 
-extends 'NuFoo::Core::Builder';
-
-with 'NuFoo::Core::Role::TT', 'NuFoo::Core::Role::Perl::Moose::Thing';
+extends 'NuFoo::Perl::Moose::Class::Builder';
 
 has name => ( is => "rw", isa => "Str", required => 1,
     documentation => qq{Name of the new builder},
@@ -52,27 +51,29 @@ sub _build_class_name {
 }
 
 method build () {
-    if ( $self->tt ) {
-        my $with = $self->class_with;
-        unless ( "NuFoo::Core::Role::TT" ~~ @$with ) {
-            $self->class_with( [ @$with, "NuFoo::Core::Role::TT"] );
-        }
-    }
-
-    my $file = $self->class2file( $self->class );
+    # XXX This is a nasty hack. Should only apply to the perl file. Need to factor
+    # our parent a bit more for that. Probably shouldn't ever set dir this way.
+    my $dir = $self->nufoo->dir;
     foreach (qw/nufoo .nufoo/) {
-        if ( -d $_ ) {
-            $log->info("Using local nufoo directory '$_'");
-            $file = "$_/$file";
+        my $subdir = $dir->subdir($_);
+        if ( -d $subdir ) {
+            $log->info("Using local nufoo directory '$subdir'");
+            $self->nufoo->dir($subdir);
             last;
         }
     }
-    $self->tt_write( $file => 'builder.tt' );
-}
+ 
+    if ( $self->tt ) {
+        $self->class_with->unshift( "NuFoo::Core::Role::TT" )
+            unless $self->class_with ~~ "NuFoo::Core::Role::TT";
+    }
+    $self->uses->unshift(
+        "NuFoo::Core::Types qw()",
+        "MooseX::Method::Signatures",
+        'Log::Any qw($log)'
+    );
 
-method class2file (Str $name) {
-    $name =~ s/::/\//g;
-    $name . ".pm";
+    $self->SUPER::build(@_);
 }
 
 CLASS->meta->make_immutable;

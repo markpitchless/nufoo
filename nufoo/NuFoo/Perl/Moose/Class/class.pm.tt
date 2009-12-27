@@ -28,6 +28,7 @@ has [% attr.name %] => (
 );
 
 [%- END %]
+[% PROCESS "class-body.pl.tt" -%]
 
 __PACKAGE__->meta->make_immutable;
 no Moose;

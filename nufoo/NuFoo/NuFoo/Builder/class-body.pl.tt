@@ -1,0 +1,6 @@
+method build() {
+    # TODO - Add builder here
+    [%- IF tt %]
+    $self->tt_write( "file.foo" => "file.foo.tt" );
+    [%- END %]
+}

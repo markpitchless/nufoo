@@ -14,6 +14,7 @@ my $builder = Module::Build->new(
         'MooseX::Method::Signatures' => 0,
         'MooseX::StrictConstructor'  => 0,
         'MooseX::Types::Path::Class' => 0,
+        'MooseX::Autobox'            => 0,
         'CLASS'                      => 0,
         'File::Spec'                 => 0,
         'File::Path'                 => 0,

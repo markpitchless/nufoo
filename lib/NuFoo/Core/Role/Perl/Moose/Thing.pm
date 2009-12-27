@@ -9,6 +9,7 @@ classes and roles.
 
 use Moose::Role;
 use NuFoo::Core::Types qw(
+    ArrayRefOfStr
     PerlPackageName
     PerlPackageList
     PerlMooseAttributeSpecList
@@ -22,8 +23,9 @@ has class => (
 
 has uses => (
     is            => "rw",
-    isa           => PerlPackageList,
-    documentation => qq{Classs this class should use.},
+    isa           => ArrayRefOfStr,
+    default       => sub { [] },
+    documentation => qq{Classs this class should use. Value is the full use string between the use keyword and the semi colon.},
 );
 
 # Can not be used by roles.
