@@ -10,12 +10,13 @@ use CLASS;
 use Moose;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
-use NuFoo::Core::Types qw( PerlPackageName );
+use NuFoo::Core::Types qw( File PerlPackageName );
 use Log::Any qw($log);
 
 extends 'NuFoo::Core::Builder';
 
 with 'NuFoo::Core::Role::TT',
+    'NuFoo::Role::Perl',
     'NuFoo::Core::Role::Authorship',
     'NuFoo::Core::Role::Licensing',
     'NuFoo::Core::Role::Perl::Moose::Thing',
@@ -24,6 +25,15 @@ with 'NuFoo::Core::Role::TT',
 has '+class' => ( required => 1 );
 
 has '+licenses' => ( default => sub { ["perl"] } );
+
+has class_file => (
+    is         => "rw",
+    isa        => File,
+    required   => 1,
+    lazy_build => 1,
+    documentation => qq{File to write the class to. Default will work it out from the class name},
+);
+method _build_class_file { $self->perl_class2file($self->class); }
 
 has test_more => (
     is            => "rw",
@@ -74,14 +84,8 @@ sub _build_test_class_name {
 }
 
 method build {
-    my $file = $self->class2file( $self->class );
-    if ( -d "lib" ) {
-        $log->info("Using local 'lib' directory");
-        $file = "lib/$file";
-    }
-
     my $tmpl = $self->declare ? "declare.pm.tt" : "class.pm.tt";
-    $self->tt_write( $file => $tmpl );
+    $self->tt_write( $self->class_file => $tmpl );
 
     if ( $self->test_more ) {
         my $name = lc $self->class;
@@ -101,11 +105,6 @@ method build {
         $args->{t_file_name} = $self->t_file_name if $self->has_t_file_name;
         $self->nufoo->build( "Perl.Test.Class", $args );
     }
-}
-
-method class2file (Str $name) {
-    $name =~ s/::/\//g;
-    $name . ".pm";
 }
 
 CLASS->meta->make_immutable;
