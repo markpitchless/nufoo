@@ -11,18 +11,13 @@ use Moose;
 use Moose::Autobox;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
-use NuFoo::Core::Types qw(
-    PerlPackageName
-    PerlPackageList
-    PerlMooseAttributeSpec
-    PerlMooseAttributeSpecList
-);
+use NuFoo::Core::Types qw();
+use Path::Class qw(dir);
 use Log::Any qw($log);
-use Template;
 
 extends 'NuFoo::Perl::Moose::Class::Builder';
 
-has name => ( is => "rw", isa => "Str", required => 1,
+has name => ( is => "rw", isa => Str, required => 1,
     documentation => qq{Name of the new builder},
 );
 
@@ -50,22 +45,21 @@ sub _build_class_name {
     return "NuFoo::$name\::Builder";
 }
 
-method build () {
-    # XXX This is a nasty hack. Should only apply to the perl file. Need to factor
-    # our parent a bit more for that. Probably shouldn't ever set dir this way.
+method _build_perl_dir {
     my $dir = $self->nufoo->dir;
     foreach (qw/nufoo .nufoo/) {
         my $subdir = $dir->subdir($_);
         if ( -d $subdir ) {
             $log->info("Using local nufoo directory '$subdir'");
-            $self->nufoo->dir($subdir);
-            last;
+            return dir($_);
         }
     }
- 
-    if ( $self->tt ) {
-        $self->class_with->unshift( "NuFoo::Core::Role::TT" )
-            unless $self->class_with ~~ "NuFoo::Core::Role::TT";
+    return $self->SUPER::_build_perl_dir;
+}
+
+method build () {
+    if ( $self->tt && !($self->class_with ~~ "NuFoo::Core::Role::TT") ) {
+        $self->class_with->unshift( "NuFoo::Core::Role::TT" );
     }
     $self->uses->unshift(
         "NuFoo::Core::Types qw()",
@@ -82,46 +76,36 @@ no Moose;
 1;
 
 __END__
+
+=pod
+
 =head1 SYNOPSIS
 
  nufoo NuFoo.Builder --name NAME [ATTRIBUTES]
  
 =head1 DESCRIPTION
 
-Builds new NuFoo builders. 
+Builds new NuFoo builder.
 
 =head1 ATTRIBUTES 
 
-=over 4
+See L<NuFoo::Perl::Moose::Class::Builder|Perl.Moose.Class> for the base
+attributes. Below are the extras this class adds.
 
-=item name 
+=head2 name
 
 The name of the new builder in dot notation. Will be used to generate the
 correct file and class names.
 
-=item has
-
-Attributes for the class.
-
-=item with
-
-List of roles to consume.
-
-=item extends
-
-List of classes to extend. Default is NuFoo::Core::Builder.
-
-=item tt
+=head2 tt
 
 Setup class for Template use. Includes the TT role. Default is on.
-
-=back
 
 =head1 EXAMPLES
 
  nufoo NuFoo.Builder --name=Perl.Wizzbang
 
- nufoo NuFoo.Builder --name=My.Class
+ nufoo NuFoo.Builder --name=My.Class --extends NuFoo::Perl::Moose::Class::Builder --has Bool:extras_docs
 
 =head1 SEE ALSO
 
