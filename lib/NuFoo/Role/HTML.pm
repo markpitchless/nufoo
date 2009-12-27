@@ -37,7 +37,7 @@ method _build_html_dir {
 
 has html_t_dir => (
     is         => "rw",
-    isa        => File,
+    isa        => Dir,
     coerce     => 1,
     lazy_build => 1,
     documentation => qq{Dir for HTML test files. Default is '<html_dir>/t'.},
