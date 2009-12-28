@@ -49,12 +49,11 @@ method _build_perl_t_dir {
     return dir(".");
 }
 
-method perl_package2file (Str $name) {
-    my $dir = $self->perl_dir;
+method perl_package2file ( Str $name, Dir :$dir? ) {
+    $dir ||= $self->perl_dir;
     return $dir->file(split( /::/, "$name\.pm" ));
 }
-
-method perl_class2file (Str $name) { $self->perl_package2file($name) }
+sub perl_class2file { shift->perl_package2file(@_); }
 
 no Moose::Role;
 
