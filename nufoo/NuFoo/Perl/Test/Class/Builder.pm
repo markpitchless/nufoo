@@ -2,20 +2,22 @@ package NuFoo::Perl::Test::Class::Builder;
 
 use CLASS;
 use Moose;
+use Moose::Autobox;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
 use NuFoo::Core::Types qw(
+    ArrayRefOfStr
     PerlPackageName
     PerlPackageList
-    PerlMooseAttributeSpec
-    PerlMooseAttributeSpecList
 );
 use Log::Any qw($log);
 use File::Spec::Functions qw/catfile/;
+use Path::Class qw(dir);
 
 extends 'NuFoo::Core::Builder';
 
 with 'NuFoo::Core::Role::TT';
+with 'NuFoo::Role::Perl';
 
 has class => (
     is            => "rw",
@@ -26,7 +28,7 @@ has class => (
 
 has uses => (
     is      => "rw",
-    isa     => PerlPackageList,
+    isa     => ArrayRefOfStr,
     default => sub { [] },
     documentation => qq{List of packages to use.},
 );
@@ -65,43 +67,31 @@ sub _build_t_file_name {
 }
 
 method build {
-    if ( $self->deep ) {
-        my $uses = $self->uses;
-        unless ( @$uses ~~ "Test::Deep" ) {
-            $self->uses( [ "Test::Deep", @$uses ] );
-        }
-    }
+    $self->uses->unshift("Test::Deep")
+        if $self->deep && !($self->uses ~~ "Test::Deep");
 
     if ( $self->use_test ) {
-        my $uses = $self->uses;
-        my @mods = split /[, ]/, $self->use_test;
-        foreach (@mods) { 
-            $self->uses( [ "Test::$_", @{$self->uses} ] )
-                unless ( @$uses ~~ "Test::Deep" );
-        }
+        $self->uses->push("Test::$_") foreach split /[, ]/, $self->use_test;
     }
 
-    my $file = $self->class2file( $self->class );
-    if ( -d catfile( 't', 'lib' ) ) {
-        $log->info( "Using local '".catfile('t','lib')."' directory" );
-        $file = catfile( 't', 'lib', $file );
+    my $file;
+    my $t_lib = dir('t', 'lib');
+    if ( -d dir($self->nufoo->dir, $t_lib) ) {
+        $log->info( "Using perl t lib '$t_lib' directory" );
+        $file = $self->perl_class2file( $self->class, dir => $t_lib );
+    }
+    else {
+        $file = $self->perl_class2file($self->class);
     }
     $self->tt_write( $file => "class.pm.tt" );
 
     if ( $self->t_file ) {
-        my $file = $self->t_file_name;
-        if ( -d 't' ) {
-            $log->info("Using local 't' directory");
-            $file = catfile( 't', $file );
-        }
-        $file .= ".t" unless $file ~~ /\.t$/;
+        my $file = $self->perl_t_dir->file( $self->t_file_name . ".t" );
         $self->tt_write( $file => "test.t.tt" );
     }
-}
-
-method class2file (Str $name) {
-    $name =~ s/::/\//g;
-    $name . ".pm";
+    else {
+        $log->notice("You need to add ".$self->class." to you test runner.");
+    }
 }
 
 CLASS->meta->make_immutable;
