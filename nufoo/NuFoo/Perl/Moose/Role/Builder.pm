@@ -27,33 +27,19 @@ __END__
 
 =head1 DESCRIPTION
 
-Builds L<Moose> roles. 
+Builds L<Moose> roles. Sub class of
+L<NuFoo::Perl::Moose::Class::Builder|Perl.Moose.Class>.
 
 =head1 ATTRIBUTES 
+
+See L<NuFoo::Perl::Moose::Class::Builder|Perl.Moose.Class> for inherited
+attributes.
 
 =over 4
 
 =item class
 
 The package name for the new role.
-
-=item has
-
-List of attributes for the class. Each attribute is a hashref with a name
-attribute to name the attribute the rest of the keys corrisond to the
-arguments passed to has when setting up a class.
-
-The attribute can also be given as a string of the form:
-
- <type>:<name>=<default>
-
-type and default are optional.
-
-=item with
-
-List of roles this class consumes.
-
-=back
 
 =head1 EXAMPLES 
 
