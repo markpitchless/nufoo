@@ -10,6 +10,19 @@ use Log::Any qw($log);
 
 extends 'NuFoo::Perl::Package::Builder';
 
+use MooseX::Types -declare => [qw(
+    PerlGetoptSpec
+    PerlGetoptSpecList
+)];
+
+subtype PerlGetoptSpec,
+    as Str,
+    where { m/^[^\s]+$/ }, # Proper check of a valid opt string
+    message { "Not a valid option spec ($_)" };
+
+subtype PerlGetoptSpecList,
+    as ArrayRef[PerlGetoptSpec];
+
 has 'name' => (
     is => "rw",
     isa => Str,
@@ -25,19 +38,6 @@ has file => (
     lazy_build => 1,
     documentation => qq{Name of the file to write the command to. Default built from name.},
 );
-
-use MooseX::Types -declare => [qw(
-    PerlGetoptSpec
-    PerlGetoptSpecList
-)];
-
-subtype PerlGetoptSpec,
-    as Str,
-    where { m/^[^\s]+$/ }, # Proper check of a valid opt string
-    message { "Not a valid option spec ($_)" };
-
-subtype PerlGetoptSpecList,
-    as ArrayRef[PerlGetoptSpec];
 
 has options => (
     is            => "rw",
@@ -75,7 +75,8 @@ NuFoo::Perl::Getopt::Long::Builder - Builds Getopt::Long based perl commands.
 
 =head1 DESCRIPTION
 
-Builds Getopt::Long based perl commands.
+Builds L<Getopt::Long> and L<Pod::Usage> based perl commands. A basic command
+is built with --help and m--an options already setup.
 
 =head1 ATTRIBUTES
 
@@ -83,7 +84,9 @@ Builds Getopt::Long based perl commands.
 
 =head1 EXAMPLES
 
- nufoo Perl.Getopt.Long
+ nufoo Perl.Getopt.Long --name foo
+
+ nufoo Perl.Getopt.Long --name foo --opt 'verbose|v!' --opt 'quiet|q' --opt 'bar=s'
 
 =head1 SEE ALSO
 
