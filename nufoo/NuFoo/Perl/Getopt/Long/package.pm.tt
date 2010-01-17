@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+[% WRAPPER "pod-wrap.pod.tt" %]
+use warnings;
+use strict;
+use Getopt::Long;
+use Pod::Usage;
+
+# Options with defaults
+my ($help, $man);
+
+# Options
+GetOptions(
+    'help|h|?' => \$help,
+    'man'      => \$man,
+) or pod2usage(2);
+pod2usage(1) if $help;
+pod2usage( -exitstatus => 0, -verbose => 2 ) if $man;
+
+# TODO: Do stuff
+
+__END__
+[% END %]
