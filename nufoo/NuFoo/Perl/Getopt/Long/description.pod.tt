@@ -1,0 +1,12 @@
+
+=head1 OPTIONS
+
+=over 4
+
+[% FOR opt IN options;
+   names = opt.match('(\w+)', 1);
+-%]
+=item [% "--$name " FOR name IN names %]
+
+[% END -%]
+=back

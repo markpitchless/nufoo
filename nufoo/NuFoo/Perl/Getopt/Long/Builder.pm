@@ -4,7 +4,7 @@ our $VERSION = '0.01';
 
 use Moose;
 use MooseX::Method::Signatures;
-use MooseX::Types::Moose qw(Str);
+use MooseX::Types::Moose qw(:all);
 use NuFoo::Core::Types qw(File);
 use Log::Any qw($log);
 
@@ -24,6 +24,27 @@ has file => (
     coerce     => 1,
     lazy_build => 1,
     documentation => qq{Name of the file to write the command to. Default built from name.},
+);
+
+use MooseX::Types -declare => [qw(
+    PerlGetoptSpec
+    PerlGetoptSpecList
+)];
+
+subtype PerlGetoptSpec,
+    as Str,
+    where { m/^[^\s]+$/ }, # Proper check of a valid opt string
+    message { "Not a valid option spec ($_)" };
+
+subtype PerlGetoptSpecList,
+    as ArrayRef[PerlGetoptSpec];
+
+has options => (
+    is            => "rw",
+    isa           => PerlGetoptSpecList,
+    default       => sub { [] },
+    coerce        => 1,
+    documentation => qq{Command line options to add. Multiple allowed.},
 );
 
 method _build_file { $self->name }

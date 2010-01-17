@@ -7,11 +7,21 @@ use Pod::Usage;
 
 # Options with defaults
 my ($help, $man);
+[% FOR opt IN options;
+   var_name = opt.match('^(\w+)').0;
+-%]
+my $[% var_name %];
+[% END -%]
 
 # Options
 GetOptions(
     'help|h|?' => \$help,
     'man'      => \$man,
+[% FOR opt IN options;
+   var_name = opt.match('^(\w+)').0;
+-%]
+    '[% opt %]' => \$[% var_name %],
+[% END -%]
 ) or pod2usage(2);
 pod2usage(1) if $help;
 pod2usage( -exitstatus => 0, -verbose => 2 ) if $man;
