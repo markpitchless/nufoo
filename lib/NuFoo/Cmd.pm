@@ -98,7 +98,7 @@ method run() {
     $level = 'debug' if $self->debug;
     $level = 'error' if $self->quiet;
     $level ||= 'info';
-    Log::Any->set_adapter('+Log::Any::Adapter::Term', level => $level);
+    Log::Any->set_adapter( 'Term', level => $level );
 
     if ( $self->has_include) {
         $self->include_path( [ $self->include, $self->include_path ] );
