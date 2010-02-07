@@ -3,6 +3,14 @@
 
 =over 4
 
+=item --help -h -?
+
+Show usage info.
+
+=item --man
+
+Show the man page.
+
 [% FOR opt IN options;
    names = opt.match('(\w+)(?:[|!+]|[=:][siof]|$)?', 1);
 -%]
