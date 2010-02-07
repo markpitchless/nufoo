@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use NuFoo::Core::Cmd;
+use NuFoo::Cmd;
 
-my $nufoo = NuFoo::Core::Cmd->new_with_options;
+my $nufoo = NuFoo::Cmd->new_with_options;
 $nufoo->run;

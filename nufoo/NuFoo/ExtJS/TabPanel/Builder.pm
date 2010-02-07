@@ -10,7 +10,7 @@ use CLASS;
 use Log::Any qw($log);
 use Moose;
 use MooseX::Method::Signatures;
-use NuFoo::Core::Types qw(File Dir);
+use NuFoo::Types qw(File Dir);
 
 extends 'NuFoo::ExtJS::Component::Builder';
 
@@ -46,7 +46,7 @@ Builds an Ext.TabPanel sub class.
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>.
+L<NuFoo>, L<NuFoo::Builder>.
 
 =head1 BUGS
 

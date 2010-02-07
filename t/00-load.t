@@ -9,9 +9,9 @@ use Test::More tests => 6;
 
 BEGIN {
     use_ok( 'NuFoo' );
-    use_ok( 'NuFoo::Core::Cmd' );
+    use_ok( 'NuFoo::Cmd' );
     use_ok( 'Log::Any::Adapter::Term' );
-    use_ok( 'NuFoo::Core::Builder' );
+    use_ok( 'NuFoo::Builder' );
     
     # These are loaded from ../nufoo
     use_ok( 'NuFoo::NuFoo::Builder::Builder' );

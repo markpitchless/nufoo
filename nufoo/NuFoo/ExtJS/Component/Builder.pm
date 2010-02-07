@@ -10,12 +10,12 @@ use CLASS;
 use Log::Any qw($log);
 use Moose;
 use MooseX::Method::Signatures;
-use NuFoo::Core::Types qw(File Dir);
+use NuFoo::Types qw(File Dir);
 
-extends 'NuFoo::Core::Builder';
+extends 'NuFoo::Builder';
 
-with 'NuFoo::Core::Role::TT',
-    'NuFoo::Core::Role::Authorship',
+with 'NuFoo::Role::TT',
+    'NuFoo::Role::Authorship',
     'NuFoo::Role::HTML',
     'NuFoo::Role::JS';
 
@@ -147,7 +147,7 @@ Build pre-configured component skeleton.
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>.
+L<NuFoo>, L<NuFoo::Builder>.
 
 =head1 BUGS
 

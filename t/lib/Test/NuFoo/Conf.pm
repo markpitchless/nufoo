@@ -1,4 +1,4 @@
-package Test::NuFoo::Core::Conf;
+package Test::NuFoo::Conf;
 
 use strict;
 use warnings;
@@ -8,17 +8,17 @@ use FindBin qw($RealBin);
 use Test::More;
 use Test::Deep;
 
-use NuFoo::Core::Conf;
+use NuFoo::Conf;
 
 sub simple : Test(5) {
     my $self = shift;
     my ($conf);
 
-    $conf = NuFoo::Core::Conf->new( files => ["$RealBin/etc/not.here"] );
+    $conf = NuFoo::Conf->new( files => ["$RealBin/etc/not.here"] );
     ok $conf, "Got a config object for a missing file.";
     is $conf->get('core.hello'), undef, "Got undef core.hello from no config";
     
-    $conf = NuFoo::Core::Conf->new( files => ["$RealBin/etc/config"] );
+    $conf = NuFoo::Conf->new( files => ["$RealBin/etc/config"] );
     ok $conf, "Got a config object for etc/config.";
     is $conf->get('core.hello'), "world", "Got core.hello from conf";
     is $conf->get('core.force'), 0, "Got core.force from conf";
@@ -28,7 +28,7 @@ sub stacked : Test(3) {
     my $self = shift;
     my ($conf);
 
-    $conf = NuFoo::Core::Conf->new( files => [
+    $conf = NuFoo::Conf->new( files => [
         "$RealBin/etc/config",
         "$RealBin/etc/config.user"
     ] );
@@ -41,7 +41,7 @@ sub inherited : Test(5) {
     my $self = shift;
     my ($conf);
 
-    $conf = NuFoo::Core::Conf->new( files => [
+    $conf = NuFoo::Conf->new( files => [
         "$RealBin/etc/config",
         "$RealBin/etc/config.user"
     ] );
@@ -58,14 +58,14 @@ sub inherited : Test(5) {
 sub get_all : Test(1) {
     my $self = shift;
 
-    my $conf = NuFoo::Core::Conf->new( files => ["$RealBin/etc/config"] );
+    my $conf = NuFoo::Conf->new( files => ["$RealBin/etc/config"] );
     my $all  = $conf->get_all('core');
     cmp_deeply $all, { force => 0, hello => "world" }, "get_all";
 }
 
 sub from_env : Test(2) {
     my $self = shift;
-    my $conf = NuFoo::Core::Conf->new( files => [
+    my $conf = NuFoo::Conf->new( files => [
         "$RealBin/etc/config",
         "$RealBin/etc/config.user"
     ] );

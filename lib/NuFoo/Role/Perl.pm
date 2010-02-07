@@ -5,7 +5,7 @@ our $VERSION = '0.01';
 
 use Moose::Role;
 use MooseX::Method::Signatures;
-use NuFoo::Core::Types qw(Dir File);
+use NuFoo::Types qw(Dir File);
 use Log::Any qw($log);
 use Path::Class qw(dir);
 

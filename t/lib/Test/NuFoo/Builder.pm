@@ -1,4 +1,4 @@
-package Test::NuFoo::Core::Builder;
+package Test::NuFoo::Builder;
 
 use strict;
 use warnings;
@@ -22,7 +22,7 @@ sub construct : Test(3) {
     lives_ok { $builder = $class->new( nufoo => $nufoo ) }
         "Can construct loaded builder NuFoo.Hello.World";
     
-    isa_ok $builder, "NuFoo::Core::Builder";
+    isa_ok $builder, "NuFoo::Builder";
 }
 
 sub config_loading : Test(2) {

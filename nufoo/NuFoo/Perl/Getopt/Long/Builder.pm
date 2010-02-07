@@ -5,7 +5,7 @@ our $VERSION = '0.01';
 use Moose;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw(:all);
-use NuFoo::Core::Types qw(File);
+use NuFoo::Types qw(File);
 use Log::Any qw($log);
 
 extends 'NuFoo::Perl::Package::Builder';
@@ -90,7 +90,7 @@ is built with --help and m--an options already setup.
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>, L<perl>.
+L<NuFoo>, L<NuFoo::Builder>, L<perl>.
 
 =head1 BUGS
 

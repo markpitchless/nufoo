@@ -11,12 +11,12 @@ use CLASS;
 use Moose;
 use MooseX::Method::Signatures;
 use Log::Any qw($log);
-use NuFoo::Core::Types qw(DirName);
+use NuFoo::Types qw(DirName);
 
-extends 'NuFoo::Core::Builder';
+extends 'NuFoo::Builder';
 
-with 'NuFoo::Core::Role::TT',
-    "NuFoo::Core::Role::Authorship",
+with 'NuFoo::Role::TT',
+    "NuFoo::Role::Authorship",
     "NuFoo::Role::JS";
 
 has name => (
@@ -120,7 +120,7 @@ L<http://www.extjs.com/learn/Manual:Advanced_Application_Design>
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>.
+L<NuFoo>, L<NuFoo::Builder>.
 
 =head1 BUGS
 

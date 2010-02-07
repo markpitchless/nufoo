@@ -1,13 +1,13 @@
-package NuFoo::Core::Role::TT;
+package NuFoo::Role::TT;
 
 =head1 NAME
 
-NuFoo::Core::Role::TT - Role for builders to use Template Toolkit templates. 
+NuFoo::Role::TT - Role for builders to use Template Toolkit templates. 
 
 =cut
 
 use Moose::Role;
-use NuFoo::Core::Meta::Attribute::Trait::NoTT;
+use NuFoo::Meta::Attribute::Trait::NoTT;
 use Template;
 
 requires 'home_dir', 'write_file';
@@ -22,7 +22,7 @@ sub _build_tt_template {
     my $self = shift;
     my @include = $self->home_dir;
     foreach ($self->meta->linearized_isa) {
-        next unless $_->meta->does_role("NuFoo::Core::Role::TT");
+        next unless $_->meta->does_role("NuFoo::Role::TT");
         push @include, $_->home_dir;
     }
     my $tt   = Template->new({
@@ -35,11 +35,11 @@ sub tt_attribs {
     my $class = shift;
     grep {
         # Ready for when we add a specific trait for TT attributes.
-        #$_->does("NuFoo::Core::Meta::Attribute::Trait::TT")
+        #$_->does("NuFoo::Meta::Attribute::Trait::TT")
         #    or
         $_->name !~ /^_/
     } grep {
-        !$_->does('NuFoo::Core::Meta::Attribute::Trait::NoTT')
+        !$_->does('NuFoo::Meta::Attribute::Trait::NoTT')
     } $class->meta->get_all_attributes
 }
 
@@ -109,7 +109,7 @@ useful points to override. Also please add a TEMPLATES section to the docs.
 By default all of you classes attributes that don't start with an _ will be
 passed to the template as variables. You can add the trait C<NoTT> to a
 attribute to stop it getting added.
-See L<NuFoo::Core::Meta::Attribute::Trait::NoTT>.
+See L<NuFoo::Meta::Attribute::Trait::NoTT>.
 
 For even more control override L<tt_attribs> or L<tt_vars>.
 
@@ -147,7 +147,7 @@ NoTT trait.
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>, L<Template>, L<Moose>, L<perl>.
+L<NuFoo>, L<NuFoo::Builder>, L<Template>, L<Moose>, L<perl>.
 
 =head1 BUGS
 

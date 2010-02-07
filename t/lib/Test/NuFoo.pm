@@ -36,13 +36,13 @@ sub new_builder : Test(9) {
     my ($builder);
 
     $builder = $nufoo->new_builder('NuFoo.Hello.World');
-    isa_ok( $builder, "NuFoo::Core::Builder", "No args" );
+    isa_ok( $builder, "NuFoo::Builder", "No args" );
     isa_ok( $builder, "NuFoo::NuFoo::Hello::World::Builder", "No args" );
     is( $builder->who, "World", "who attrib is default value." );
     isa_ok( $builder->nufoo, "NuFoo", "builder->nufoo" );
 
     $builder = $nufoo->new_builder('NuFoo.Hello.World', { who => "Me" });
-    isa_ok( $builder, "NuFoo::Core::Builder", "With args" );
+    isa_ok( $builder, "NuFoo::Builder", "With args" );
     isa_ok( $builder, "NuFoo::NuFoo::Hello::World::Builder", "With args" );
     is( $builder->who, "Me", "Who attrib set via new call." );
     isa_ok( $builder->nufoo, "NuFoo", "builder->nufoo" );
@@ -55,7 +55,7 @@ sub conf : Test(8) {
     my $self = shift;
     my $nufoo = NuFoo->new( include_path => ["$Bin/nufoo"] );
     ok $nufoo->conf, "New NuFoo has conf";
-    isa_ok $nufoo->conf, "NuFoo::Core::Conf";
+    isa_ok $nufoo->conf, "NuFoo::Conf";
 
     my @conf_files = ("$Bin/etc/config");
     $nufoo = NuFoo->new( 
@@ -63,7 +63,7 @@ sub conf : Test(8) {
         include_path => ["$Bin/nufoo"] 
     );
     ok $nufoo->conf, "New NuFoo has conf";
-    isa_ok $nufoo->conf, "NuFoo::Core::Conf";
+    isa_ok $nufoo->conf, "NuFoo::Conf";
     cmp_deeply $nufoo->conf->files, [file($Bin,"etc","config")] , "Files passed on";
     is $nufoo->conf->get('core.hello'), "world", "Can read core.hello from conf";
 

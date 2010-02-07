@@ -10,12 +10,12 @@ use CLASS;
 use Moose;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
-use NuFoo::Core::Types qw( File PerlPackageName );
+use NuFoo::Types qw( File PerlPackageName );
 use Log::Any qw($log);
 
 extends 'NuFoo::Perl::Package::Builder';
 
-with 'NuFoo::Core::Role::Perl::Moose::Thing';
+with 'NuFoo::Role::Perl::Moose::Thing';
 
 has '+class' => ( required => 1 );
 
@@ -201,7 +201,7 @@ Use L<MooseX::Declare> with it's excellent new syntax.
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>.
+L<NuFoo>, L<NuFoo::Builder>.
 
 =head1 BUGS
 

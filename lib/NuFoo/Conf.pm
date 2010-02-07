@@ -1,8 +1,8 @@
-package NuFoo::Core::Conf;
+package NuFoo::Conf;
 
 =head1 NAME
 
-NuFoo::Core::Conf - Provides config file loading for the nufoo.  
+NuFoo::Conf - Provides config file loading for the nufoo.  
 
 =cut
 
@@ -11,7 +11,7 @@ our $VERSION = '0.01';
 use Moose;
 use MooseX::Method::Signatures;
 use MooseX::Types::Path::Class qw(Dir File);
-use NuFoo::Core::Types qw(FileList);
+use NuFoo::Types qw(FileList);
 use Config::IniFiles;
 use Log::Any qw($log);
 
@@ -115,10 +115,10 @@ __END__
 =head1 SYNOPSIS
 
  # Use default file list
- my $obj = NuFoo::Core::Conf->new();
+ my $obj = NuFoo::Conf->new();
  
  # Use your own file list
- my $obj = NuFoo::Core::Conf->new( files => ["./my/config.ini"] );
+ my $obj = NuFoo::Conf->new( files => ["./my/config.ini"] );
 
 =head1 DESCRIPTION
 

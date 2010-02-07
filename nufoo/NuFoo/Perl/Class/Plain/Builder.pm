@@ -10,7 +10,7 @@ use CLASS;
 use Log::Any qw($log);
 use Moose;
 use MooseX::Method::Signatures;
-use NuFoo::Core::Types qw( PerlPackageName );
+use NuFoo::Types qw( PerlPackageName );
 
 extends 'NuFoo::Perl::Package::Builder';
 
@@ -59,7 +59,7 @@ The class name. Used to derive the file name.
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Perl::Package>, L<NuFoo::Core::Builder>.
+L<NuFoo>, L<NuFoo::Perl::Package>, L<NuFoo::Builder>.
 
 =head1 BUGS
 

@@ -1,14 +1,14 @@
-package NuFoo::Core::Role::Perl::Moose::Thing;
+package NuFoo::Role::Perl::Moose::Thing;
 
 =head1 NAME
 
-NuFoo::Core::Role::Perl::Moose::Thing - Role for builders that create Moose
+NuFoo::Role::Perl::Moose::Thing - Role for builders that create Moose
 classes and roles. 
 
 =cut
 
 use Moose::Role;
-use NuFoo::Core::Types qw(
+use NuFoo::Types qw(
     ArrayRefOfStr
     PerlPackageName
     PerlPackageList
@@ -59,7 +59,7 @@ __END__
 
 =head1 SYNOPSIS
 
- does "NuFoo::Core::Role::Perl::Moose::Thing";
+ does "NuFoo::Role::Perl::Moose::Thing";
 
 =head1 DESCRIPTION
 
@@ -79,7 +79,7 @@ __END__
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>, L<Moose>, L<perl>.
+L<NuFoo>, L<NuFoo::Builder>, L<Moose>, L<perl>.
 
 =head1 BUGS
 

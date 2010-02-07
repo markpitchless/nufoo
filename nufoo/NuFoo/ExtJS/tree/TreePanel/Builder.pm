@@ -10,7 +10,7 @@ use CLASS;
 use Log::Any qw($log);
 use Moose;
 use MooseX::Method::Signatures;
-use NuFoo::Core::Types qw();
+use NuFoo::Types qw();
 
 extends 'NuFoo::ExtJS::Component::Builder';
 
@@ -52,7 +52,7 @@ Builds...
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>.
+L<NuFoo>, L<NuFoo::Builder>.
 
 =head1 BUGS
 

@@ -11,7 +11,7 @@ use Moose;
 use Moose::Autobox;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
-use NuFoo::Core::Types qw();
+use NuFoo::Types qw();
 use Path::Class qw(dir);
 use Log::Any qw($log);
 
@@ -28,7 +28,7 @@ has '+class' => (
     documentation => qq{Class name of the builder. You do not normally set as it is derived from the name by default.},
 );
 
-has '+extends' => ( default => sub { ["NuFoo::Core::Builder"] } );
+has '+extends' => ( default => sub { ["NuFoo::Builder"] } );
 
 has tt => (
     traits        => ['Getopt'],
@@ -58,11 +58,11 @@ method _build_perl_dir {
 }
 
 method build () {
-    if ( $self->tt && !($self->class_with ~~ "NuFoo::Core::Role::TT") ) {
-        $self->class_with->unshift( "NuFoo::Core::Role::TT" );
+    if ( $self->tt && !($self->class_with ~~ "NuFoo::Role::TT") ) {
+        $self->class_with->unshift( "NuFoo::Role::TT" );
     }
     $self->uses->unshift(
-        "NuFoo::Core::Types qw()",
+        "NuFoo::Types qw()",
         'Log::Any qw($Log)'
     );
     $self->uses->unshift("MooseX::Method::Signatures") unless $self->declare;
@@ -109,7 +109,7 @@ Setup class for Template use. Includes the TT role. Default is on.
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>.
+L<NuFoo>, L<NuFoo::Builder>.
 
 =head1 BUGS
 

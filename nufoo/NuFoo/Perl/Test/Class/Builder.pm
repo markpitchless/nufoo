@@ -5,7 +5,7 @@ use Moose;
 use Moose::Autobox;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
-use NuFoo::Core::Types qw(
+use NuFoo::Types qw(
     ArrayRefOfStr
     PerlPackageName
     PerlPackageList
@@ -14,9 +14,9 @@ use Log::Any qw($log);
 use File::Spec::Functions qw/catfile/;
 use Path::Class qw(dir);
 
-extends 'NuFoo::Core::Builder';
+extends 'NuFoo::Builder';
 
-with 'NuFoo::Core::Role::TT';
+with 'NuFoo::Role::TT';
 with 'NuFoo::Role::Perl';
 
 has class => (
@@ -159,7 +159,7 @@ Name for .t file when is using t_file option.
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>.
+L<NuFoo>, L<NuFoo::Builder>.
 
 =head1 BUGS
 

@@ -11,13 +11,13 @@ use Moose;
 use Moose::Autobox;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
-use NuFoo::Core::Types qw( ArrayRefOfStr PerlPackageList );
+use NuFoo::Types qw( ArrayRefOfStr PerlPackageList );
 use Log::Any qw($log);
 use File::Spec::Functions qw/catfile/;
 
-extends 'NuFoo::Core::Builder';
+extends 'NuFoo::Builder';
 
-with 'NuFoo::Core::Role::TT';
+with 'NuFoo::Role::TT';
 with 'NuFoo::Role::Perl';
 
 has name => (
@@ -119,7 +119,7 @@ test.
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>.
+L<NuFoo>, L<NuFoo::Builder>.
 
 =head1 BUGS
 

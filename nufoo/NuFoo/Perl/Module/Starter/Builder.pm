@@ -5,11 +5,11 @@ use Moose;
 use MooseX::Method::Signatures;
 use Log::Any qw($log);
 use Module::Starter;
-use NuFoo::Core::Types qw(PerlLicense EmailAddress);
+use NuFoo::Types qw(PerlLicense EmailAddress);
 
-extends 'NuFoo::Core::Builder';
+extends 'NuFoo::Builder';
 
-with 'NuFoo::Core::Role::TT';
+with 'NuFoo::Role::TT';
 
 has modules => (
     is            => "rw",
@@ -107,7 +107,7 @@ Names of the initial modules to create. Must have at least one.
 
 =head1 SEE ALSO
 
-L<Module::Starter>, L<NuFoo>, L<NuFoo::Core::Builder>.
+L<Module::Starter>, L<NuFoo>, L<NuFoo::Builder>.
 
 =head1 BUGS
 

@@ -10,15 +10,15 @@ use CLASS;
 use Log::Any qw($log);
 use Moose;
 use MooseX::Method::Signatures;
-use NuFoo::Core::Types qw(:all);
+use NuFoo::Types qw(:all);
 use Path::Class;
 
-extends 'NuFoo::Core::Builder';
+extends 'NuFoo::Builder';
 
-with 'NuFoo::Core::Role::TT';
+with 'NuFoo::Role::TT';
 with 'NuFoo::Role::Perl';
-with 'NuFoo::Core::Role::Authorship';
-with 'NuFoo::Core::Role::Licensing';
+with 'NuFoo::Role::Authorship';
+with 'NuFoo::Role::Licensing';
 
 has package => (
     is            => "rw",
@@ -72,7 +72,7 @@ Builds perl packages, with all the normal pod sections setup.
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>.
+L<NuFoo>, L<NuFoo::Builder>.
 
 =head1 BUGS
 

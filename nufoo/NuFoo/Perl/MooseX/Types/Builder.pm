@@ -10,7 +10,7 @@ use CLASS;
 use Log::Any qw($log);
 use Moose;
 use MooseX::Method::Signatures;
-use NuFoo::Core::Types qw();
+use NuFoo::Types qw();
 
 extends 'NuFoo::Perl::Package::Builder';
 
@@ -45,7 +45,7 @@ See L<NuFoo::Perl::Moose::Class>.
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>, L<NuFoo::Perl::Moose::Class::Builder>,
+L<NuFoo>, L<NuFoo::Builder>, L<NuFoo::Perl::Moose::Class::Builder>,
 L<MooseX::Types>
 
 =head1 BUGS

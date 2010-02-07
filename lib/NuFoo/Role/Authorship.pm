@@ -1,13 +1,13 @@
-package NuFoo::Core::Role::Authorship;
+package NuFoo::Role::Authorship;
 
 =head1 NAME
 
-NuFoo::Core::Role::Authorship - Role for builders that want author information. 
+NuFoo::Role::Authorship - Role for builders that want author information. 
 
 =cut
 
 use Moose::Role;
-use NuFoo::Core::Types qw( EmailAddress );
+use NuFoo::Types qw( EmailAddress );
 
 has author => (
     is            => "rw",
@@ -27,7 +27,7 @@ __END__
 
 =head1 SYNOPSIS
 
- does "NuFoo::Core::Role::Authorship";
+ does "NuFoo::Role::Authorship";
 
 =head1 DESCRIPTION
 
@@ -41,7 +41,7 @@ __END__
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>, L<Moose>, L<perl>.
+L<NuFoo>, L<NuFoo::Builder>, L<Moose>, L<perl>.
 
 =head1 BUGS
 

@@ -1,5 +1,5 @@
 
-package NuFoo::Core::Meta::Attribute::Trait::NoTT;
+package NuFoo::Meta::Attribute::Trait::NoTT;
 use Moose::Role;
 
 our $VERSION   = '0.1';
@@ -9,7 +9,7 @@ no Moose::Role;
 # register this as a metaclass alias ...
 package # stop confusing PAUSE
     Moose::Meta::Attribute::Custom::Trait::NoTT;
-sub register_implementation { 'NuFoo::Core::Meta::Attribute::Trait::NoTT' }
+sub register_implementation { 'NuFoo::Meta::Attribute::Trait::NoTT' }
 
 1;
 
@@ -19,7 +19,7 @@ __END__
 
 =head1 NAME
 
-NuFoo::Core::Meta::Attribute::Trait::NoTT - Optional meta attribute trait to
+NuFoo::Meta::Attribute::Trait::NoTT - Optional meta attribute trait to
 stop sttributes getting passed to templates. 
 
 =head1 SYNOPSIS
@@ -27,8 +27,8 @@ stop sttributes getting passed to templates.
   package NuFoo::Some::Builder;
   use Moose;
   
-  extends 'NuFoo::Core::Builder';
-  with 'NuFoo::Core::Role::TT';
+  extends 'NuFoo::Builder';
+  with 'NuFoo::Role::TT';
   
   has hello => (
       traits  => [ 'NoTT' ],  # do not pass to template
@@ -46,7 +46,7 @@ stop sttributes getting passed to templates.
 
 This is a custom attribute metaclass trait which can be used to 
 specify that a specific attribute should B<not> be passed to a
-template when using L<NuFoo::Core::Role::TT>.
+template when using L<NuFoo::Role::TT>.
 All you need to do is specify the C<NoTT> metaclass trait.
 
   has 'foo' => (traits => [ 'NoGetopt', ... ], ... );

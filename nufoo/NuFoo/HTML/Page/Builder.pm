@@ -11,12 +11,12 @@ use Log::Any qw($log);
 use Moose;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw(:all);
-use NuFoo::Core::Types qw(File);
+use NuFoo::Types qw(File);
 use NuFoo::HTML::Types qw( HtmlDocType );
 
-extends 'NuFoo::Core::Builder';
+extends 'NuFoo::Builder';
 
-with 'NuFoo::Core::Role::TT',
+with 'NuFoo::Role::TT',
     'NuFoo::Role::HTML';
 
 has file => (
@@ -100,7 +100,7 @@ Builds a basic HTML page.
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>.
+L<NuFoo>, L<NuFoo::Builder>.
 
 L<http://www.w3.org/MarkUp/Guide/>,
 L<http://www.w3.org/TR/REC-html40/struct/global.html>

@@ -20,8 +20,8 @@ use File::Path qw(make_path);
 use File::Find;
 use Path::Class;
 use MooseX::Getopt::Meta::Attribute::Trait;
-use NuFoo::Core::Conf;
-use NuFoo::Core::Types qw(File Dir FileList);
+use NuFoo::Conf;
+use NuFoo::Types qw(File Dir FileList);
 use Cwd qw(getcwd);
 
 has include_path => (
@@ -59,14 +59,14 @@ has force => (
 
 has conf => (
     is  => "ro",
-    isa => "NuFoo::Core::Conf",
+    isa => "NuFoo::Conf",
     lazy_build => 1,
 );
 
 method _build_conf {
     my %args;
     $args{files} = $self->config_files if $self->has_config_files;
-    return NuFoo::Core::Conf->new(%args); 
+    return NuFoo::Conf->new(%args); 
 }
 
 has dir => (

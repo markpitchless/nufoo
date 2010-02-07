@@ -1,8 +1,8 @@
-package NuFoo::Core::Builder;
+package NuFoo::Builder;
 
 =head1 NAME
 
-NuFoo::Core::Builder - Base class for builders. 
+NuFoo::Builder - Base class for builders. 
 
 =head1 VERSION
 
@@ -95,11 +95,11 @@ sub build_attribs {
     my $class = shift;
     grep {
         # Ready for when we add a specific trait for Build attributes.
-        #$_->does("NuFoo::Core::Meta::Attribute::Trait::Build")
+        #$_->does("NuFoo::Meta::Attribute::Trait::Build")
         #    or
         $_->name !~ /^_/
     } grep {
-        !$_->does('NuFoo::Core::Meta::Attribute::Trait::NoBuild')
+        !$_->does('NuFoo::Meta::Attribute::Trait::NoBuild')
     } $class->meta->get_all_attributes
 }
 

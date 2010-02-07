@@ -1,15 +1,15 @@
-package NuFoo::Core::Role::Licensing;
+package NuFoo::Role::Licensing;
 
 =head1 NAME
 
-NuFoo::Core::Role::Licensing - Role for builders that want licensing information. 
+NuFoo::Role::Licensing - Role for builders that want licensing information. 
 
 =cut
 
 use Moose::Role;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( ArrayRef );
-use NuFoo::Core::Types qw( PerlLicenseList );
+use NuFoo::Types qw( PerlLicenseList );
 use Module::Starter::Simple;
 
 has licenses => (
@@ -39,7 +39,7 @@ __END__
 
 =head1 SYNOPSIS
 
- does "NuFoo::Core::Role::Licensing";
+ does "NuFoo::Role::Licensing";
 
 =head1 DESCRIPTION
 
@@ -53,7 +53,7 @@ __END__
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Core::Builder>, L<Moose>, L<perl>.
+L<NuFoo>, L<NuFoo::Builder>, L<Moose>, L<perl>.
 
 =head1 BUGS
 

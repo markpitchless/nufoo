@@ -1,8 +1,8 @@
-package NuFoo::Core::Types;
+package NuFoo::Types;
 
 =head1 NAME
 
-NuFoo::Core::Types - The NuFoo types library. 
+NuFoo::Types - The NuFoo types library. 
 
 =cut
 
@@ -147,7 +147,7 @@ __END__
 =head1 SYNOPSIS
 
  use Moose;
- use NuFoo::Core::Types qw( PerlPackageName );
+ use NuFoo::Types qw( PerlPackageName );
 
  has class => ( is => 'rw', isa => PerlPackageName );
 

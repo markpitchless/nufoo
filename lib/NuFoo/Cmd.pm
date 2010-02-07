@@ -1,4 +1,4 @@
-package NuFoo::Core::Cmd;
+package NuFoo::Cmd;
 
 =head1 NAME
 
@@ -16,7 +16,7 @@ use Moose;
 use MooseX::Method::Signatures;
 use Log::Any;
 use Log::Any::Adapter::Term;
-use NuFoo::Core::Types qw(IncludeList);
+use NuFoo::Types qw(IncludeList);
 use Log::Any qw($log);
 use Pod::Usage;
 
