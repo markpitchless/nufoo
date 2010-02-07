@@ -141,7 +141,7 @@ method builder_names {
         $dir = catfile($dir, "NuFoo");
         next unless -d $dir;
         find( sub {
-            return if $File::Find::dir =~ m/NuFoo\/Core/;
+            return if $File::Find::name =~ m/NuFoo\/Builder/;
             push @builder_files, abs2rel($File::Find::name, $dir)
                 if $_ eq "Builder.pm";
         }, $dir );
