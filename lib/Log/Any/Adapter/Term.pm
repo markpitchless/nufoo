@@ -80,7 +80,7 @@ Log::Any::Adapter::Term - A Log::Any screen logger.
 =head1 SYNOPSIS
 
     use Log::Any::Adapter::Term;
-    Log::Any->set_adapter('+Log::Any::Adapter::Term', level => $level);
+    Log::Any->set_adapter( 'Term', level => $level );
 
 =head1 DESCRIPTION
 
