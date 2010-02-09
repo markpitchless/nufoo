@@ -1,5 +1,5 @@
 
-package NuFoo::HTML::Types;
+package NuFoo::Types::HTML;
 
 our $VERSION = '0.01';
 
@@ -27,7 +27,7 @@ __END__
 
 =head1 NAME
 
-NuFoo::HTML::Types - HTML MooseX:Types library. 
+NuFoo::Types::HTML - HTML MooseX:Types library. 
 
 =cut
 
@@ -35,7 +35,7 @@ NuFoo::HTML::Types - HTML MooseX:Types library.
 
  use Moose;
  use MooseX::Types::Moose qw(:all);
- use NuFoo::HTML::Types qw( HtmlDocType );
+ use NuFoo::Types::HTML qw( HtmlDocType );
 
  has doctype => ( is => 'rw', isa => HtmlDocType );
 

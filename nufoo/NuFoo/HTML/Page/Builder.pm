@@ -12,7 +12,7 @@ use Moose;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw(:all);
 use NuFoo::Types qw(File);
-use NuFoo::HTML::Types qw( HtmlDocType );
+use NuFoo::Types::HTML qw( HtmlDocType );
 
 extends 'NuFoo::Builder';
 
