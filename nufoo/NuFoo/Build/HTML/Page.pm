@@ -1,8 +1,8 @@
-package NuFoo::HTML::Page::Builder;
+package NuFoo::Build::HTML::Page;
 
 =head1 NAME
 
-NuFoo::HTML::Page::Builder - Builds a basic HTML page.
+NuFoo::Build::HTML::Page - Builds a basic HTML page.
 
 =cut
 
