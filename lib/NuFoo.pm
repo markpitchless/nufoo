@@ -122,12 +122,11 @@ method build ( Str $name, HashRef $args? ) {
 method builder_name_to_class($class: Str $name) {
     $name =~ s/\./::/g;
     $name =~ s/\//::/g;
-    return "NuFoo::$name\::Builder";
+    return "NuFoo::Build::$name";
 }
 
 method builder_class_to_name($class: Str $name) {
-    $name =~ s/^NuFoo:://;
-    $name =~ s/::Builder$//;
+    $name =~ s/^NuFoo::Build:://;
     $name =~ s/::/\./g;
     return $name;
 }

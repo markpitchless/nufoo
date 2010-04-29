@@ -16,7 +16,7 @@ use Moose;
 use MooseX::Method::Signatures;
 use MooseX::StrictConstructor;
 use Log::Any qw($log);
-use File::Spec::Functions qw(rel2abs splitpath);
+use File::Spec::Functions qw(rel2abs splitpath catdir);
 use NuFoo;
 
 with 'MooseX::Getopt', 'NuFoo::Role::GetoptUsage';
@@ -76,8 +76,10 @@ method home_dir($self:) {
     (my $inc_file = $class) =~ s/::/\//g;
     $inc_file .= ".pm";
     my $file  = $INC{$inc_file} || return undef; 
-    my (undef, $dir, undef) = splitpath($file);
-    return rel2abs($dir);
+    my (undef, $dir, $name) = splitpath($file);
+    $name =~ s/\.pm$//;
+    my $home_dir = catdir($dir, $name);
+    return rel2abs($home_dir);
 }
 
 method build() {
