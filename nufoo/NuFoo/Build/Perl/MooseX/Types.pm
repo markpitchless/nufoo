@@ -1,8 +1,8 @@
-package NuFoo::Perl::MooseX::Types::Builder;
+package NuFoo::Build::Perl::MooseX::Types;
 
 =head1 NAME
 
-NuFoo::Perl::MooseX::Types::Builder - Builds MooseX::Types type libraries.
+NuFoo::Build::Perl::MooseX::Types - Builds MooseX::Types type libraries.
 
 =cut
 
