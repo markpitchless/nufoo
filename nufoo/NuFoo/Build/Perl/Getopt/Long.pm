@@ -1,4 +1,4 @@
-package NuFoo::Perl::Getopt::Long::Builder;
+package NuFoo::Build::Perl::Getopt::Long;
 
 our $VERSION = '0.01';
 
@@ -67,7 +67,7 @@ __END__
 
 =head1 NAME
 
-NuFoo::Perl::Getopt::Long::Builder - Builds Getopt::Long based perl commands.
+NuFoo::Build::Perl::Getopt::Long - Builds Getopt::Long based perl commands.
 
 =head1 SYNOPSIS
 
