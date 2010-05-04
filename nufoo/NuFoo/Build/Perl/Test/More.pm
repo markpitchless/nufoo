@@ -1,8 +1,8 @@
-package NuFoo::Perl::Test::More::Builder;
+package NuFoo::Build::Perl::Test::More;
 
 =head1 NAME
 
-NuFoo::Perl::Test::More::Builder - Builds Test::More .t files.
+NuFoo::Build::Perl::Test::More - Builds Test::More .t files.
 
 =cut
 
