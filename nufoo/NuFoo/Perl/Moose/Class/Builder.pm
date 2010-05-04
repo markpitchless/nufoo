@@ -13,7 +13,7 @@ use MooseX::Types::Moose qw( :all );
 use NuFoo::Types qw( File PerlPackageName );
 use Log::Any qw($log);
 
-extends 'NuFoo::Perl::Package::Builder';
+extends 'NuFoo::Build::Perl::Package';
 
 with 'NuFoo::Role::Perl::Moose::Thing';
 

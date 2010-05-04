@@ -1,8 +1,8 @@
-package NuFoo::Perl::Package::Builder;
+package NuFoo::Build::Perl::Package;
 
 =head1 NAME
 
-NuFoo::Perl::Package::Builder - Builds...
+NuFoo::Build::Perl::Package - Builds...
 
 =cut
 

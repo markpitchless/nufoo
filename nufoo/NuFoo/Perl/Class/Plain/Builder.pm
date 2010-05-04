@@ -12,7 +12,7 @@ use Moose;
 use MooseX::Method::Signatures;
 use NuFoo::Types qw( PerlPackageName );
 
-extends 'NuFoo::Perl::Package::Builder';
+extends 'NuFoo::Build::Perl::Package';
 
 # Moose wont let us lazy_build here. Not allowed to change predicate or clearer
 #has '+package' => ( lazy_build => 1 );

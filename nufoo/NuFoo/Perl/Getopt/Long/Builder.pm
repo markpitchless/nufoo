@@ -8,7 +8,7 @@ use MooseX::Types::Moose qw(:all);
 use NuFoo::Types qw(File);
 use Log::Any qw($log);
 
-extends 'NuFoo::Perl::Package::Builder';
+extends 'NuFoo::Build::Perl::Package';
 
 use MooseX::Types -declare => [qw(
     PerlGetoptSpec
