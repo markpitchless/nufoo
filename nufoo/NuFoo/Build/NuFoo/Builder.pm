@@ -1,8 +1,8 @@
-package NuFoo::NuFoo::Builder::Builder;
+package NuFoo::Build::NuFoo::Builder;
 
 =head1 NAME
 
-NuFoo::NuFoo::Builder::Builder - Create a new NuFoo builder.
+NuFoo::Build::NuFoo::Builder - Create a new NuFoo builder.
 
 =cut
 
