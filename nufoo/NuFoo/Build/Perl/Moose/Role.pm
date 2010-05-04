@@ -1,8 +1,8 @@
-package NuFoo::Perl::Moose::Role::Builder;
+package NuFoo::Build::Perl::Moose::Role;
 
 =head1 NAME
 
-NuFoo::Perl::Moose::Role::Builder - Builds Moose roles.
+NuFoo::Build::Perl::Moose::Role - Builds Moose roles.
 
 =cut
 
