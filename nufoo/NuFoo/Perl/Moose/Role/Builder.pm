@@ -11,7 +11,7 @@ use Moose;
 use MooseX::Method::Signatures;
 use Log::Any qw($log);
 
-extends 'NuFoo::Perl::Moose::Class::Builder';
+extends 'NuFoo::Build::Perl::Moose::Class';
 
 # We don't override the base class build as we just want different templates.
 
@@ -28,11 +28,11 @@ __END__
 =head1 DESCRIPTION
 
 Builds L<Moose> roles. Sub class of
-L<NuFoo::Perl::Moose::Class::Builder|Perl.Moose.Class>.
+L<NuFoo::Build::Perl::Moose::Class|Perl.Moose.Class>.
 
 =head1 ATTRIBUTES 
 
-See L<NuFoo::Perl::Moose::Class::Builder|Perl.Moose.Class> for inherited
+See L<NuFoo::Build::Perl::Moose::Class|Perl.Moose.Class> for inherited
 attributes.
 
 =over 4

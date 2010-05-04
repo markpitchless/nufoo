@@ -1,8 +1,8 @@
-package NuFoo::Perl::Moose::Class::Builder;
+package NuFoo::Build::Perl::Moose::Class;
 
 =head1 NAME
 
-NuFoo::Perl::Moose::Class::Builder - Builds Moose classes.
+NuFoo::Build::Perl::Moose::Class - Builds Moose classes.
 
 =cut
 

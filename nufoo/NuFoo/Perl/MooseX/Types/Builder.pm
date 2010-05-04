@@ -45,7 +45,7 @@ See L<NuFoo::Perl::Moose::Class>.
 
 =head1 SEE ALSO
 
-L<NuFoo>, L<NuFoo::Builder>, L<NuFoo::Perl::Moose::Class::Builder>,
+L<NuFoo>, L<NuFoo::Builder>, L<NuFoo::Build::Perl::Moose::Class>,
 L<MooseX::Types>
 
 =head1 BUGS

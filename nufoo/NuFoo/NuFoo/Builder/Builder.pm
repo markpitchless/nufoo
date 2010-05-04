@@ -15,7 +15,7 @@ use NuFoo::Types qw();
 use Path::Class qw(dir);
 use Log::Any qw($log);
 
-extends 'NuFoo::Perl::Moose::Class::Builder';
+extends 'NuFoo::Build::Perl::Moose::Class';
 
 has name => ( is => "rw", isa => Str, required => 1,
     documentation => qq{Name of the new builder},
@@ -89,7 +89,7 @@ Builds new NuFoo builder.
 
 =head1 ATTRIBUTES 
 
-See L<NuFoo::Perl::Moose::Class::Builder|Perl.Moose.Class> for the base
+See L<NuFoo::Build::Perl::Moose::Class|Perl.Moose.Class> for the base
 attributes. Below are the extras this class adds.
 
 =head2 name
@@ -105,7 +105,7 @@ Setup class for Template use. Includes the TT role. Default is on.
 
  nufoo NuFoo.Builder --name=Perl.Wizzbang
 
- nufoo NuFoo.Builder --name=My.Class --extends NuFoo::Perl::Moose::Class::Builder --has Bool:extras_docs
+ nufoo NuFoo.Builder --name=My.Class --extends NuFoo::Build::Perl::Moose::Class --has Bool:extras_docs
 
 =head1 SEE ALSO
 
