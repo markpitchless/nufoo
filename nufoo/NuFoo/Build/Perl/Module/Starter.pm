@@ -1,4 +1,4 @@
-package NuFoo::Perl::Module::Starter::Builder;
+package NuFoo::Build::Perl::Module::Starter;
 
 use CLASS;
 use Moose;
