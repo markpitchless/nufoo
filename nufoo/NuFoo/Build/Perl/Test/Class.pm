@@ -1,4 +1,4 @@
-package NuFoo::Perl::Test::Class::Builder;
+package NuFoo::Build::Perl::Test::Class;
 
 use CLASS;
 use Moose;
@@ -102,7 +102,7 @@ __END__
 
 =head1 NAME
 
-NuFoo::Perl::Test::Class::Builder - Builds Test::Class based tests.
+NuFoo::Build::Perl::Test::Class - Builds Test::Class based tests.
 
 =head1 SYNOPSIS
 
