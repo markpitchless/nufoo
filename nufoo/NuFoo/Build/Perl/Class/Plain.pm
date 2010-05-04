@@ -1,8 +1,8 @@
-package NuFoo::Perl::Class::Plain::Builder;
+package NuFoo::Build::Perl::Class::Plain;
 
 =head1 NAME
 
-NuFoo::Perl::Class::Plain::Builder - Builds plain old perl classes.
+NuFoo::Build::Perl::Class::Plain - Builds plain old perl classes.
 
 =cut
 
