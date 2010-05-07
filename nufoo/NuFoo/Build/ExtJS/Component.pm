@@ -1,8 +1,8 @@
-package NuFoo::ExtJS::Component::Builder;
+package NuFoo::Build::ExtJS::Component;
 
 =head1 NAME
 
-NuFoo::ExtJS::Component::Builder - Builds basic skelton for etending an ExtJS component.
+NuFoo::Build::ExtJS::Component - Builds basic skelton for etending an ExtJS component.
 
 =cut
 

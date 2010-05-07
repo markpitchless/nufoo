@@ -12,7 +12,7 @@ use Moose;
 use MooseX::Method::Signatures;
 use NuFoo::Types qw();
 
-extends 'NuFoo::ExtJS::Component::Builder';
+extends 'NuFoo::Build::ExtJS::Component';
 
 has '+extends' => ( default => "Ext.tree.TreePanel" );
 
