@@ -1,8 +1,8 @@
-package NuFoo::ExtJS::Preconf::Application::Builder;
+package NuFoo::Build::ExtJS::Preconf::Application;
 
 =head1 NAME
 
-NuFoo::ExtJS::Preconf::Application::Builder - Builds an application skeleton
+NuFoo::Build::ExtJS::Preconf::Application - Builds an application skeleton
 for an ExtJS application using Saki's pre configured component setup.
 
 =cut
