@@ -1,8 +1,8 @@
-package NuFoo::ExtJS::tree::TreePanel::Builder;
+package NuFoo::Build::ExtJS::tree::TreePanel;
 
 =head1 NAME
 
-NuFoo::ExtJS::tree::TreePanel::Builder - Builds...
+NuFoo::Build::ExtJS::tree::TreePanel - Builds...
 
 =cut
 
