@@ -1,8 +1,8 @@
-package NuFoo::ExtJS::TabPanel::Builder;
+package NuFoo::Build::ExtJS::TabPanel;
 
 =head1 NAME
 
-NuFoo::ExtJS::TabPanel::Builder - Builds a Ext.TabPanel sub class.
+NuFoo::Build::ExtJS::TabPanel - Builds a Ext.TabPanel sub class.
 
 =cut
 
