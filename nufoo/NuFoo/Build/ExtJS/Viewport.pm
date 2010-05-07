@@ -1,8 +1,8 @@
-package NuFoo::ExtJS::Viewport::Builder;
+package NuFoo::Build::ExtJS::Viewport;
 
 =head1 NAME
 
-NuFoo::ExtJS::Viewport::Builder - Builds a Ext.Viewport sub class.
+NuFoo::Build::ExtJS::Viewport - Builds a Ext.Viewport sub class.
 
 =cut
 
