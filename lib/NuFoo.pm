@@ -93,6 +93,13 @@ method BUILD {
 
 method load_builder (Str $name) {
     my $class = $self->builder_name_to_class($name);
+
+    {
+        # Builders classes will always have ISA
+        no strict 'refs';
+        return $class if defined @{"${class}::ISA"};
+    }
+
     local @INC = @INC;
     unshift @INC, $self->include_path;
     $log->debug("Loading $name as $class from local INC=@INC");
