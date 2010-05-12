@@ -136,20 +136,18 @@ method builder_names {
     unshift @INC, $self->include_path;
     my @builder_files;
     foreach my $dir ( @INC ) {
+        $dir = catfile($dir, "NuFoo", "Build");
         $log->debug("Searching: $dir");
-        $dir = catfile($dir, "NuFoo");
         next unless -d $dir;
         find( sub {
             return if $File::Find::name =~ m/NuFoo\/Builder/;
-            push @builder_files, abs2rel($File::Find::name, $dir)
-                if $_ eq "Builder.pm";
+            push @builder_files, abs2rel($File::Find::name, $dir) if m/\.pm$/;
         }, $dir );
     }
-    return map {
-        my (undef, $dir, undef) = splitpath($_);
-        my $name = join ".", splitdir($dir);
-        $name =~ s/\.$//;
-        $name;
+    return sort map {
+        my $path = $_;
+        $path =~ s/\.pm$//;
+        join ".", splitdir($path);
     } @builder_files;
 }
 
