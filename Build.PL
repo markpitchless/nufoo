@@ -35,4 +35,7 @@ my $builder = Module::Build->new(
     create_makefile_pl => 'traditional',
 );
 
+# NuFoo builders use template files (*.tt) from within lib
+$builder->add_build_element('tt');
+
 $builder->create_build_script();
