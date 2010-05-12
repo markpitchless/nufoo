@@ -136,6 +136,7 @@ method builder_names {
     unshift @INC, $self->include_path;
     my @builder_files;
     foreach my $dir ( @INC ) {
+        next unless defined $dir and ! ref $dir;
         $dir = catfile($dir, "NuFoo", "Build");
         $log->debug("Searching: $dir");
         next unless -d $dir;
