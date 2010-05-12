@@ -24,7 +24,7 @@ has name => (
     is       => "rw",
     isa      => Str,
     required => 1,
-    documentation => qq{The test name. Used for filename.},
+    documentation => qq{The test name (without the .t extension), used for filename.},
 );
 
 has uses => (
