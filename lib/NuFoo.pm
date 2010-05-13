@@ -192,7 +192,7 @@ method write_file (
 
     my $exists = -f "$file" ? 1 : 0;
     if ( $exists && !$force ) {
-        $log->warning( "Skipped '$log_file' : Already exists" );
+        $log->warning( "Skipped '$log_file' : Already exists (use -f to over write)" );
         return;
     }
     else {
