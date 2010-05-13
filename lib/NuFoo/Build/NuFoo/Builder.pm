@@ -34,7 +34,7 @@ has tt => (
     traits        => ['Getopt'],
     is            => "rw",
     isa           => Bool,
-    default       => 0,
+    default       => 1,
     documentation => qq{Setup builder for Template use.},
 );
 
@@ -42,7 +42,7 @@ sub _build_class_name {
     my $self = shift;
     my $name = $self->name;
     $name =~ s/\./::/g;
-    return "NuFoo::$name\::Builder";
+    return "NuFoo::Build::$name";
 }
 
 method _build_perl_dir {
@@ -85,7 +85,7 @@ __END__
  
 =head1 DESCRIPTION
 
-Builds new NuFoo builder.
+Builds a new NuFoo builder.
 
 =head1 ATTRIBUTES 
 
