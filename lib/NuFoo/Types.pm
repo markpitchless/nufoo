@@ -16,6 +16,7 @@ use MooseX::Types -declare => [qw(
     Dir
     FileList
     DirName
+    BuilderName
     EmailAddress
     PerlPackageName
     PerlPackageList
@@ -76,6 +77,11 @@ subtype DirName,
     where { m/^[^:\/\\]+$/ },
     message { "Bad directory name ($_)." };
 
+subtype BuilderName,
+    as Str,
+    where { m/^\w+(\.\w+)*$/ },
+    message { "The string ($_) is not a valid nufoo builder name, must me words (alphanumerics) seperated by dots" },
+;
 
 subtype EmailAddress,
     as Str,

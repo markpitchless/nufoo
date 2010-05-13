@@ -11,14 +11,17 @@ use Moose;
 use Moose::Autobox;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
-use NuFoo::Types qw();
-use Path::Class qw(dir);
-use Log::Any qw($log);
+use NuFoo::Types qw( BuilderName );
+use Path::Class qw( dir );
+use Log::Any qw( $log );
 
 extends 'NuFoo::Build::Perl::Moose::Class';
 
-has name => ( is => "rw", isa => Str, required => 1,
-    documentation => qq{Name of the new builder},
+has name => (
+    is       => "rw",
+    isa      => BuilderName,
+    required => 1,
+    documentation => qq{Name of the new builder in dot notation},
 );
 
 has '+class' => (
