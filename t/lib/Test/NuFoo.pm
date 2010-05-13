@@ -18,16 +18,16 @@ sub load_builder : Test(4) {
     throws_ok { $nufoo->load_builder("Not.Found") } qr/Can't locate builder/,
         "Missing builder not found";
     
-    is $nufoo->load_builder("NuFoo.Hello.World"),
-        "NuFoo::NuFoo::Hello::World::Builder",
-        "NuFoo.Hello.World loaded";
+    is $nufoo->load_builder("Hello.World"),
+        "NuFoo::Build::Hello::World",
+        "Hello.World loaded";
 
-    is $nufoo->load_builder("NuFoo/Hello/World"),
-        "NuFoo::NuFoo::Hello::World::Builder",
+    is $nufoo->load_builder("Hello/World"),
+        "NuFoo::Build::Hello::World",
         "NuFoo/Hello/World loaded";
 
-    is $nufoo->load_builder("NuFoo::Hello::World"),
-        "NuFoo::NuFoo::Hello::World::Builder",
+    is $nufoo->load_builder("Hello::World"),
+        "NuFoo::Build::Hello::World",
         "NuFoo::Hello::World loaded";
 }
 
@@ -35,19 +35,19 @@ sub new_builder : Test(9) {
     my $nufoo = NuFoo->new( include_path => ["$Bin/nufoo"] );
     my ($builder);
 
-    $builder = $nufoo->new_builder('NuFoo.Hello.World');
+    $builder = $nufoo->new_builder('Hello.World');
     isa_ok( $builder, "NuFoo::Builder", "No args" );
-    isa_ok( $builder, "NuFoo::NuFoo::Hello::World::Builder", "No args" );
+    isa_ok( $builder, "NuFoo::Build::Hello::World", "No args" );
     is( $builder->who, "World", "who attrib is default value." );
     isa_ok( $builder->nufoo, "NuFoo", "builder->nufoo" );
 
-    $builder = $nufoo->new_builder('NuFoo.Hello.World', { who => "Me" });
+    $builder = $nufoo->new_builder('Hello.World', { who => "Me" });
     isa_ok( $builder, "NuFoo::Builder", "With args" );
-    isa_ok( $builder, "NuFoo::NuFoo::Hello::World::Builder", "With args" );
+    isa_ok( $builder, "NuFoo::Build::Hello::World", "With args" );
     is( $builder->who, "Me", "Who attrib set via new call." );
     isa_ok( $builder->nufoo, "NuFoo", "builder->nufoo" );
 
-    $builder = $nufoo->new_builder( 'NuFoo.Hello.World', who => "You" );
+    $builder = $nufoo->new_builder( 'Hello.World', who => "You" );
     is $builder->who, "You", "Args passed as list" 
 }
 
