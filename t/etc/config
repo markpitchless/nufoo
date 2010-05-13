@@ -2,7 +2,7 @@
 force = 0
 hello = world
 
-[NuFoo.Hello.World]
+[Hello.World]
 who = Galaxy
 
 [Perl]
