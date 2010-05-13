@@ -1,13 +1,25 @@
 Revision history for NuFoo
 
-        Config system, files and ENV.
-        --list option.
+0.03    13th May 2010
 
-        New Builders:
-         * Perl.Module.Starter
-         * Perl.Moose.Role
-         * ExtJS.Preconf.Application
-         * ExtJS.Preconf.Component
+    * Config system, files and ENV.
+    * --list option to get list of builders.
+    * Refactored class layout, builders now live under NuFoo::Build
+
+    New Builders:
+    * ExtJS.Component
+    * ExtJS.Preconf.Application
+    * ExtJS.TabPanel
+    * ExtJS.Viewport
+    * ExtJS.grid.GridPanel
+    * ExtJS.tree.TreePanel
+    * HTML.Page
+    * Perl.Class.Plain
+    * Perl.Getopt.Long
+    * Perl.Module.Starter
+    * Perl.Moose.Role
+    * Perl.MooseX.Types
+    * Perl.Package
 
 
 0.02    21st Oct 2009
