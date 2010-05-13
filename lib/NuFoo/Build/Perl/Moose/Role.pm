@@ -35,9 +35,7 @@ L<NuFoo::Build::Perl::Moose::Class|Perl.Moose.Class>.
 See L<NuFoo::Build::Perl::Moose::Class|Perl.Moose.Class> for inherited
 attributes.
 
-=over 4
-
-=item class
+=head2 class
 
 The package name for the new role.
 

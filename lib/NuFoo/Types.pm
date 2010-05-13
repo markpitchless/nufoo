@@ -108,7 +108,7 @@ subtype PerlMooseAttributeSpec,
 subtype PerlMooseAttributeSpecList,
     as ArrayRef[PerlMooseAttributeSpec];
 
-sub str_to_moose_attribute_spec {
+sub _str_to_moose_attribute_spec {
     my ($isa,$name,$def) = $_[0] =~ m/
         ^
         (?:(\w+):)?   # Optional type \1
@@ -125,12 +125,12 @@ sub str_to_moose_attribute_spec {
 
 coerce PerlMooseAttributeSpec,
     from Str,
-    via { str_to_moose_attribute_spec($_); }
+    via { _str_to_moose_attribute_spec($_); }
 ;
 
 coerce PerlMooseAttributeSpecList,
     from ArrayRefOfStr,
-    via { [ map { str_to_moose_attribute_spec($_); } @$_ ]; }
+    via { [ map { _str_to_moose_attribute_spec($_); } @$_ ]; }
 ;
 
 subtype PerlLicense,

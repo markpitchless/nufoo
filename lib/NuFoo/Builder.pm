@@ -132,6 +132,10 @@ base class all builders must be based on.
 
 Sub classers must impliment with their build logic.
 
+=head2 build_name
+
+Name of this builder in dot notation.
+
 =head2 home_dir
 
 Return the home directory for this builder. This is the dir for resources such
