@@ -148,7 +148,6 @@ method builder_names {
         $log->debug("Searching: $dir");
         next unless -d $dir;
         find( sub {
-            return if $File::Find::name =~ m/NuFoo\/Builder/;
             push @builder_files, abs2rel($File::Find::name, $dir) if m/\.pm$/;
         }, $dir );
     }
