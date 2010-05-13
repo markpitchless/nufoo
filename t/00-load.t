@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use FindBin qw/$Bin/;
-use lib ("$Bin/../nufoo");
+use lib ("$Bin/../lib");
 
 use Test::More tests => 30;
 
