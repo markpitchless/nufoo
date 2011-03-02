@@ -277,7 +277,13 @@ Return list of availiable builder names.
 
 =head2 write_file
 
-=head2 mkdir
+=head2 mkdir(Dir $dir)
+
+Create a directory in the output directory, logging having done so. C<$dir> is
+either the string path for the dir or a L<Path::Class::Dir> object. All
+intermediate directories are created (think mkdir -p). Does nothing if the
+directory already exists. Returns a L<Path::Class::Dir> for the new directory.
+Throws an error if the directory fails to create.
 
 =head1 AUTHOR
 

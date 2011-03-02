@@ -66,7 +66,7 @@ method build () {
     }
     $self->uses->unshift(
         "NuFoo::Types qw()",
-        'Log::Any qw($Log)'
+        'Log::Any qw($log)'
     );
     $self->uses->unshift("MooseX::Method::Signatures") unless $self->declare;
 
