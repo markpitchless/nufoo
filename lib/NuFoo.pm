@@ -102,9 +102,12 @@ method load_builder (Str $name) {
 
     local @INC = @INC;
     unshift @INC, $self->include_path;
-    $log->debug("Loading $name as $class from local INC=@INC");
+    (my $path = $class) =~ s!::!/!g;
+    $path .= ".pm";
+    $log->debug("Loading $name as $class ($path) from local INC=@INC");
     eval "use $class";
-    if ( my ($path) = $@ =~ m/^Can't locate (.*?) in \@INC/ ) {
+    $log->debug("use error: $@");
+    if ( my ($path) = $@ =~ m/^Can't locate $path in \@INC/ ) {
         die "Can't locate builder $name ($path) in \@INC";
     }
     $log->debug( "Load error: $@" ) if $@;
