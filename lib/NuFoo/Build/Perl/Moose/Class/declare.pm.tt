@@ -17,9 +17,8 @@ class [% class %][% IF extends.size %] extends [% extends.join(" extends ") %][%
         default => "[% attr.default %]",
         [%- END %]
     );
-
-[%      PROCESS "class-body.pl.tt" | indent(4) -%]
 [%- END %]
+[%      PROCESS "class-body.pl.tt" | indent(4) -%]
 }
 
 1;
