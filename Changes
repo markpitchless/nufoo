@@ -2,6 +2,9 @@ Revision history for NuFoo
 
    * Fixed up the test suite.
 
+    New Builders:
+   * OpenFrameworks.Starter
+
 
 0.03    13th May 2010
 
