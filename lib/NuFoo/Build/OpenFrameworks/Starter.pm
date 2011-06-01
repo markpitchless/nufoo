@@ -2,7 +2,8 @@
 use MooseX::Declare;
 use Modern::Perl;
 
-class NuFoo::Build::OpenFrameworks::Starter extends NuFoo::Builder with NuFoo::Role::TT {
+class NuFoo::Build::OpenFrameworks::Starter
+    extends NuFoo::Builder with NuFoo::Role::TT {
     our $VERSION = '0.01';
     use NuFoo::Types qw();
     use Log::Any qw($log);
@@ -19,10 +20,10 @@ class NuFoo::Build::OpenFrameworks::Starter extends NuFoo::Builder with NuFoo::R
         is         => "rw",
         isa        => "Str",
         lazy_build => 1,
-        documentation => qq{Class name of the ofBaseApp sub class. Defaults to name.},
+        documentation => qq{Class name of the ofBaseApp sub class. Defaults to <name>App.},
     );
 
-    method _build_class() { $self->name; }
+    method _build_class() { $self->name . "App"; }
 
     method build() {
         my $nufoo = $self->nufoo;
