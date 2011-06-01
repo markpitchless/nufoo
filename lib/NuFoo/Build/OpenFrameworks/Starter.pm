@@ -23,6 +23,13 @@ class NuFoo::Build::OpenFrameworks::Starter
         documentation => qq{Class name of the ofBaseApp sub class. Defaults to <name>App.},
     );
 
+    has gitignore => (
+        is         => "rw",
+        isa        => "Bool",
+        default    => 0,
+        documentation => qq{Add appropriate .gitignore files.},
+    );
+
     method _build_class() { $self->name . "App"; }
 
     method build() {
@@ -39,6 +46,12 @@ class NuFoo::Build::OpenFrameworks::Starter
         $self->tt_write( "$name/src/main.cpp"    => "src/main.cpp.tt" );
         $self->tt_write( "$name/src/$class.cpp"  => "src/testApp.cpp.tt" );
         $self->tt_write( "$name/src/$class.h"    => "src/testApp.h.tt" );
+
+        if ($self->gitignore) {
+            $self->tt_write( "$name/.gitignore"          => "dot.gitignore.tt" );
+            $self->tt_write( "$name/bin/.gitignore"      => "bin/dot.gitignore.tt" );
+            $self->tt_write( "$name/bin/data/.gitignore" => "bin/data/dot.gitignore.tt" );
+        }
     }
 }
 
