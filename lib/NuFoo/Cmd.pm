@@ -19,6 +19,7 @@ use Log::Any::Adapter::Term;
 use NuFoo::Types qw(IncludeList);
 use Log::Any qw($log);
 use Pod::Usage;
+use Try::Tiny;
 
 extends 'NuFoo';
 
@@ -118,7 +119,7 @@ method run() {
     $self->usage_error("No builder name") if !$name || $name =~ m/^-/;
 
     my ($builder, $builder_class);
-    eval { 
+    try {
         $builder_class = $self->load_builder( $name );
         if ($self->man) {
             (my $doc_file = $builder_class) =~ s/::/\//g;
@@ -135,9 +136,10 @@ method run() {
             nufoo => $self 
         );
         $builder->build
-    };
-    if ($@) {
-        given($@) {
+    }
+    catch {
+        my $err = $_;
+        given($err) {
             when (/^Can't locate builder .*? in \@INC/) {
                 $self->exit_error(
                     "Builder '$name' not found.\n(Searching: "
@@ -166,7 +168,12 @@ method run() {
                 $log->error("Build failed: $@");
             }
         }
-    }
+        # TODO - Lazy! should have diferent codes for the errors.
+        return 10;
+    };
+
+    # Got here with no errors, so all good, 0 status
+    return 0;
 }
 
 method show_list {
