@@ -121,9 +121,12 @@ method run() {
     eval { 
         $builder_class = $self->load_builder( $name );
         if ($self->man) {
+            (my $doc_file = $builder_class) =~ s/::/\//g;
+            $doc_file .= ".pm";
+            $doc_file  = $INC{$doc_file} or die "No docs!";
             pod2usage(
                 -verbose  => 2,
-                -input    => $builder_class->home_dir . "/Builder.pm",
+                -input    => $doc_file,
             );
         }
         # Should possible be using new_builder if we go with that setup.
