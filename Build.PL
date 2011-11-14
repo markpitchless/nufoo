@@ -29,6 +29,7 @@ my $builder = Module::Build->new(
         'Email::Valid'               => 0,
         'Path::Class'                => 0,
         'Config::IniFiles'           => 0,
+        'Try::Tiny'                  => 0,
     },
     build_requires => {
         'Test::More'  => 0,
