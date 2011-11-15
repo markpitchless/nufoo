@@ -119,7 +119,7 @@ __END__
 
  use Moose;
 
- with 'MooseX::Getopt', 'NuFoo::Role::GetoptUsage';
+ with 'MooseX::Getopt::Basic', 'NuFoo::Role::GetoptUsage';
 
  $self->getopt_usage;
 
@@ -132,11 +132,14 @@ that inspects your classes meta information to build the messsage.
 
 =head1 METHODS 
 
-=head2 getopt_usage( Bool :$no_headings )
+=head2 getopt_usage( Bool :$no_headings, Int :$exit )
 
 Prints the usage message followed by a table of the options. Options are
 printed required first, then optional.  These two sections get a heading unless
-C<no_headers> arg is true.
+C<no_headings> arg is true.
+
+If an exit arg is given and defined then this method will exit the program with
+that exit code.
 
 =head1 SEE ALSO
 
