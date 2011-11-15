@@ -23,7 +23,9 @@ use Try::Tiny;
 
 extends 'NuFoo';
 
-with 'MooseX::Getopt', 'NuFoo::Role::GetoptUsage';
+with
+    'MooseX::Getopt::Basic', # Basic as we don't want GLD usage handling
+    'NuFoo::Role::GetoptUsage';
 
 # This activates use of Getopt::Long::Descriptive for usage (along with
 # _usage_format below) to give the --help option.
@@ -79,8 +81,7 @@ method exit_error (Str $msg) {
 
 method usage_error (Str $msg, Int $verbose = 1) {
     $log->error($msg) if $msg;
-    $self->getopt_usage;
-    exit ($msg ? 1 : 0);
+    $self->getopt_usage( exit => $msg ? 1 : 0 );
 }
 
 method builder_usage_error( Str|Object $class, Str $msg ) {
@@ -88,8 +89,7 @@ method builder_usage_error( Str|Object $class, Str $msg ) {
     $log->error($msg) if $msg;
     $class->getopt_usage();
     say "Global:";
-    $self->getopt_usage( no_headings => 1 );
-    exit ($msg ? 1 : 0);
+    $self->getopt_usage( no_headings => 1, exit => $msg ? 1 : 0 );
 }
 
 method run() {
@@ -116,11 +116,14 @@ method run() {
         -input    => __FILE__,
     ) if $self->man && !$name;
     
+    $self->getopt_usage( exit => 0 ) if $self->help && !$name;
+
     $self->usage_error("No builder name") if !$name || $name =~ m/^-/;
 
     my ($builder, $builder_class);
     try {
         $builder_class = $self->load_builder( $name );
+        $builder_class->getopt_usage( exit => 0 ) if $self->help;
         if ($self->man) {
             (my $doc_file = $builder_class) =~ s/::/\//g;
             $doc_file .= ".pm";
@@ -130,6 +133,7 @@ method run() {
                 -input    => $doc_file,
             );
         }
+
         # Should possible be using new_builder if we go with that setup.
         $builder = $builder_class->new(
             argv  => \@argv, 

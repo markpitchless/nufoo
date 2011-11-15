@@ -50,7 +50,7 @@ method _parse_usage_format ( ClassName|Object $self: Str $fmt ) {
 
 method _usage_format (ClassName|Str $self:) { "Usage:\n    %c [OPTIONS]"; }
 
-method getopt_usage( ClassName|Object $self: Bool :$no_headings? ) {
+method getopt_usage( ClassName|Object $self: Bool :$no_headings?, Int :$exit? ) {
     my $headings = $no_headings ? 0 : 1;
     
     say $self->_parse_usage_format($self->_usage_format) if $headings;
@@ -76,6 +76,9 @@ method getopt_usage( ClassName|Object $self: Bool :$no_headings? ) {
     $self->_getopt_attr_usage($_, max_len => $max_len ) foreach @req_attrs;
     say colored $Colours{heading}, "Options:" if $headings && @opt_attrs;
     $self->_getopt_attr_usage($_, max_len => $max_len ) foreach @opt_attrs;
+
+    exit $exit if defined $exit;
+    return 1;
 }
 
 method _getopt_attr_usage ( ClassName|Object $self: Object $attr, Int :$max_len ) {
