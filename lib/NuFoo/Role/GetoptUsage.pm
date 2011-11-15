@@ -134,9 +134,12 @@ that inspects your classes meta information to build the messsage.
 
 =head2 getopt_usage( Bool :$no_headings, Int :$exit )
 
-Prints the usage message followed by a table of the options. Options are
-printed required first, then optional.  These two sections get a heading unless
-C<no_headings> arg is true.
+Prints the usage message to stdout followed by a table of the options. Options
+are printed required first, then optional.  These two sections get a heading
+unless C<no_headings> arg is true.
+
+If stdout is a tty usage message is colourised. Setting the env var
+ANSI_COLORS_DISABLED will disable colour even on a tty.
 
 If an exit arg is given and defined then this method will exit the program with
 that exit code.
