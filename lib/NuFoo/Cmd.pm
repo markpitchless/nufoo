@@ -15,7 +15,7 @@ use 5.010;
 use Moose;
 use MooseX::Method::Signatures;
 use Log::Any;
-use Log::Any::Adapter::Term;
+use NuFoo::LogAnyAdapter;
 use NuFoo::Types qw(IncludeList);
 use Log::Any qw($log);
 use Pod::Usage;
@@ -99,7 +99,7 @@ method run() {
     $level = 'debug' if $self->debug;
     $level = 'error' if $self->quiet;
     $level ||= 'info';
-    Log::Any->set_adapter( 'Term', level => $level );
+    Log::Any->set_adapter( '+NuFoo::LogAnyAdapter', level => $level );
 
     if ( $self->has_include) {
         $self->include_path( [ $self->include, $self->include_path ] );
