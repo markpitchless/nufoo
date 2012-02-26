@@ -1,9 +1,12 @@
 Revision history for NuFoo
 
-   * Fixed up the test suite.
+0.04    26th February 2012
+
+    * Removed Log::Any::Adapter::Term dependency.
+    * Fixed up the test suite.
 
     New Builders:
-   * OpenFrameworks.Starter
+    * OpenFrameworks.Starter
 
 
 0.03    13th May 2010

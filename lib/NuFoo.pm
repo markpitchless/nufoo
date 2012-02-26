@@ -10,7 +10,7 @@ Version 0.03
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 use Moose;
 use MooseX::Method::Signatures;
