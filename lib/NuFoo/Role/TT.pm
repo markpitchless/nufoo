@@ -186,6 +186,11 @@ All complex software has bugs lurking in it, and this module is no exception.
 
 See L<NuFoo/BUGS> for details of how to report bugs.
 
+=head1 TODO
+
+Add a C<tt_options> method to pass options to the constructed L<Template>
+object.
+
 =head1 AUTHOR
 
 Mark Pitchless, C<< <markpitchless at gmail.com> >>

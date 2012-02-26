@@ -1,12 +1,50 @@
-NuFoo
+                                         ____
+                          ____   __  __ / __/____   ____
+                         / __ \ / / / // /_ / __ \ / __ \
+                        / / / // /_/ // __// /_/ // /_/ /
+                       /_/ /_/ \__,_//_/   \____/ \____/
 
-Command line tool for developers for creating new boilerplace files.
 
-e.g. to create a new Moose based class:
+nufoo - Command line boiler plate generator for developers.
 
- nufoo Perl.Moose.Class --class My::User --has name --has Bool:logged_in
+e.g. to create a new HTML page:
 
-Comes with a library of various builders and an easy way to add your own.
+ $ nufoo HTML.Page --title 'Hello'
+ Info:    Created file 'index.html'
+
+It has knowledge of common file layouts and will try to put created files in
+the right places if they exist. e.g. create a new perl Moose class with a test,
+run from the root of a perl project.
+
+ $ nufoo Perl.Moose.Class --class Foo::Session --has Str:user_name --test_more
+ Info:    Using perl dir '/projects/foo/lib'
+ Info:    Using perl t dir '/projects/foo/t'
+ Info:    Created directory 'lib/Foo'
+ Info:    Created file 'lib/Foo/Session.pm'
+ Info:    Created file 't/foo-session.t'
+
+Comes with a library of various builders and an easy way to add your own both
+locally from your home directory or per project by keeping them in the projects
+file tree. Current builders:
+
+ HTML.Page
+ NuFoo.Builder
+ OpenFrameworks.Starter
+ Perl.Class.Plain
+ Perl.Getopt.Long
+ Perl.Module.Starter
+ Perl.Moose.Class
+ Perl.Moose.Role
+ Perl.MooseX.Types
+ Perl.Package
+ Perl.Test.Class
+ Perl.Test.More
+ ExtJS.Component
+ ExtJS.Preconf.Application
+ ExtJS.TabPanel
+ ExtJS.Viewport
+ ExtJS.grid.GridPanel
+ ExtJS.tree.TreePanel
 
 
 INSTALLATION
@@ -18,26 +56,31 @@ To install this module, run the following commands:
 	./Build test
 	./Build install
 
+
 SUPPORT AND DOCUMENTATION
 
-After installing, you can find documentation for this module with the
-perldoc command.
+The command line tool also has a built in help system.
 
-    perldoc NuFoo
+ nufoo --help
+ nufoo --help BUILDER
 
-You can also look for information at:
+ nufoo --man
+ nufoo --man BUILDER
 
-    RT, CPAN's request tracker
-        http://rt.cpan.org/NoAuth/Bugs.html?Dist=NuFoo
+--help gives usage summary and --man gives man page. Call without a builder
+name for global options and with a builder name for help with that builder. e.g.
 
-    AnnoCPAN, Annotated CPAN documentation
-        http://annocpan.org/dist/NuFoo
+ nufoo --help Perl.Moose.Class
+ nufoo --man Perl.Moose.Class
 
-    CPAN Ratings
-        http://cpanratings.perl.org/d/NuFoo
+To get a list of builders use --list
 
-    Search CPAN
-        http://search.cpan.org/dist/NuFoo/
+ nufoo --list
+
+You can also look for information, report bugs, feature requests at the github
+page.
+
+ https://github.com/markpitchless/nufoo
 
 
 COPYRIGHT AND LICENCE

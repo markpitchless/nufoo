@@ -2,15 +2,15 @@ package NuFoo::Cmd;
 
 =head1 NAME
 
-nufoo - Create new boiler plate code. 
+nufoo - Command line boilerplate generator for developers.
 
 =head1 VERSION
 
-Version 0.01
+Version 0.04
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.04';
 use 5.010;
 use Moose;
 use MooseX::Method::Signatures;
@@ -189,11 +189,18 @@ __END__
 
 =head1 SYNOPSIS
 
- nufoo
- nufoo --man
- nufoo --man BUILDER
+    # Get help
+    nufoo
+    nufoo --man|--help
+    nufoo --man|--help BUILDER
+    nufoo BUILDER
 
- nufoo [OPTIONS] [BUILDER] [BUILDER_OPTIONS]
+    # List availiable builders
+    nufoo --list
+
+    # Build stuff
+    nufoo [OPTIONS] BUILDER [BUILDER_OPTIONS]
+
 
 =head1 DESCRIPTION
 
@@ -202,9 +209,10 @@ pages etc. For example the following would create us a new Moose class.
  
  nufoo Perl.Moose.Class --class=My::Foo
 
-To get help on a particular builder, including what option it takes use --man
-options with a builder name, e.g.
+To get help on a particular builder, including what option it takes use --help
+or --man for the full man page e.g.
 
+  nufoo --help Perl.Moose.Class
   nufoo --man Perl.Moose.Class
 
 =head1 OPTIONS
@@ -218,6 +226,10 @@ Additional directories to search for builders in. Give more then once.
 =item --quiet
 
 Only show errors in log output.
+
+=item --help
+
+Show usage information. With a builder name show usage for that builder.
 
 =item --man
 
@@ -236,9 +248,11 @@ L<NuFoo>.
 
 =head1 BUGS
 
-All complex software has bugs lurking in it, and this module is no exception.
+All software has bugs lurking in it, and this code is no exception.
 
-See L<NuFoo/BUGS> for details of how to report bugs.
+Please report any bugs or feature requests via the github project at:
+
+L<http://github.com/markpitchless/Log-Any-Adapter-Term>
 
 =head1 AUTHOR
 
@@ -254,6 +268,6 @@ This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published
 by the Free Software Foundation; or the Artistic License.
 
-See http://dev.perl.org/licenses/ for more information.
+See L<http://dev.perl.org/licenses/> for more information.
 
 =cut

@@ -2,11 +2,11 @@ package NuFoo;
 
 =head1 NAME
 
-NuFoo - Developer tool for creating new boilerplace files using a set of builder modules.
+NuFoo - Command line boilerplate generator for developers.
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
@@ -227,7 +227,7 @@ interface, L<nufoo>:
 
 Array of directories to search for builders in.
 
-=head1 METHODS 
+=head1 METHODS
 
 =head2 build
 
@@ -293,8 +293,9 @@ Mark Pitchless, C<< <markpitchless at gmail.com> >>
 
 All complex software has bugs lurking in it, and this module is no exception.
 
-Please report any bugs or feature requests to C<bug-nufoo at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=NuFoo>.
+Please report any bugs or feature requests via the github page at:
+
+L<http://github.com/markpitchless/Log-Any-Adapter-Term>
 
 =head1 SUPPORT
 
@@ -302,28 +303,9 @@ You can find documentation for this module with the perldoc command.
 
     perldoc NuFoo
 
+The source code is hosted on github:
 
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=NuFoo>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/NuFoo>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/NuFoo>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/NuFoo/>
-
-=back
+L<http://github.com/markpitchless/Log-Any-Adapter-Term>
 
 
 =head1 ACKNOWLEDGEMENTS
