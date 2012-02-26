@@ -32,8 +32,9 @@ my $builder = Module::Build->new(
         'Try::Tiny'                  => 0,
     },
     build_requires => {
-        'Test::More'  => 0,
-        'Test::Class' => 0,
+        'Test::More'   => 0,
+        'Test::Class'  => 0,
+        'Test::Output' => 0.16,
     },
     add_to_cleanup      => [ 'NuFoo-*' ],
     create_makefile_pl => 'traditional',
