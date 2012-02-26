@@ -82,7 +82,7 @@ __END__
 
 =head1 SYNOPSIS
 
- sub build {
+ method build() {
     my $self = shift;
 
     $self->tt_write( 'index.html' => 'index.html.tt' );
@@ -96,37 +96,35 @@ __END__
 
 A role for builders to use that want to build using Template Toolkit. This
 deals with setting the include path to include the builders home directory. So
-just drop your templates into the same dir as F<Builder.pm> and call the
-L<tt_write> method or L<tt_process> method.
+just drop your templates into the same dir in lib as your builder main class
+(ie the class that inherits from L<NuFoo::Builder> and call the L</tt_write>
+method or L</tt_process> method.
 
-The home dir of any parent classes that do this role also getting added to the
+The home dir of any parent classes that do this role also get added to the
 include path in method dispatch order. This means when you inherit from a class
-that does this role you also inheit it's template path, hence templates. You
-can override templates with your own places in your home dir. Because of this
-authors are encoraged to split the templates into smaller includes that provide
-useful points to override. Also please add a TEMPLATES section to the docs.
+that does templating you also inheit it's template path, hence templates. You
+can override templates with your own placed in your builder home dir. Because
+of this authors are encouraged to split the templates into smaller includes that
+provide useful points to override. Also please add a TEMPLATES section to the
+docs.
 
 By default all of you classes attributes that don't start with an _ will be
-passed to the template as variables. You can add the trait C<NoTT> to a
+passed to the template as variables. You can add the trait C<NoTT> to an
 attribute to stop it getting added.
 See L<NuFoo::Meta::Attribute::Trait::NoTT>.
 
-For even more control override L<tt_attribs> or L<tt_vars>.
+For even more control override L</tt_attribs> or L</tt_vars>.
 
 =head1 ATTRIBUTES 
 
 =head2 tt_template
 
 The L<Template> object to use for processing. Default creates an object with
-the builders home dir as the include path, so you dont normally need to worry
-about this. If you want to change it then override C<_build_tt>. 
+the builders and its parents home directories as the include path, so you don't
+normally need to worry about this. If you want to change it then override
+C<_build_tt>.
 
 =head1 METHODS 
-
-=head2 tt_process
-
-Process the template given as the first arg returning the result as a string.
-tt_vars is called to get data to pass to the template.
 
 =head2 tt_write
 
@@ -134,10 +132,43 @@ tt_vars is called to get data to pass to the template.
 
 Combine template processing and writing.
 
+=head2 tt_process
+
+ my $text  = $self->tt_process( 'hello.txt.tt' );
+ $self->write_file( "hello.txt" => $out );
+
+Process the template given as the first arg returning the result as a string.
+L</tt_vars> is called to get data to pass to the template.
+
 =head2 tt_vars
 
-Return HashRef of data to parse to the template. Uses tt_attribs to work out
-what data to add.
+Return HashRef of data to parse to the template.
+
+Adds this class as vars C<builder> and C<build> and then uses L</tt_attribs> to
+work out what data to add, which defaults to all properties of this class whose
+names don't start with an underscore. These are added to the hash by calling
+their accessors.
+
+Use C<override> or C<around> to add to the default vars, see
+L<Moose::Manual::MethodModifiers> for details. e.g.
+
+  override 'tt_vars' => sub {
+    my $self = shift;
+    my $vars = super();
+    $vars->{hello} = "world";
+    return $vars;
+ }
+
+or
+
+ around 'tt_vars' => sub {
+    my $orig = shift;
+    my $self = shift;
+    my $vars = $self->$orig(@_);
+    $vars->{hello} = "world";
+    return $vars;
+ }
+
 
 =head2 tt_attribs
 
@@ -163,6 +194,6 @@ Mark Pitchless, C<< <markpitchless at gmail.com> >>
 
 =head1 COPYRIGHT & LICENSE
 
-See L<NuFoo>.
+See L<NuFoo/COPYRIGHT & LICENSE>.
 
 =cut
