@@ -9,3 +9,4 @@ CVS
 \.swo$
 ^\.git
 ^MYMETA.yml$
+^tmp/.*
