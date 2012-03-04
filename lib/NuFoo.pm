@@ -206,7 +206,7 @@ method write_file (
         $log->info( ($exists ? "Over wrote" : "Created") . " file '$log_file'" );
     }
     return $file;
-} 
+}
 
 1;
 __END__
@@ -225,7 +225,28 @@ interface, L<nufoo>:
 
 =head2 include_path
 
-Array of directories to search for builders in.
+Array of directories to search for builders in. Default is F<nufoo>, F<.nufoo>
+in current directory, F<$HOME/.nufoo> and F</usr/local/share/nuff>, in that
+order.
+
+=head2 config_files
+
+FileList of config files to load in order.
+
+=head2 force
+
+Bool, default false. Over write existing files.
+
+=head2 conf
+
+Holds the L<NuFoo::Conf> object with our configuration. Default creates a new
+L<NuFoo::Conf> object passing L</config_files> to the constructor.
+
+=head2 outdir
+
+Dir. Where the built stuff goes, default is the current working directory.
+Builders should generally work relative to this, which the methods here do for
+you.
 
 =head1 METHODS
 
@@ -233,7 +254,9 @@ Array of directories to search for builders in.
 
  build( Str $name, HashRef $args? )
 
-Run a builder.
+Run a builder. Creates a builder via L</new_builder>, with the hash of args
+given and then calls build on it. The core entry point to all the NuFoo
+building goodness.
 
 =head2 new_builder
 
@@ -276,6 +299,15 @@ e.g.
 Return list of availiable builder names.
 
 =head2 write_file
+
+The core file writing method, builders should put their writes through here
+and infact have their own write_file method that proxies here.
+
+Creates any missing directories in the path and then writes the content to the
+file. Content can be either a string or a ref to a string. Won't overrite files
+unless L</force> in set or a true force arg is explicity passed in.
+
+Logs everything done.
 
 =head2 mkdir(Dir $dir)
 
