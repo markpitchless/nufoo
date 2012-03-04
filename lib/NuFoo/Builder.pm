@@ -35,14 +35,24 @@ around BUILDARGS => sub {
     my %args  = ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
 
     # Load config from the NuFoo object
+    # Searches in role namespace and then builder name
     if ($args{nufoo}) {
-        my $conf    = $args{nufoo}->conf;
-        my $section = $class->build_name;
+        my $conf     = $args{nufoo}->conf;
+        my @sections = $class->build_name;
+        foreach ( $class->meta->calculate_all_roles ) {
+            my $name = $_->name;
+            next if $name =~ /\|/; # wtf are these piped name lists?
+            $name =~ s/^NuFoo::Role:://;
+            $name =~ s/::/\./;
+            unshift @sections, $name;
+        }
         my %extra;
-        foreach ( $class->build_attribs ) {
-            my $name = $section . "." . $_->name;
-            my $val  = $conf->get($name);
-            $extra{$_->name} = $val if defined $val;
+        foreach my $section (@sections) {
+            foreach ( $class->build_attribs ) {
+                my $name = $section . "." . $_->name;
+                my $val  = $conf->get($name);
+                $extra{$_->name} = $val if defined $val;
+            }
         }
         %args = ( %args, %extra ) if keys %extra; 
     }
