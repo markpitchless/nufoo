@@ -300,12 +300,17 @@ Return list of availiable builder names.
 
 =head2 write_file
 
+    $self->write_file( $file, $content );
+    $self->write_file( $file, \$content );
+    $self->write_file( "hello.txt", "Hello World" );
+    $self->write_file( ['lib', 'Hello', 'World.pm'], "package Hello::World\n..." );
+
 The core file writing method, builders should put their writes through here
 and infact have their own write_file method that proxies here.
 
-Creates any missing directories in the path and then writes the content to the
-file. Content can be either a string or a ref to a string. Won't overrite files
-unless L</force> in set or a true force arg is explicity passed in.
+File path is relative to L</outdir> and any missing directories in the path are
+created. Content can be either a string or a ref to a string. Won't overrite
+files unless L</force> in set or a true force arg is explicity passed in.
 
 Logs everything done.
 
