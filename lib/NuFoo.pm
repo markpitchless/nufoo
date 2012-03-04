@@ -6,11 +6,11 @@ NuFoo - Command line boilerplate generator for developers.
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Moose;
 use MooseX::Method::Signatures;

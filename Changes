@@ -1,5 +1,11 @@
 Revision history for NuFoo
 
+0.05    4th March 2012
+
+    * Change NuFoo attribute dir to outdir.
+    * Documentation updates.
+
+
 0.04    26th February 2012
 
     * Removed Log::Any::Adapter::Term dependency.
