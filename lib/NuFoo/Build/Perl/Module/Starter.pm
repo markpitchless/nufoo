@@ -9,7 +9,8 @@ use NuFoo::Types qw(PerlLicense EmailAddress);
 
 extends 'NuFoo::Builder';
 
-with 'NuFoo::Role::TT';
+with 'NuFoo::Role::TT',
+     'NuFoo::Role::Authorship';
 
 has modules => (
     is            => "rw",
@@ -24,19 +25,8 @@ has distro => (
     documentation => qq{The distribution name (optional)},
 );
 
-has author => (
-    is            => "rw",
-    isa           => "Str",
-    required      => 1,
-    documentation => qq{Author's name (required)},
-);
-
-has email => (
-    is            => "rw",
-    isa           => EmailAddress,
-    required      => 1,
-    documentation => qq{Author's email (required)},
-);
+has '+author' => ( required => 1 );
+has '+email'  => ( required => 1 );
 
 has license => (
     is            => "rw",
