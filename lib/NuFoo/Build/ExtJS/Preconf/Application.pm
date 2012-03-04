@@ -46,7 +46,7 @@ has css_file_name => (
     documentation => qq{Name of the css file for ext overrides. Default derived from name.},
 );
 
-method _build_dir { $self->name; }
+method _build_outdir { $self->name; }
 
 method _build_application_class {
     return $self->name . ".Application";
@@ -74,7 +74,7 @@ method build {
     $self->tt_write($self->js_class2file($self->application_class), 'Application.js.tt');
     $self->tt_write( ["css", $self->css_file_name], 'application.css.tt' );
 
-    my $dir = $self->nufoo->dir;
+    my $dir = $self->nufoo->outdir;
     $log->notice("You need to copy ext code into $dir/ext directory.");
 }
 

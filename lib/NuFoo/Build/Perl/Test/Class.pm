@@ -76,7 +76,7 @@ method build {
 
     my $file;
     my $t_lib = dir('t', 'lib');
-    if ( -d dir($self->nufoo->dir, $t_lib) ) {
+    if ( -d dir($self->nufoo->outdir, $t_lib) ) {
         $log->info( "Using perl t lib '$t_lib' directory" );
         $file = $self->perl_class2file( $self->class, dir => $t_lib );
     }

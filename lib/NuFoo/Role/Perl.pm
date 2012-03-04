@@ -18,7 +18,7 @@ has perl_dir => (
 );
 
 method _build_perl_dir {
-    my $outdir = $self->nufoo->dir;
+    my $outdir = $self->nufoo->outdir;
     foreach (qw(lib Lib)) {
         my $dir = $outdir->subdir($_);
         if (-d $dir) {
@@ -38,7 +38,7 @@ has perl_t_dir => (
 );
 
 method _build_perl_t_dir {
-    my $outdir = $self->nufoo->dir;
+    my $outdir = $self->nufoo->outdir;
     foreach (['t'], [$self->perl_dir, 't']) {
         my $dir = $outdir->subdir( @$_ );
         if (-d $dir) {

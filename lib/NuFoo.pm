@@ -69,7 +69,7 @@ method _build_conf {
     return NuFoo::Conf->new(%args); 
 }
 
-has dir => (
+has outdir => (
     is            => "rw",
     isa           => Dir,
     coerce        => 1,
@@ -77,7 +77,7 @@ has dir => (
     documentation => qq{Output dir. Default is pwd.},
 );
 
-method _build_dir { getcwd() }
+method _build_outdir { getcwd() }
 
 method BUILD {
     my $conf = $self->conf; # Causes load
@@ -162,7 +162,7 @@ method builder_names {
 }
 
 method mkdir (Dir $dir does coerce) {
-    $dir = Path::Class::File->new($self->dir, $dir);
+    $dir = Path::Class::File->new($self->outdir, $dir);
     return 1 if -d "$dir";
     my @created = eval { make_path("$dir") };
     if ($@) {
@@ -189,7 +189,7 @@ method write_file (
     # ->mkdir also works relative to $self->dir
     $self->mkdir( $file->dir );
 
-    $file = file($self->dir, $file);
+    $file = file($self->outdir, $file);
     my $log_file = $file->relative;
 
     my $exists = -f "$file" ? 1 : 0;

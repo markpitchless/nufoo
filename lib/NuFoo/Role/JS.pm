@@ -24,7 +24,7 @@ has js_dir => (
 );
 
 method _build_js_dir {
-    my $outdir = $self->nufoo->dir;
+    my $outdir = $self->nufoo->outdir;
     foreach ('js', ['htdocs','js'], ['www','js']) {
         my $dir = dir($outdir, ref $_ ? @$_ : $_);
         if (-d $dir) {

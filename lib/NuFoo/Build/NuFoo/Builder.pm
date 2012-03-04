@@ -49,7 +49,7 @@ sub _build_class_name {
 }
 
 method _build_perl_dir {
-    my $dir = $self->nufoo->dir;
+    my $dir = $self->nufoo->outdir;
     foreach (qw/nufoo .nufoo/) {
         my $subdir = $dir->subdir($_);
         if ( -d $subdir ) {

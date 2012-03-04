@@ -24,7 +24,7 @@ has html_dir => (
 );
 
 method _build_html_dir {
-    my $outdir = $self->nufoo->dir;
+    my $outdir = $self->nufoo->outdir;
     foreach (qw(htdocs www)) {
         my $dir = dir($outdir, $_);
         if (-d $dir) {
