@@ -169,7 +169,7 @@ method run() {
                 );
             }
             default {
-                $log->error("Build failed: $@");
+                $log->error("Build failed: $err");
             }
         }
         # TODO - Lazy! should have diferent codes for the errors.
