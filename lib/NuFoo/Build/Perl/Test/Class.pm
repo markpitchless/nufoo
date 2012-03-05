@@ -6,6 +6,7 @@ use Moose::Autobox;
 use MooseX::Method::Signatures;
 use MooseX::Types::Moose qw( :all );
 use NuFoo::Types qw(
+    Dir
     ArrayRefOfStr
     PerlPackageName
     PerlPackageList
@@ -23,7 +24,7 @@ has class => (
     is            => "rw",
     isa           => PerlPackageName,
     required      => 1,
-    documentation => qq{The class name.},
+    documentation => qq{The Test::Class subclass name. e.g. Foo::Test.},
 );
 
 has uses => (
@@ -66,6 +67,23 @@ sub _build_t_file_name {
     return "$name.t";
 }
 
+has t_lib_dir => (
+    is          => "rw",
+    isa         => Dir,
+    coerce      => 1,
+    lazy_build  => 1,
+    documentation => qq{Directory for Test::More lib (.pm) files. Default uses t/lib if found otherwise perl_dir.},
+);
+
+method _build_t_lib_dir {
+    my $t_lib = dir('t', 'lib');
+    unless ( -d dir($self->nufoo->outdir, $t_lib) ) {
+        $t_lib = $self->perl_dir;
+    }
+    $log->info( "Using t_lib_dir '$t_lib' directory" );
+    return $t_lib;
+}
+
 method build {
     $self->uses->unshift("Test::Deep")
         if $self->deep && !($self->uses ~~ "Test::Deep");
@@ -74,15 +92,7 @@ method build {
         $self->uses->push("Test::$_") foreach split /[, ]/, $self->use_test;
     }
 
-    my $file;
-    my $t_lib = dir('t', 'lib');
-    if ( -d dir($self->nufoo->outdir, $t_lib) ) {
-        $log->info( "Using perl t lib '$t_lib' directory" );
-        $file = $self->perl_class2file( $self->class, dir => $t_lib );
-    }
-    else {
-        $file = $self->perl_class2file($self->class);
-    }
+    my $file = $self->perl_class2file( $self->class, dir => $self->t_lib_dir );
     $self->tt_write( $file => "class.pm.tt" );
 
     if ( $self->t_file ) {
@@ -110,7 +120,14 @@ NuFoo::Build::Perl::Test::Class - Builds Test::Class based tests.
 
 =head1 DESCRIPTION
 
-Builds L<Test::Class> based tests.
+Builds L<Test::Class> based tests. L</class> gives the name for the new Test,
+which will be a sub class of L<Test::Class>. e.g. Foo::Test for testing the Foo
+module. This is placed in L</t_lib_dir>, which will be F<t/lib> if exists
+otherwise the normal perl_dir (see L<NuFoo::Role::Perl>).
+
+You will then need to add that class to you Test::Class test runner.
+Alternatively set the L</t_file> option to create a normal .t file to run
+the new test class. This goes in the perl_t_dir (see L<NuFoo::Role::Perl/perl_t_dir>).
 
 =head1 ATTRIBUTES 
 
@@ -120,6 +137,10 @@ Builds L<Test::Class> based tests.
 
 The class name for your new test. Used to build the file name. Will use a local
 F<t/lib> if found.
+
+=item t_lib_dir
+
+Directory for Test::More lib (.pm) files. Default uses t/lib if found otherwise perl_dir.
 
 =item uses
 
