@@ -60,11 +60,14 @@ has t_file_name => (
     documentation => qq{Name for .t file when is using t_file option.},
 );
 
-sub _build_t_file_name {
+method _build_t_file_name {
     my $self = shift;
     my $name = lc $self->class;
     $name =~ s/::/-/g;
-    return "$name.t";
+    $name =~ s/^test-//;
+    $name =~ s/-test$//;
+    $name.= '.t' unless $name =~ m/\.t$/;
+    return $name;
 }
 
 has t_lib_dir => (
@@ -96,7 +99,7 @@ method build {
     $self->tt_write( $file => "class.pm.tt" );
 
     if ( $self->t_file ) {
-        my $file = $self->perl_t_dir->file( $self->t_file_name . ".t" );
+        my $file = $self->perl_t_dir->file( $self->t_file_name );
         $self->tt_write( $file => "test.t.tt" );
     }
     else {
