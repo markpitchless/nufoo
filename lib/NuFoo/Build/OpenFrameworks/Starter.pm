@@ -5,6 +5,7 @@ use Modern::Perl;
 class NuFoo::Build::OpenFrameworks::Starter
     extends NuFoo::Builder with NuFoo::Role::TT {
     our $VERSION = '0.01';
+    use MooseX::Types::Moose qw( :all );
     use NuFoo::Types qw();
     use Log::Any qw($log);
 
@@ -21,6 +22,12 @@ class NuFoo::Build::OpenFrameworks::Starter
         isa        => "Str",
         lazy_build => 1,
         documentation => qq{Class name of the ofBaseApp sub class. Defaults to <name>App.},
+    );
+
+    has addons => (
+        is         => "rw",
+        isa        => ArrayRef[Str],
+        documentation => qq{List of addons you want to use.},
     );
 
     has gitignore => (
@@ -40,8 +47,9 @@ class NuFoo::Build::OpenFrameworks::Starter
         $nufoo->mkdir("$name/src");
         $nufoo->mkdir("$name/bin");
         $nufoo->mkdir("$name/bin/data");
-        $self->tt_write( "$name/config.make"     => "config.make.tt" );
         $self->tt_write( "$name/Makefile"        => "Makefile.tt" );
+        $self->tt_write( "$name/config.make"     => "config.make.tt" );
+        $self->tt_write( "$name/addons.make"     => "addons.make.tt" );
         $self->tt_write( "$name/$name.cbp"       => "emptyExample.cbp.tt" );
         $self->tt_write( "$name/$name.workspace" => "emptyExample.workspace.tt" );
         $self->tt_write( "$name/src/main.cpp"    => "src/main.cpp.tt" );
