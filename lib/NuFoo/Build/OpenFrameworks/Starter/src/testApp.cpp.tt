@@ -50,3 +50,12 @@ void [% class %]::windowResized(int w, int h){
 
 }
 
+//--------------------------------------------------------------
+void [% class %]::gotMessage(ofMessage msg){
+
+}
+
+//--------------------------------------------------------------
+void [% class %]::dragEvent(ofDragInfo dragInfo){
+
+}

@@ -40,7 +40,8 @@ class NuFoo::Build::OpenFrameworks::Starter
         $nufoo->mkdir("$name/src");
         $nufoo->mkdir("$name/bin");
         $nufoo->mkdir("$name/bin/data");
-        $self->tt_write( "$name/makefile"        => "makefile.tt" );
+        $self->tt_write( "$name/config.make"     => "config.make.tt" );
+        $self->tt_write( "$name/Makefile"        => "Makefile.tt" );
         $self->tt_write( "$name/$name.cbp"       => "emptyExample.cbp.tt" );
         $self->tt_write( "$name/$name.workspace" => "emptyExample.workspace.tt" );
         $self->tt_write( "$name/src/main.cpp"    => "src/main.cpp.tt" );
