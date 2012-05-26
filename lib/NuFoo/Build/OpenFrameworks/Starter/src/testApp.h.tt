@@ -1,6 +1,10 @@
 #pragma once
 
 #include "ofMain.h"
+[% FOR addon IN addons -%]
+#include "[% addon %].h"
+[% END -%]
+
 
 class [% class %] : public ofBaseApp {
 
