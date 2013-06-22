@@ -61,7 +61,6 @@ has t_file_name => (
 );
 
 method _build_t_file_name {
-    my $self = shift;
     my $name = lc $self->class;
     $name =~ s/::/-/g;
     $name =~ s/^test-//;
