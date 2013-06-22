@@ -43,7 +43,7 @@ has options => (
     is            => "rw",
     isa           => PerlGetoptSpecList,
     default       => sub { [] },
-    coerce        => 1,
+    #coerce        => 1,
     documentation => qq{Command line options to add. Multiple allowed.},
 );
 
