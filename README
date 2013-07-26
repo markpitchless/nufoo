@@ -39,12 +39,6 @@ file tree. Current builders:
  Perl.Package
  Perl.Test.Class
  Perl.Test.More
- ExtJS.Component
- ExtJS.Preconf.Application
- ExtJS.TabPanel
- ExtJS.Viewport
- ExtJS.grid.GridPanel
- ExtJS.tree.TreePanel
 
 
 INSTALLATION

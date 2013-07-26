@@ -1,9 +1,0 @@
-
-        var tree = new [% class %]({
-          width:  300
-          ,height: 300
-          ,el: '[% class_id %]'
-          ,dataUrl: 'tree.json'
-        });
-
-        tree.render();

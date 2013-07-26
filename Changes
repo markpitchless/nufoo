@@ -1,5 +1,8 @@
 Revision history for NuFoo
 
+    * Removed all the ExtJS builders as they are incomplete, out of date and I
+      have no time to maintain them.
+
 0.05    4th March 2012
 
     * Change NuFoo attribute dir to outdir.
