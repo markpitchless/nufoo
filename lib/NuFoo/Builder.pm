@@ -68,7 +68,7 @@ sub getopt_usage_config {
     my $proto = shift;
     my $class = ref $proto || $proto;
     my $name  = NuFoo->builder_class_to_name($class);
-    return ( format => "%c $name [OPTIONS]" );
+    return ( format => "%c $name %r [OPTIONS]" );
 }
 
 method home_dir($self:) {
