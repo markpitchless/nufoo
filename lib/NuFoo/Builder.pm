@@ -55,20 +55,8 @@ around BUILDARGS => sub {
                 $extra{$_->name} = $val if defined $val;
             }
         }
-        %args = ( %args, %extra ) if keys %extra; 
-    }
-
-    # Process an argv (command line args), if we got one.
-    # Note we pass the current args, with conf included, to stop
-    # _attrs_to_options from generating required options (which cause a die)
-    # for options we already have.
-    if ( my $argv = delete $args{argv} ) {
-        Getopt::Long::Configure('no_pass_through');
-        my %processed = $class->_parse_argv(
-            options => [ $class->_attrs_to_options( \%args ) ],
-            params  => { argv => $argv },
-        );
-        %args = ( %args, %{$processed{params}} ) if ref $processed{params};
+        # Note that args (command line, new) overrides extra (conf file)
+        %args = ( %extra, %args ) if keys %extra;
     }
 
     return $class->$orig(%args);

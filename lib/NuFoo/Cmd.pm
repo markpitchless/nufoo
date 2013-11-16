@@ -86,11 +86,13 @@ method run() {
         $builder_class->getopt_usage( exit => 0 ) if $self->help_flag;
         $builder_class->getopt_usage( man => 1 ) if $self->man;
 
+        # Construct the builder, we want unknown opt errors now.
         # Should possible be using new_builder if we go with that setup.
-        $builder = $builder_class->new_with_options(
-            #argv  => \@argv,
-            nufoo => $self
-        );
+        Getopt::Long::Configure('no_pass_through');
+        {
+            local @ARGV = @argv;
+            $builder = $builder_class->new_with_options( nufoo => $self );
+        }
         $builder->build
     }
     catch {
