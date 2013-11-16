@@ -1,5 +1,7 @@
 Revision history for NuFoo
 
+    * Use MooseX::Getopt::Usage for arg parsing, usage and manpage generation.
+
     * Removed all the ExtJS builders as they are incomplete, out of date and I
       have no time to maintain them.
 
