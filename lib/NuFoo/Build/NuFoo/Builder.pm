@@ -82,15 +82,11 @@ __END__
 
 =pod
 
-=head1 SYNOPSIS
-
- nufoo NuFoo.Builder --name NAME [ATTRIBUTES]
- 
 =head1 DESCRIPTION
 
 Builds a new NuFoo builder.
 
-=head1 ATTRIBUTES 
+=head1 ATTRIBUTES
 
 See L<NuFoo::Build::Perl::Moose::Class|Perl.Moose.Class> for the base
 attributes. Below are the extras this class adds.

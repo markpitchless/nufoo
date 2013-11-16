@@ -18,29 +18,22 @@ use Log::Any;
 use NuFoo::LogAnyAdapter;
 use NuFoo::Types qw(IncludeList);
 use Log::Any qw($log);
-use Pod::Usage;
 use Try::Tiny;
 
 extends 'NuFoo';
 
-with
-    'MooseX::Getopt::Basic', # Basic as we don't want GLD usage handling
-    'NuFoo::Role::GetoptUsage';
+with 'MooseX::Getopt::Usage',
+     'MooseX::Getopt::Usage::Role::Man';
 
-# This activates use of Getopt::Long::Descriptive for usage (along with
-# _usage_format below) to give the --help option.
-# It is a bit restrictive, so should move to Pod::Usage at some point.
-has help => ( is => 'rw', isa => 'Bool',
-    documentation => "Display help message" );
+has '+help_flag' => ( documentation => "Show usage information. With a builder name show usage for that builder." );
 
-has man => ( is => 'rw', isa => 'Bool',
-    documentation => "Display manual" );
+has '+man' => ( documentation => "Display the manual page. With a builder name show the manual page for that builder." );
 
 has debug => ( is => 'rw', isa => 'Bool', default => 0,
     documentation => "Output debugging messages." );
 
 has quiet => ( is => 'rw', isa => 'Bool', default => 0,
-    documentation => "Be quiet, only output errors messages." );
+    documentation => "Be quiet, only output error messages." );
 
 has include => (
     is            => 'rw',
@@ -53,44 +46,16 @@ has include => (
 has list => ( is => 'rw', isa => 'Bool', default => 0,
     documentation => "List availiable builders." );
 
-sub _usage_format {
-    return qq{Usage:
+# We need to handle --man and --help ourselves based on builder name.
+sub getopt_usage_config { (
+    auto_man   => 0,
+    auto_usage => 0
+); }
 
-    # Get help
-    %c
-    %c --man
-    %c --man BUILDER
-    %c BUILDER
-
-    # List availiable builders
-    %c --list
-
-    # Build stuff
-    %c [OPTIONS] BUILDER [BUILDER_OPTIONS]
-};
-}
-
+# Only pull out our options, leaving possible builder options.
 before new_with_options => sub {
     Getopt::Long::Configure('pass_through'); 
 };
-
-method exit_error (Str $msg) {
-    $log->error($msg);
-    exit 1;
-}
-
-method usage_error (Str $msg, Int $verbose = 1) {
-    $log->error($msg) if $msg;
-    $self->getopt_usage( exit => $msg ? 1 : 0 );
-}
-
-method builder_usage_error( Str|Object $class, Str $msg ) {
-    $class = blessed $class || $class;
-    $log->error($msg) if $msg;
-    $class->getopt_usage();
-    say "Global:";
-    $self->getopt_usage( no_headings => 1, exit => $msg ? 1 : 0 );
-}
 
 method run() {
     my @argv = @{$self->extra_argv};
@@ -104,40 +69,27 @@ method run() {
     if ( $self->has_include) {
         $self->include_path( [ $self->include, $self->include_path ] );
     }
-    
+
     if ( $self->list ) {
         $self->show_list;
         return 0;
     }
 
     my $name = shift @argv;
-    pod2usage(
-        -verbose  => 2,
-        -input    => __FILE__,
-    ) if $self->man && !$name;
-    
-    $self->getopt_usage( exit => 0 ) if $self->help && !$name;
-
-    $self->usage_error("No builder name") if !$name || $name =~ m/^-/;
+    $self->getopt_usage( man => 1 ) if $self->man && !$name;
+    $self->getopt_usage( exit => 0 ) if $self->help_flag && !$name;
+    $self->getopt_usage( err => "No builder name", exit => 3 ) if !$name || $name =~ m/^-/;
 
     my ($builder, $builder_class);
     try {
         $builder_class = $self->load_builder( $name );
-        $builder_class->getopt_usage( exit => 0 ) if $self->help;
-        if ($self->man) {
-            (my $doc_file = $builder_class) =~ s/::/\//g;
-            $doc_file .= ".pm";
-            $doc_file  = $INC{$doc_file} or die "No docs!";
-            pod2usage(
-                -verbose  => 2,
-                -input    => $doc_file,
-            );
-        }
+        $builder_class->getopt_usage( exit => 0 ) if $self->help_flag;
+        $builder_class->getopt_usage( man => 1 ) if $self->man;
 
         # Should possible be using new_builder if we go with that setup.
-        $builder = $builder_class->new(
-            argv  => \@argv, 
-            nufoo => $self 
+        $builder = $builder_class->new_with_options(
+            #argv  => \@argv,
+            nufoo => $self
         );
         $builder->build
     }
@@ -145,35 +97,32 @@ method run() {
         my $err = $_;
         given($err) {
             when (/^Can't locate builder .*? in \@INC/) {
-                $self->exit_error(
-                    "Builder '$name' not found.\n(Searching: "
-                    .join(' ',$self->include_path)
-                    .")"
-                );
+                my $err =  "Builder '$name' not found.\n(Searching: "
+                    .join(' ',$self->include_path).")";
+                $self->getopt_usage( err => $err, exit => 4 );
             }
             when (
                 /Attribute \((\w+)\) does not pass the type constraint because: (.*?) at/
             ) {
-                $self->builder_usage_error(
-                    $builder_class, "Invalid '$1' : $2"
-                );
+                $builder_class->getopt_usage(
+                    err => "Invalid '$1' : $2",
+                    exit => 5 );
             }
             when (/Required option missing: (.*?)\n/) {
-                $self->builder_usage_error(
-                    $builder_class, "Required option missing: $1"
-                );
+                $builder_class->getopt_usage(
+                    err => "Required option missing: $1",
+                    exit => 6 );
             }
             when (/Unknown option: (.*?)\n/) {
-                $self->builder_usage_error(
-                    $builder_class, "Unknown option: $1"
-                );
+                $builder_class->getopt_usage(
+                    err => "Unknown option: $1",
+                    exit => 7 );
             }
             default {
                 $log->error("Build failed: $err");
             }
         }
-        # TODO - Lazy! should have diferent codes for the errors.
-        return 10;
+        return 23;
     };
 
     # Got here with no errors, so all good, 0 status
@@ -190,16 +139,16 @@ __END__
 =head1 SYNOPSIS
 
     # Get help
-    nufoo
-    nufoo --man|--help
-    nufoo --man|--help BUILDER
-    nufoo BUILDER
+    %c
+    %c --man|--help
+    %c --man|--help BUILDER
+    %c BUILDER
 
     # List availiable builders
-    nufoo --list
+    %c --list
 
     # Build stuff
-    nufoo [OPTIONS] BUILDER [BUILDER_OPTIONS]
+    %c [OPTIONS] BUILDER [BUILDER_OPTIONS]
 
 
 =head1 DESCRIPTION
@@ -214,33 +163,6 @@ or --man for the full man page e.g.
 
   nufoo --help Perl.Moose.Class
   nufoo --man Perl.Moose.Class
-
-=head1 OPTIONS
-
-=over 4
-
-=item --include
-
-Additional directories to search for builders in. Give more then once.
-
-=item --quiet
-
-Only show errors in log output.
-
-=item --help
-
-Show usage information. With a builder name show usage for that builder.
-
-=item --man
-
-Display the manual page. With a builder name show the manual page for that
-builder.
-
-=item --debug
-
-Show debug messages.
-
-=back
 
 =head1 SEE ALSO
 

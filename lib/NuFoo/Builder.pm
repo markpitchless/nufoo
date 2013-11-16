@@ -19,7 +19,8 @@ use Log::Any qw($log);
 use File::Spec::Functions qw(rel2abs splitpath catdir);
 use NuFoo;
 
-with 'MooseX::Getopt', 'NuFoo::Role::GetoptUsage';
+with 'MooseX::Getopt::Usage',
+     'MooseX::Getopt::Usage::Role::Man';
 
 has nufoo => (
     is       => "ro",
@@ -73,12 +74,13 @@ around BUILDARGS => sub {
     return $class->$orig(%args);
 };
 
-# Override method from the role to show the builder name in the usage.
-sub _usage_format {
+# Show the builder name in the usage.
+# Note: If a builder defines a SYNOPSIS in its POD that will override.
+sub getopt_usage_config {
     my $proto = shift;
     my $class = ref $proto || $proto;
     my $name  = NuFoo->builder_class_to_name($class);
-    return "Usage:\n    %c $name OPTIONS";
+    return ( format => "%c $name [OPTIONS]" );
 }
 
 method home_dir($self:) {
