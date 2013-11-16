@@ -48,10 +48,6 @@ no Moose;
 1;
 __END__
 
-=head1 SYNOPSIS
-
- nufoo Perl.Package --package PACKAGE [ATTRIBUTES] 
-
 =head1 DESCRIPTION
 
 Builds perl packages, with all the normal pod sections setup.

@@ -69,10 +69,6 @@ __END__
 
 NuFoo::Build::Perl::Getopt::Long - Builds Getopt::Long based perl commands.
 
-=head1 SYNOPSIS
-
- nufoo Perl.Getopt.Long [ATTRIBUTES] 
-
 =head1 DESCRIPTION
 
 Builds L<Getopt::Long> and L<Pod::Usage> based perl commands. A basic command

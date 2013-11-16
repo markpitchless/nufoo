@@ -21,10 +21,6 @@ no Moose;
 1;
 __END__
 
-=head1 SYNOPSIS
-
- nufoo Perl.Moose.Role --class CLASS [ATTRIBUTES] 
-
 =head1 DESCRIPTION
 
 Builds L<Moose> roles. Sub class of

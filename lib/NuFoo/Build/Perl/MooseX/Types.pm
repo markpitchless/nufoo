@@ -22,10 +22,6 @@ no Moose;
 1;
 __END__
 
-=head1 SYNOPSIS
-
- nufoo Perl.MooseX.Types [ATTRIBUTES] 
-
 =head1 DESCRIPTION
 
 Builds L<MooseX::Types> type libraries.

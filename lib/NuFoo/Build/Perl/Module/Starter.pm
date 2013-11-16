@@ -61,10 +61,6 @@ __END__
 Perl.Module.Starter - Uses module-starter to create new perl
 distributions.
 
-=head1 SYNOPSIS
-
- $ nufoo Perl.Module.Starter ATTRIBUTES 
-
 =head1 DESCRIPTION
 
 A thin wrapper around Andy Lester's excellent L<Module::Starter> package. The

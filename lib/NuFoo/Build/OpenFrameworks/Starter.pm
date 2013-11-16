@@ -73,10 +73,6 @@ __END__
 
 NuFoo::Build::OpenFrameworks::Starter - Build a new openFrameworks application. 
 
-=head1 SYNOPSIS
-
- nufoo OpenFrameworks.Starter [ATTRIBUTES] 
-
 =head1 DESCRIPTION
 
 Buidl a new openFrameworks (oF) application. Should be run inside a

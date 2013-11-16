@@ -72,10 +72,6 @@ no Moose;
 1;
 __END__
 
-=head1 SYNOPSIS
-
- $ nufoo Perl.Test.More --name NAME [ATTRIBUTES] 
-
 =head1 DESCRIPTION
 
 Builds Test::More .t files.

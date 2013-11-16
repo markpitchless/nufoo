@@ -116,10 +116,6 @@ __END__
 
 NuFoo::Build::Perl::Test::Class - Builds Test::Class based tests.
 
-=head1 SYNOPSIS
-
- $ nufoo Perl.Test.Class --class=CLASS [ATTRIBUTES] 
-
 =head1 DESCRIPTION
 
 Builds L<Test::Class> based tests. L</class> gives the name for the new Test,

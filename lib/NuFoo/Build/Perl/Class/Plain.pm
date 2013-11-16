@@ -34,10 +34,6 @@ no Moose;
 1;
 __END__
 
-=head1 SYNOPSIS
-
- nufoo Perl.Class.Plain --class CLASS [ATTRIBUTES] 
-
 =head1 DESCRIPTION
 
 Builds plain old perl classes.
