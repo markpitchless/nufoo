@@ -48,8 +48,8 @@ has list => ( is => 'rw', isa => 'Bool', default => 0,
 
 # We need to handle --man and --help ourselves based on builder name.
 sub getopt_usage_config { (
-    auto_man   => 0,
-    auto_usage => 0
+    auto_man  => 0,
+    auto_help => 0
 ); }
 
 # Only pull out our options, leaving possible builder options.
