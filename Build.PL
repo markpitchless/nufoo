@@ -13,6 +13,7 @@ my $builder = Module::Build->new(
         'Moose::Autobox'             => 0,
         'MooseX::Types'              => 0,
         'MooseX::Getopt'             => 0,
+        'MooseX::Getopt::Usage'      => 0.16,
         'MooseX::Method::Signatures' => 0,
         'MooseX::StrictConstructor'  => 0,
         'MooseX::Types::Path::Class' => 0,
