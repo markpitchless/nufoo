@@ -41,6 +41,7 @@ has with => (
     is            => "rw",
     isa           => PerlPackageList,
     default       => sub { [] },
+    coerce        => 1,
     accessor      => "class_with", # Don't stomp on the Moose keyword
     documentation => qq{Roles this class does. Multiple allowed.},
 );

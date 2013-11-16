@@ -96,8 +96,13 @@ subtype PerlPackageName,
 
 subtype PerlPackageList,
     as ArrayRef[PerlPackageName],
-    message { "There is an invalid package/class name in ".join(", ", @$_) },
+    message { "There is an invalid package/class name in list: ".join(", ", ref $_ ? @$_ : $_) },
 ;
+
+coerce PerlPackageList,
+    from Str,
+    via { [ split(/\s*,\s*/, $_) ] };
+
 
 subtype PerlMooseAttributeSpec,
     as HashRef,
