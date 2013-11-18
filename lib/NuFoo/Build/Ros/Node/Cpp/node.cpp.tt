@@ -1,4 +1,38 @@
+#include <ros/ros.h>
 
-[% FOREACH param IN params %]
-    param: [% param.name %] [% param.data_type %] [% param.default %]
-[% END %]
+namespace [% package %] {
+
+class [% class %] {
+
+protected:
+    ros::NodeHandle nh_;
+
+public:
+    [% class %]()
+      : nh_("~")
+    {
+        // Setup ROS topics and services
+    }
+
+    void run ()
+    {
+        ros::spin();
+        //while (ros::ok())
+        //{
+        //}
+    }
+
+protected:
+
+};
+
+} //[% package %]
+
+int
+main (int argc, char** argv)
+{
+  ros::init (argc, argv, "[% name %]");
+  [% package %]::[% class %] node;
+  node.run();
+  return 0;
+}

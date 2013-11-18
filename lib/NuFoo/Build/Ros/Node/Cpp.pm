@@ -27,6 +27,19 @@ method _build_node_src_file {
     file($self->src_dir, $self->name . ".cpp");
 }
 
+has class => (
+    is => "rw",
+    isa => Str,
+    required => 1,
+    lazy_build => 1,
+);
+
+method _build_class {
+    my $class = $self->name;
+    $class =~ s/_(\w)/\U$1/;
+    return ucfirst $class;
+}
+
 method build() {
     $self->tt_write( $self->node_src_file => "node.cpp.tt" );
 }
