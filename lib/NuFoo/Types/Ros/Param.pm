@@ -4,6 +4,7 @@ our $VERSION = '0.01';
 
 use Moose;
 use MooseX::Types::Moose qw(:all);
+use NuFoo::Types qw(:all);
 use NuFoo::Types::Ros qw(:all);
 use MooseX::Types -declare => [qw( RosParam RosParamList )];
 
@@ -15,6 +16,7 @@ has name => (
 has param_type => (
     is      => "rw",
     isa     => RosFieldType,
+    default => "string",
 );
 
 has default => (
@@ -33,8 +35,9 @@ sub new_from_string {
         (?:=(.*))?    # Optional default \3
         $
     /x;
-    return $class->new({
-        name => $name, param_type => $type, default => $def });
+    my $args = { name => $name, default => $def };
+    $args->{param_type} = $type if $type;
+    return $class->new($args);
 }
 
 sub as_str {
@@ -51,11 +54,11 @@ subtype RosParamList,
 
 coerce RosParam,
     from Str,
-    via { RosParam->new($_) };
+    via { NuFoo::Types::Ros::Param->new_from_string($_) };
 
 coerce RosParamList,
-    from Str,
-    via { map { RosParam->new($_) } @$_ };
+    from ArrayRefOfStr,
+    via { [ map { NuFoo::Types::Ros::Param->new_from_string($_) } @$_ ] };
 
 
 __PACKAGE__->meta->make_immutable;

@@ -41,7 +41,7 @@ subtype RosPackageResourceName,
 subtype RosFieldType,
     as Str,
     where { $_ =~ m{^[\w\[\]/_]*$} },
-    message { "Not a valid field type." };
+    message { "Not a valid field type '$_'." };
 
 
 1;

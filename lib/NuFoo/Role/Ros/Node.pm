@@ -26,6 +26,7 @@ has package => (
 has params => (
     is      => "rw",
     isa     => RosParamList,
+    coerce  => 1,
 );
 
 
