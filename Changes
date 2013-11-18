@@ -1,11 +1,13 @@
 Revision history for NuFoo
 
+0.06    18th Nove 2013
+
     * Use MooseX::Getopt::Usage for arg parsing, usage and manpage generation.
 
     * Removed all the ExtJS builders as they are incomplete, out of date and I
       have no time to maintain them.
 
-0.05    4th March 2012
+0.06    4th March 2012
 
     * Change NuFoo attribute dir to outdir.
     * Documentation updates.
