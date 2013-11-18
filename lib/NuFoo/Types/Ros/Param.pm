@@ -13,7 +13,7 @@ has name => (
     isa     => RosResourceName,
 );
 
-has param_type => (
+has data_type => (
     is      => "rw",
     isa     => RosFieldType,
     default => "string",
@@ -36,7 +36,7 @@ sub new_from_string {
         $
     /x;
     my $args = { name => $name, default => $def };
-    $args->{param_type} = $type if $type;
+    $args->{data_type} = $type if $type;
     return $class->new($args);
 }
 
