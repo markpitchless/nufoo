@@ -6,10 +6,16 @@ class [% class %] {
 
 protected:
     ros::NodeHandle nh_;
+    [%- FOR param IN params %]
+    [% param.data_type %] [% param.name %];
+    [%- END %]
 
 public:
     [% class %]()
       : nh_("~")
+      [%- FOR param IN params %]
+      , [% param.name %]([% param.default %])
+      [%- END %]
     {
         // Setup ROS topics and services
     }
