@@ -1,0 +1,4 @@
+
+[% FOREACH param IN params %]
+    param: [% param.name %] [% param.data_type %] [% param.default %]
+[% END %]
