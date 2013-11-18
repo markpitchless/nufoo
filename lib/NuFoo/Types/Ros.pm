@@ -10,12 +10,14 @@ use MooseX::Types -declare => [qw(
     RosPackageName
     RosResourceName
     RosPackageResourceName
+    RosFieldType
+    RosParam
 )];
 use MooseX::Types::Moose qw(:all);
 
 subtype RosNodeName,
     as Str,
-    where { $_ =~ m{^[A-Za-z]\w*$} },
+    where { $_ =~ m{^[A-Za-z][\w_]*$} },
     message { "Not a valid node name." };
 
 subtype RosPackageName,
@@ -34,6 +36,13 @@ subtype RosPackageResourceName,
     as Str,
     where { $_ =~ m{^[A-Za-z][\w+_/]*$} },
     message { "Not a valid reource name." };
+
+# Type in messages, services etc
+subtype RosFieldType,
+    as Str,
+    where { $_ =~ m{^[\w\[\]/_]*$} },
+    message { "Not a valid field type." };
+
 
 1;
 __END__
