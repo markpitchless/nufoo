@@ -34,8 +34,8 @@ subtype RosResourceName,
 # TODO A Package Resource Name. e.g. std_msgs/Bool, camera/Node
 subtype RosType,
     as Str,
-    where { $_ =~ m{^[A-Za-z]\w+/[A-Za-z]?\w$} },
-    message { "Not a valid package resource name." };
+    where { $_ =~ m{^[A-Za-z]\w+/[A-Za-z]\w+$} },
+    message { "Not a valid package resource name '$_'." };
 
 # Type in messages, services etc
 subtype RosFieldType,

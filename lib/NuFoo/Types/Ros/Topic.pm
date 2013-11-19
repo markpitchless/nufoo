@@ -11,14 +11,31 @@ use MooseX::Types -declare => [qw( RosTopic RosTopicList )];
 has topic    => ( is => "rw", isa => RosResourceName, required => 1 );
 has msg_type => ( is => "rw", isa => RosType, required => 1 );
 
+has var_name => ( is => "rw", isa => Str, lazy_build => 1 );
+sub _build_var_name {
+    my $self = shift;
+    my $name = $self->topic;
+    $name =~ s{/}{_}g;
+    return $name;
+}
+
+has cpp_class => ( is => "ro", isa => Str, lazy_build => 1 );
+sub _build_cpp_class {
+    my $self = shift;
+    my $class = $self->msg_type;
+    $class =~ s{/}{::}g;
+    return $class;
+}
+
 sub new_from_string {
     my $proto = shift;
     my $class = ref $proto || $proto;
     my $str = shift || confess "Need a string";
-    my ($topic,$type) = $str =~ m{
+    my ($type,$topic) = $str =~ m{
         ^
-        (?:(\w+|\w+/\w+):)   # \1 msg_type
-        ([\w\d_/]+)          # \2 topic
+        ([A-Za-z]\w+/[A-Za-z]\w+) # \1 type
+        :
+        ([A-Za-z~/][\w+_/]*) # \2 topic
         $
     }x;
     my $args = { topic => $topic, msg_type => $type };

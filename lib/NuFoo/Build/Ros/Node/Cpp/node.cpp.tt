@@ -16,6 +16,13 @@ public:
       [%- END %]
     {
         // Setup ROS topics and services
+        [%- FOREACH pub IN publishers %]
+        [% pub.var_name %]_pub_ = nh_.advertise<[% pub.cpp_class %]>("[% pub.topic %]", 1);
+
+        [%- END %]
+        [%- FOREACH sub IN subscribers %]
+        [% sub.var_name %]_sub_ = nh_.advertise<[% sub.cpp_class %]>("[% sub.topic %]", 1);
+        [%- END %]
     }
 
     [%- IF dynamic_reconfigure %]
@@ -46,6 +53,10 @@ protected:
     [%- END %]
 
     [%- FOREACH pub IN publishers %]
+    ros::Publisher [% pub.var_name %]_pub_;
+    [%- END %]
+    [%- FOREACH sub IN subscribers %]
+    ros::Subscriber [% sub.var_name %]_sub_;
     [%- END %]
 
 };
