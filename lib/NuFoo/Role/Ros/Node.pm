@@ -8,6 +8,7 @@ use MooseX::Types::Moose qw(:all);
 use NuFoo::Types qw(:all);
 use NuFoo::Types::Ros qw(:all);
 use NuFoo::Types::Ros::Param qw(:all);
+use NuFoo::Types::Ros::Topic qw(:all);
 use Log::Any qw($log);
 use Path::Class;
 
@@ -41,6 +42,18 @@ has package => (
 has params => (
     is      => "rw",
     isa     => RosParamList,
+    coerce  => 1,
+);
+
+has publishers => (
+    is      => "rw",
+    isa     => RosTopicList,
+    coerce  => 1,
+);
+
+has subscribers => (
+    is      => "rw",
+    isa     => RosTopicList,
     coerce  => 1,
 );
 

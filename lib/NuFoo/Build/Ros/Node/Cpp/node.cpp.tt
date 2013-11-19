@@ -45,6 +45,9 @@ protected:
     dynamic_reconfigure::Server<[% package %]::[% class %]Config> config_server_
     [%- END %]
 
+    [%- FOREACH pub IN publishers %]
+    [%- END %]
+
 };
 
 } //[% package %]

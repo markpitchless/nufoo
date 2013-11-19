@@ -9,7 +9,7 @@ use MooseX::Types -declare => [qw(
     RosNodeName
     RosPackageName
     RosResourceName
-    RosPackageResourceName
+    RosType
     RosFieldType
     RosParam
 )];
@@ -31,11 +31,11 @@ subtype RosResourceName,
     where { $_ =~ m{^[A-Za-z~/][\w+_/]*$} },
     message { "Not a valid reource name." };
 
-# TODO Check only one slash
-subtype RosPackageResourceName,
+# TODO A Package Resource Name. e.g. std_msgs/Bool, camera/Node
+subtype RosType,
     as Str,
-    where { $_ =~ m{^[A-Za-z][\w+_/]*$} },
-    message { "Not a valid reource name." };
+    where { $_ =~ m{^[A-Za-z]\w+/[A-Za-z]?\w$} },
+    message { "Not a valid package resource name." };
 
 # Type in messages, services etc
 subtype RosFieldType,
