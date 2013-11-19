@@ -1,14 +1,12 @@
 #include <ros/ros.h>
+[% IF dynamic_reconfigure %]
+#include <dynamic_reconfigure/server.h>
+#include "[% package %]/[% class %]Config.h"
+[% END %]
 
 namespace [% package %] {
 
 class [% class %] {
-
-protected:
-    ros::NodeHandle nh_;
-    [%- FOR param IN params %]
-    [% param.data_type %] [% param.name %];
-    [%- END %]
 
 public:
     [% class %]()
@@ -20,7 +18,16 @@ public:
         // Setup ROS topics and services
     }
 
-    void run ()
+    [%- IF dynamic_reconfigure %]
+    void config_cb_([% package %]::[% class %]Config &config, uint32_t level)
+    {
+      [%- FOR param IN params %]
+        [% param.name %] = config.[% param.name %];
+      [%- END %]
+    }
+    [%- END %]
+
+    void run()
     {
         ros::spin();
         //while (ros::ok())
@@ -29,6 +36,14 @@ public:
     }
 
 protected:
+    ros::NodeHandle nh_;
+    [%- FOR param IN params %]
+    [% param.data_type %] [% param.name %];
+    [%- END %]
+    [%- IF dynamic_reconfigure %]
+
+    dynamic_reconfigure::Server<[% package %]::[% class %]Config> config_server_
+    [%- END %]
 
 };
 

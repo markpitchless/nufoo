@@ -4,7 +4,8 @@ our $VERSION = '0.01';
 
 use Moose::Role;
 use MooseX::Method::Signatures;
-use NuFoo::Types qw();
+use MooseX::Types::Moose qw(:all);
+use NuFoo::Types qw(:all);
 use NuFoo::Types::Ros qw(:all);
 use NuFoo::Types::Ros::Param qw(:all);
 use Log::Any qw($log);
@@ -28,6 +29,12 @@ has params => (
     isa     => RosParamList,
     coerce  => 1,
 );
+
+has dynamic_reconfigure => (
+    is    => "rw",
+    isa   => Bool,
+);
+
 
 
 

@@ -40,6 +40,7 @@ method _build_class {
     return ucfirst $class;
 }
 
+
 method build() {
     $self->tt_write( $self->node_src_file => "node.cpp.tt" );
 }
