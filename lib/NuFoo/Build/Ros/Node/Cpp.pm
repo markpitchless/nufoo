@@ -43,6 +43,9 @@ method _build_class {
 
 method build() {
     $self->tt_write( $self->node_src_file => "node.cpp.tt" );
+    if ( $self->dynamic_reconfigure ) {
+        $self->tt_write( $self->cfg_file => "dynamic_reconfigure.cfg.tt" );
+    }
 }
 
 __PACKAGE__->meta->make_immutable;

@@ -9,6 +9,7 @@ use NuFoo::Types qw(:all);
 use NuFoo::Types::Ros qw(:all);
 use NuFoo::Types::Ros::Param qw(:all);
 use Log::Any qw($log);
+use Path::Class;
 
 with 'NuFoo::Role::Ros';
 
@@ -17,6 +18,19 @@ has name => (
     isa     => RosNodeName,
     required => 1,
 );
+
+has class_name => (
+    is => "rw",
+    isa => Str,
+    required   => 1,
+    lazy_build => 1,
+    documentation => q{Class name version of the node name. Default generates camel case version of the name. e.g. a node called foo_bar gets class name FooBar.}
+);
+method _build_class_name {
+    my $class_name = $self->name;
+    $class_name =~ s/_(\w)/\U$1/;
+    return ucfirst $class_name;
+}
 
 has package => (
     is      => "rw",
@@ -35,6 +49,15 @@ has dynamic_reconfigure => (
     isa   => Bool,
 );
 
+has cfg_file => (
+    is  => "rw",
+    isa => File,
+    lazy_build => 1,
+    documentation => q{File path for this nodes dynamic reconfigure cfg file. Default uses <class_name>.cfg}
+);
+method _build_cfg_file() {
+    return file("cfg", $self->class.".cfg");
+}
 
 
 
