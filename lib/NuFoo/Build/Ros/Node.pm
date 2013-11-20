@@ -1,4 +1,4 @@
-package NuFoo::Build::Ros::Node::Cpp;
+package NuFoo::Build::Ros::Node;
 
 our $VERSION = '0.01';
 
@@ -58,11 +58,7 @@ __END__
 
 =head1 NAME
 
-NuFoo::Build::Ros::Node::Cpp - 
-
-=head1 SYNOPSIS
-
- nufoo Ros.Node.Cpp [ATTRIBUTES] 
+NuFoo::Build::Ros::Node - 
 
 =head1 DESCRIPTION
 
@@ -72,7 +68,7 @@ NuFoo::Build::Ros::Node::Cpp -
 
 =head1 EXAMPLES
 
- nufoo Ros.Node.Cpp
+ nufoo Ros.Node
 
 =head1 SEE ALSO
 
