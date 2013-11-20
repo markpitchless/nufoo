@@ -16,6 +16,7 @@ sub _build_var_name {
     my $self = shift;
     my $name = $self->topic;
     $name =~ s{/}{_}g;
+    $name =~ s{~}{}g;
     return $name;
 }
 
