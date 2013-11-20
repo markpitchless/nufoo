@@ -16,15 +16,53 @@ extends 'NuFoo::Builder';
 with 'NuFoo::Role::TT',
      'NuFoo::Role::Ros::Node';
 
+around BUILDARGS => sub {
+    my $orig  = shift;
+    my $class = shift;
+    my $args = ref $_[0] ? $_[0] : {@_};
+    $args->{language} = "py"  if exists $args->{py} && $args->{py};
+    $args->{language} = "cpp" if exists $args->{cpp} && $args->{cpp};
+    return $class->$orig($args);
+};
+
+has language => (
+    is => "rw",
+    isa => Str
+    predicate => 'has_language',
+    required => 1,
+    default => "py",
+);
+
+has cpp => ( is => "ro", isa => Bool, reader => 'is_cpp', init_arg => 'cpp' );
+method is_cpp() {
+    return 1 if $self->has_language && $self->language eq "cpp";
+    return 0;
+}
+
+has py => ( is => "ro", isa => Bool, reader => 'is_py', init_arg => 'py' );
+method py() {
+    return 1 if $self->has_language && $self->language eq "py";
+    return 0;
+}
+
 has node_src_file => (
     is => "rw",
     isa => File,
     required => 1,
     lazy_build => 1,
 );
-
 method _build_node_src_file { 
     file($self->src_dir, $self->name . ".cpp");
+}
+
+has node_script_file => (
+    is => "rw",
+    isa => File,
+    required => 1,
+    lazy_build => 1,
+);
+method _build_node_script_file {
+    file($self->scripts_dir, $self->name . ".py");
 }
 
 has class => (
@@ -42,7 +80,15 @@ method _build_class {
 
 
 method build() {
-    $self->tt_write( $self->node_src_file => "node.cpp.tt" );
+    if ($self->is_cpp) {
+        $self->tt_write( $self->node_src_file => "node.cpp.tt" );
+    }
+    elsif ($self->is_py) {
+        $self->tt_write( $self->node_script_file => "node.py.tt" );
+    }
+    else {
+        confess "Don't now how to build '".$self->language."' nodes.";
+    }
     if ( $self->dynamic_reconfigure ) {
         $self->tt_write( $self->cfg_file => "dynamic_reconfigure.cfg.tt" );
     }
