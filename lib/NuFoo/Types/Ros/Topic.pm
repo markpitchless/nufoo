@@ -27,6 +27,7 @@ sub _build_cpp_class {
     return $class;
 }
 
+
 sub new_from_string {
     my $proto = shift;
     my $class = ref $proto || $proto;

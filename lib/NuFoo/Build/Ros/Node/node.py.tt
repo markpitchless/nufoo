@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
 import rospy;
-
-from std_msgs.msg import Bool, Float32
-from std_srvs.srv import *
-from ab_pickup.srv import *
+[% IF dynamic_reconfigure %]
+from dynamic_reconfigure.server import Server
+from [% package %].cfg import [% class_name %]Config
+[% END %]
+from std_msgs.msg import *
 
 class [% class_name %](object):
     """
@@ -17,7 +18,7 @@ class [% class_name %](object):
         subscribers, etc.
         """
         [%- FOR param IN params %]
-        self.[% param.name %] = [% param.default ? '"' _ param.default _ '"' : "None" %]
+        self._[% param.name %] = [% param.default ? '"' _ param.default _ '"' : "None" %]
         [%- END %]
 
         [%- FOREACH pub IN publishers %]
@@ -37,8 +38,19 @@ class [% class_name %](object):
         #while not rospy.is_shutdown():
         #    str = "hello world %s" % rospy.get_time()
         #    rospy.loginfo(str)
-        #    pub.publish(String(str))
         #    rospy.sleep(1.0)
+
+    [%- IF dynamic_reconfigure %]
+    def _config_cb(self, config, level):
+        """
+        Handles incoming dynamic reconfigure requests, updating the objects
+        attributes with the new config.
+        """
+        [%- FOR param IN params %]
+        self._[% param.name %] = config.[% param.name %]
+        [%- END %]
+        return config
+    [%- END %]
         
     [%-# Create callbacks for the subscribers setup in __init__ %]
     [%- FOREACH sub IN subscribers %]
