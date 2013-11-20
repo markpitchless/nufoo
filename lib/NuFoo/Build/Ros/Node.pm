@@ -27,7 +27,7 @@ around BUILDARGS => sub {
 
 has language => (
     is => "rw",
-    isa => Str
+    isa => Str,
     predicate => 'has_language',
     required => 1,
     default => "py",
