@@ -19,12 +19,20 @@ sub _build_var_name {
     return $name;
 }
 
-has cpp_class => ( is => "ro", isa => Str, lazy_build => 1 );
-sub _build_cpp_class {
+has cpp_type => ( is => "ro", isa => Str, lazy_build => 1 );
+sub _build_cpp_type {
     my $self = shift;
     my $class = $self->msg_type;
     $class =~ s{/}{::}g;
     return $class;
+}
+
+has py_type => ( is => "ro", isa => Str, lazy_build => 1 );
+sub _build_py_type {
+    my $self = shift;
+    my $name = $self->msg_type;
+    $name =~ s{^.*?/}{}g;
+    return $name;
 }
 
 

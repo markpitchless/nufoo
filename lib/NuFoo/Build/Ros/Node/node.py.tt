@@ -22,11 +22,11 @@ class [% class_name %](object):
         [%- END %]
 
         [%- FOREACH pub IN publishers %]
-        self._[% pub.var_name %]_pub = rospy.Publisher("[% pub.topic%]", [% pub.msg_type %])
+        self._[% pub.var_name %]_pub = rospy.Publisher("[% pub.topic %]", [% pub.py_type %])
 
         [%- END %]
         [%- FOREACH sub IN subscribers %]
-        self._[% sub.var_name %]_sub = rospy.Subscriber( "[% sub.topic %]", [% sub.msg_type %], self._[% sub.var_name %]_cb, queue_size=1 )
+        self._[% sub.var_name %]_sub = rospy.Subscriber("[% sub.topic %]", [% sub.py_type %], self._[% sub.var_name %]_cb, queue_size=1)
 
         [%- END %]
 

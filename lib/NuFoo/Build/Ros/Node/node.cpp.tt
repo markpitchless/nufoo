@@ -21,7 +21,7 @@ public:
     {
         // Setup ROS topics and services
         [%- FOREACH pub IN publishers %]
-        [% pub.var_name %]_pub_ = nh_.advertise<[% pub.cpp_class %]>("[% pub.topic %]", 1);
+        [% pub.var_name %]_pub_ = nh_.advertise<[% pub.cpp_type %]>("[% pub.topic %]", 1);
 
         [%- END %]
         [%- FOREACH sub IN subscribers %]
@@ -75,7 +75,7 @@ protected:
     /**
      * Handles incoming [% sub.msg_type %] on topic [% sub.topic %]
      */
-    void [% class_name %]::[% sub.var_name %]_cb_ (const [% sub.cpp_class %]::ConstPtr& msg)
+    void [% class_name %]::[% sub.var_name %]_cb_ (const [% sub.cpp_type %]::ConstPtr& msg)
     {
         // @todo - do stuff with msg;
     }
