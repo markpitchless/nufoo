@@ -13,7 +13,7 @@ gen.add("[% param.name %]", str_t, 0, "A string parameter", "[% param.default %]
 [%- ELSIF param.data_type == "int" %]
 gen.add("[% param.name %]", int_t, 0, "A int param", [% param.default %], 0, 100)
 [%- ELSIF param.data_type == "float" OR param.data_type == "double" %]
-gen.add("[% param.name %]", int_t, 0, "A double param", [% param.default %], 0.0, 100.0)
+gen.add("[% param.name %]", double_t, 0, "A double param", [% param.default %], 0.0, 100.0)
 [%- END %]
 [%- END %]
 

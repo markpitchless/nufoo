@@ -28,6 +28,10 @@ class [% class_name %](object):
         self._[% param.name %] = [% param.default ? '"' _ param.default _ '"' : "None" %]
         [%- END %]
 
+        [%- IF dynamic_reconfigure %]
+        self._config_server = Server([% class_name %]Config, self._config_cb)
+        [%- END %]
+
         [%- FOREACH pub IN publishers %]
         self._[% pub.var_name %]_pub = rospy.Publisher("[% pub.topic %]", [% pub.py_type %])
 
