@@ -13,9 +13,9 @@ class [% class_name %](object):
 
     def __init__(self, ):
         """
+        Construct a new [% class_name %], setting up it's publishers,
+        subscribers, etc.
         """
-        rospy.init_node("[% name %]")
-
         [%- FOR param IN params %]
         self.[% param.name %] = [% param.default ? '"' _ param.default _ '"' : "None" %]
         [%- END %]
@@ -31,6 +31,7 @@ class [% class_name %](object):
 
     def spin(self):
         """
+        Sets the node spinning. rospy.init should have been called first.
         """
         rospy.spin();
         #while not rospy.is_shutdown():
@@ -42,6 +43,9 @@ class [% class_name %](object):
     [%-# Create callbacks for the subscribers setup in __init__ %]
     [%- FOREACH sub IN subscribers %]
     def _[% sub.var_name %]_cb(self, msg):
+        """
+        Handles incoming [% sub.msg_type %] on topic [% sub.topic %]
+        """
         # @todo - do someting with msg
         pass
 
@@ -50,6 +54,7 @@ class [% class_name %](object):
 
 if __name__ == "__main__":
     try:
+        rospy.init_node("[% name %]")
         node = [% class_name %]()
         node.spin()
     except rospy.ROSInterruptException:
