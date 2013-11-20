@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 
+# ####################################################################
+# Copyright (c) 2013 Shadow Robot Company Ltd.
+# All rights reserved.
+# This code is proprietary and may not be used, copied, distributed without
+# prior authorisation and agreement from Shadow Robot Company Ltd. *
+# ####################################################################
+
 import rospy;
 [% IF dynamic_reconfigure %]
 from dynamic_reconfigure.server import Server
@@ -14,7 +21,7 @@ class [% class_name %](object):
 
     def __init__(self, ):
         """
-        Construct a new [% class_name %], setting up it's publishers,
+        @brief Construct a new [% class_name %], setting up it's publishers,
         subscribers, etc.
         """
         [%- FOR param IN params %]
@@ -32,7 +39,7 @@ class [% class_name %](object):
 
     def spin(self):
         """
-        Sets the node spinning. rospy.init should have been called first.
+        @brief Sets the node spinning. rospy.init should have been called first.
         """
         rospy.spin();
         #while not rospy.is_shutdown():
@@ -43,8 +50,9 @@ class [% class_name %](object):
     [%- IF dynamic_reconfigure %]
     def _config_cb(self, config, level):
         """
-        Handles incoming dynamic reconfigure requests, updating the objects
+        @brief Handles incoming dynamic reconfigure requests, updating the objects
         attributes with the new config.
+        @param config Config object, a [% class_name %]Config
         """
         [%- FOR param IN params %]
         self._[% param.name %] = config.[% param.name %]
@@ -56,7 +64,8 @@ class [% class_name %](object):
     [%- FOREACH sub IN subscribers %]
     def _[% sub.var_name %]_cb(self, msg):
         """
-        Handles incoming [% sub.msg_type %] on topic [% sub.topic %]
+        @brief Handles incoming topic [% sub.topic %]
+        @param msg The [% sub.msg_type %] message.
         """
         # @todo - do someting with msg
         pass

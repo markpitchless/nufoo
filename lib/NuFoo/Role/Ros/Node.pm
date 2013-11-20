@@ -12,7 +12,8 @@ use NuFoo::Types::Ros::Topic qw(:all);
 use Log::Any qw($log);
 use Path::Class;
 
-with 'NuFoo::Role::Ros';
+with 'NuFoo::Role::Authorship',
+     'NuFoo::Role::Ros';
 
 has name => (
     is      => "rw",

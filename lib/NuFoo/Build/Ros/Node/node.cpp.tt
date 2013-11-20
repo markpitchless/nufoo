@@ -1,3 +1,17 @@
+/*
+ * Copyright (c) 2013 Shadow Robot Company Ltd.
+ *  All rights reserved.
+ *
+ * This code is proprietary and may not be used, copied, distributed without
+ *  prior authorisation and agreement from Shadow Robot Company Ltd.
+ */
+
+/**
+ * @file   [% name %].cpp
+ * @author [% author %] <[% email %]>
+ * @brief  Does...
+ **/
+
 #include <ros/ros.h>
 [% IF dynamic_reconfigure %]
 #include <dynamic_reconfigure/server.h>
