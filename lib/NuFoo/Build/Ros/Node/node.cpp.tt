@@ -1,19 +1,19 @@
 #include <ros/ros.h>
 [% IF dynamic_reconfigure %]
 #include <dynamic_reconfigure/server.h>
-#include "[% package %]/[% class %]Config.h"
+#include "[% package %]/[% class_name %]Config.h"
 [% END %]
 
 namespace [% package %] {
 
-class [% class %] {
+class [% class_name %] {
 
 public:
     /**
      * Construct a new [% class_name %], setting up it's publishers,
      * subscribers, etc.
      */
-    [% class %]()
+    [% class_name %]()
       : nh_("~")
       [%- FOR param IN params %]
       , [% param.name %]([% param.default %])
@@ -35,7 +35,7 @@ public:
      * Handles incoming dynamic reconfigure requests, updtaing the classes
      * members from the config.
      */
-    void config_cb_([% package %]::[% class %]Config &config, uint32_t level)
+    void config_cb_([% package %]::[% class_name %]Config &config, uint32_t level)
     {
       [%- FOR param IN params %]
         [% param.name %] = config.[% param.name %];
@@ -61,7 +61,7 @@ protected:
     [%- END %]
     [%- IF dynamic_reconfigure %]
 
-    dynamic_reconfigure::Server<[% package %]::[% class %]Config> config_server_
+    dynamic_reconfigure::Server<[% package %]::[% class_name %]Config> config_server_
     [%- END %]
 
     [%- FOREACH pub IN publishers %]
@@ -89,7 +89,7 @@ int
 main (int argc, char** argv)
 {
   ros::init (argc, argv, "[% name %]");
-  [% package %]::[% class %] node;
+  [% package %]::[% class_name %] node;
   node.spin();
   return 0;
 }

@@ -65,19 +65,6 @@ method _build_node_script_file {
     file($self->scripts_dir, $self->name . ".py");
 }
 
-has class => (
-    is => "rw",
-    isa => Str,
-    required => 1,
-    lazy_build => 1,
-);
-
-method _build_class {
-    my $class = $self->name;
-    $class =~ s/_(\w)/\U$1/;
-    return ucfirst $class;
-}
-
 
 method build() {
     if ($self->is_cpp) {

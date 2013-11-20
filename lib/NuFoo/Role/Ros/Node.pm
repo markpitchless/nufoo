@@ -69,7 +69,7 @@ has cfg_file => (
     documentation => q{File path for this nodes dynamic reconfigure cfg file. Default uses <class_name>.cfg}
 );
 method _build_cfg_file() {
-    return file("cfg", $self->class.".cfg");
+    return file("cfg", $self->class_name.".cfg");
 }
 
 
