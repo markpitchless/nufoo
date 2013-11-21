@@ -157,7 +157,7 @@ L<Moose::Manual::MethodModifiers> for details. e.g.
     my $vars = super();
     $vars->{hello} = "world";
     return $vars;
- }
+ };
 
 or
 
@@ -167,7 +167,7 @@ or
     my $vars = $self->$orig(@_);
     $vars->{hello} = "world";
     return $vars;
- }
+ };
 
 
 =head2 tt_attribs

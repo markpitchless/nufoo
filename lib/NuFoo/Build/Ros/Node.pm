@@ -40,7 +40,7 @@ method is_cpp() {
 }
 
 has py => ( is => "ro", isa => Bool, reader => 'is_py', init_arg => 'py' );
-method py() {
+method is_py() {
     return 1 if $self->has_language && $self->language eq "py";
     return 0;
 }
@@ -65,6 +65,31 @@ method _build_node_script_file {
     file($self->scripts_dir, $self->name . ".py");
 }
 
+# Returns unique list of used message types.
+method used_msg_types() {
+    my %types;
+    for (@{$self->publishers}, @{$self->subscribers}) {
+        $types{$_->msg_type}++;
+    }
+    return keys %types;
+}
+
+method used_msg_packages() {
+    my @types = $self->used_msg_types;
+    my %pkgs;
+    @pkgs{ map { s{/.*$}{}; $_ } @types } = (1);
+    print "Hello: ", %pkgs, "\n";
+    return keys %pkgs;
+}
+
+around 'tt_vars' => sub {
+    my $orig = shift;
+    my $self = shift;
+    my $vars = $self->$orig(@_);
+    $vars->{used_msg_types} = [$self->used_msg_types];
+    $vars->{used_msg_packages} = [$self->used_msg_packages];
+    return $vars;
+};
 
 method build() {
     if ($self->is_cpp) {

@@ -8,11 +8,13 @@
 # ####################################################################
 
 import rospy;
+[% FOR pkg IN used_msg_packages %]
+from [% pkg %].msg import *
+[%- END %]
 [% IF dynamic_reconfigure %]
 from dynamic_reconfigure.server import Server
 from [% package %].cfg import [% class_name %]Config
 [% END %]
-from std_msgs.msg import *
 
 class [% class_name %](object):
     """
@@ -34,11 +36,10 @@ class [% class_name %](object):
 
         [%- FOREACH pub IN publishers %]
         self._[% pub.var_name %]_pub = rospy.Publisher("[% pub.topic %]", [% pub.py_type %])
-
         [%- END %]
+
         [%- FOREACH sub IN subscribers %]
         self._[% sub.var_name %]_sub = rospy.Subscriber("[% sub.topic %]", [% sub.py_type %], self._[% sub.var_name %]_cb, queue_size=1)
-
         [%- END %]
 
     def spin(self):

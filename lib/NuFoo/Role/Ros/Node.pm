@@ -30,7 +30,7 @@ has class_name => (
 );
 method _build_class_name {
     my $class_name = $self->name;
-    $class_name =~ s/_(\w)/\U$1/;
+    $class_name =~ s/_(\w)/\U$1/g;
     return ucfirst $class_name;
 }
 
