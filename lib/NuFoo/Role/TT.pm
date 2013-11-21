@@ -72,9 +72,9 @@ sub tt_process {
 sub tt_write {
     my $self = shift;
     my ($file,$tmpl,%args) = @_;
-    $args{vars} ||= {};
-    my $out  = $self->tt_process( $tmpl, $args{vars} );
-    $self->write_file( $file, \$out );
+    my $vars = exists $args{vars} ? delete $args{vars} : {};
+    my $out = $self->tt_process( $tmpl, $vars );
+    $self->write_file( $file, \$out, %args );
 }
 
 1;
@@ -130,11 +130,19 @@ C<_build_tt>.
 
  $self->tt_write( $file => $template );
 
-Combine template processing and writing.
+Combine template processing and writing. A named vars arg can be used to pass
+extra template variables in:
+ 
+ $self->tt_write( $file => $template, vars => { 'magic' => "yes" } );
+
+Any other named args are passed on to the write_file call made on the nufoo
+object:
+
+ $self->tt_write( "bin/$name" => "cmd.pl.tt", mod => "a+x" );
 
 =head2 tt_process
 
- my $text  = $self->tt_process( 'hello.txt.tt' );
+ my $text = $self->tt_process( 'hello.txt.tt' );
  $self->write_file( "hello.txt" => $out );
 
 Process the template given as the first arg returning the result as a string.

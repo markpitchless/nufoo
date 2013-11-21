@@ -22,6 +22,7 @@ my $builder = Module::Build->new(
         'File::Spec'                 => 0,
         'File::Path'                 => 0,
         'File::Find'                 => 0,
+        'File::chmod'                => 0,
         'Template'                   => 0,
         'Log::Any'                   => 0.06,
         'Log::Any::Adapter'          => 0.02,

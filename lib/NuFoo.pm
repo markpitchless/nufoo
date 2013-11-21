@@ -23,6 +23,7 @@ use MooseX::Getopt::Meta::Attribute::Trait;
 use NuFoo::Conf;
 use NuFoo::Types qw(File Dir FileList);
 use Cwd qw(getcwd);
+use File::chmod;
 
 has include_path => (
     is         => 'rw',
@@ -182,7 +183,8 @@ method mkdir (Dir $dir does coerce) {
 method write_file (
     File $file does coerce,
     Str|ScalarRef $content,
-    Bool :$force?
+    Bool :$force?,
+    Str  :$mod?
 ) {
     $force = $self->force if !defined $force;
     
@@ -204,6 +206,10 @@ method write_file (
         };
         print $out (ref $content ? $$content : $content);
         $log->info( ($exists ? "Over wrote" : "Created") . " file '$log_file'" );
+        if ($mod) {
+            chmod($mod, $file);
+            $log->info( "Set mode $mod for '$log_file' " );
+        }
     }
     return $file;
 }
@@ -300,8 +306,8 @@ Return list of availiable builder names.
 
 =head2 write_file
 
-    $self->write_file( $file, $content );
-    $self->write_file( $file, \$content );
+    $self->write_file( $file, $content, %args );
+    $self->write_file( $file, \$content, %args );
     $self->write_file( "hello.txt", "Hello World" );
     $self->write_file( ['lib', 'Hello', 'World.pm'], "package Hello::World\n..." );
 
@@ -310,9 +316,22 @@ and infact have their own write_file method that proxies here.
 
 File path is relative to L</outdir> and any missing directories in the path are
 created. Content can be either a string or a ref to a string. Won't overrite
-files unless L</force> in set or a true force arg is explicity passed in.
+files unless L</force> is set or a true force arg is explicity passed in.
 
 Logs everything done.
+
+The extra named args can be:
+
+=over 4
+
+=item mod
+
+Set file permissions on the created file, uses chmod text style settings, in
+any format accepted by L<File::chmod>. Often used when creating executables.
+
+    $self->write_file( "bin/$name", $content, mod => "a+x" );
+
+=back
 
 =head2 mkdir(Dir $dir)
 
