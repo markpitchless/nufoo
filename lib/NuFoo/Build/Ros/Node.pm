@@ -78,7 +78,6 @@ method used_msg_packages() {
     my @types = $self->used_msg_types;
     my %pkgs;
     @pkgs{ map { s{/.*$}{}; $_ } @types } = (1);
-    print "Hello: ", %pkgs, "\n";
     return keys %pkgs;
 }
 
@@ -96,13 +95,15 @@ method build() {
         $self->tt_write( $self->node_src_file => "node.cpp.tt" );
     }
     elsif ($self->is_py) {
-        $self->tt_write( $self->node_script_file => "node.py.tt" );
+        $self->tt_write(
+            $self->node_script_file => "node.py.tt", mod => "a+x" );
     }
     else {
         confess "Don't now how to build '".$self->language."' nodes.";
     }
     if ( $self->dynamic_reconfigure ) {
-        $self->tt_write( $self->cfg_file => "dynamic_reconfigure.cfg.tt" );
+        $self->tt_write(
+            $self->cfg_file => "dynamic_reconfigure.cfg.tt", mod => "a+x" );
     }
 }
 
