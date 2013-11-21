@@ -13,6 +13,9 @@
  **/
 
 #include <ros/ros.h>
+[% FOR msg_type IN used_msg_types %]
+#include <[% msg_type %].h>
+[%- END %]
 [% IF dynamic_reconfigure %]
 #include <dynamic_reconfigure/server.h>
 #include "[% package %]/[% class_name %]Config.h"
