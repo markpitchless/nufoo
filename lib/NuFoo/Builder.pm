@@ -40,11 +40,11 @@ around BUILDARGS => sub {
     if ($args{nufoo}) {
         my $conf     = $args{nufoo}->conf;
         my @sections = $class->build_name;
-        foreach ( $class->meta->calculate_all_roles ) {
+        foreach ( $class->meta->calculate_all_roles_with_inheritance ) {
             my $name = $_->name;
             next if $name =~ /\|/; # wtf are these piped name lists?
-            $name =~ s/^NuFoo::Role:://;
-            $name =~ s/::/\./;
+            $name =~ s/^NuFoo::Role::// || next;
+            $name =~ s/::/\./g;
             unshift @sections, $name;
         }
         my %extra;
