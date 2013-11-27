@@ -55,7 +55,7 @@ lib/NuFoo/Build/Perl/Moose/Class.pm
 lib/NuFoo/Build/Perl/Moose/Class/class-body.pl.tt
 lib/NuFoo/Build/Perl/Moose/Class/class-uses.pl.tt
 lib/NuFoo/Build/Perl/Moose/Class/class.pm.tt
-lib/NuFoo/Build/Perl/Moose/Class/declare.pm.tt
+lib/NuFoo/Build/Perl/Moose/Class/moops.pm.tt
 lib/NuFoo/Build/Perl/Moose/Class/description.pod.tt
 lib/NuFoo/Build/Perl/Moose/Class/see_also.pod.tt
 lib/NuFoo/Build/Perl/Moose/Class/synopsis.pod.tt
