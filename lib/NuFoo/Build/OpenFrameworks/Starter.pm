@@ -1,17 +1,16 @@
+package NuFoo::Build::OpenFrameworks::Starter;
+use Moops;
 
-use MooseX::Declare;
-use Modern::Perl;
-
-class NuFoo::Build::OpenFrameworks::Starter
-    extends NuFoo::Builder with NuFoo::Role::TT {
-    our $VERSION = '0.01';
-    use MooseX::Types::Moose qw( :all );
+class NuFoo::Build::OpenFrameworks::Starter 0.01
+    extends NuFoo::Builder
+    with NuFoo::Role::TT
+    using Moose {
     use NuFoo::Types qw();
     use Log::Any qw($log);
 
     has name => (
         is       => "rw",
-        isa      => "Str",
+        isa      => Str,
         required => 1,
         #default  => "testApp",
         documentation => qq{Name for the new of app.},
@@ -19,7 +18,7 @@ class NuFoo::Build::OpenFrameworks::Starter
 
     has class => (
         is         => "rw",
-        isa        => "Str",
+        isa        => Str,
         lazy_build => 1,
         documentation => qq{Class name of the ofBaseApp sub class. Defaults to <name>App.},
     );
@@ -32,7 +31,7 @@ class NuFoo::Build::OpenFrameworks::Starter
 
     has gitignore => (
         is         => "rw",
-        isa        => "Bool",
+        isa        => Bool,
         default    => 0,
         documentation => qq{Add appropriate .gitignore files.},
     );
