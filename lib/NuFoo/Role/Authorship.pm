@@ -1,5 +1,5 @@
 package NuFoo::Role::Authorship;
-use MooseX::Declare;
+use Moops;
 
 =head1 NAME
 
@@ -7,7 +7,7 @@ NuFoo::Role::Authorship - Role for builders that want author information.
 
 =cut
 
-role NuFoo::Role::Authorship {
+role NuFoo::Role::Authorship using Moose {
     use NuFoo::Types qw( EmailAddress );
 
     has author => (
@@ -21,7 +21,7 @@ role NuFoo::Role::Authorship {
         isa           => EmailAddress,
         documentation => qq{Author's email},
     );
-};
+}
 
 
 1;
