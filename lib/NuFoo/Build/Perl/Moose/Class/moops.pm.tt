@@ -1,8 +1,8 @@
 [% WRAPPER "pod-wrap.pod.tt" %]
+package [% class %];
 use Moops;
 
-class [% class %][% IF extends.size %] extends [% extends.join(" extends ") %][% END %][%- IF with.size %] with [% with.join(" with ") %][% END %] {
-    our $VERSION = '0.01';
+class [% class %] 0.01[% IF extends.size %] extends [% extends.join(" extends ") %][% END %][%- IF with.size %] with [% with.join(" with ") %][% END %] using Moose {
 [%- IF uses.size %]
     [%- FOREACH use_class IN uses %]
     use [% use_class %];
@@ -12,7 +12,7 @@ class [% class %][% IF extends.size %] extends [% extends.join(" extends ") %][%
 [%- FOREACH attr IN has  %]
     has [% attr.name %] => (
         is      => "[% attr.is %]",
-        isa     => "[% attr.isa %]",
+        isa     => [% attr.isa %],
         [%- IF attr.default %]
         default => "[% attr.default %]",
         [%- END %]
@@ -20,6 +20,7 @@ class [% class %][% IF extends.size %] extends [% extends.join(" extends ") %][%
 
 [%- END %]
 [%      PROCESS "class-body.pl.tt" | indent(4) -%]
+
 }
 
 1;
