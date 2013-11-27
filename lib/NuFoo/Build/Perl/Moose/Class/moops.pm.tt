@@ -1,5 +1,5 @@
 [% WRAPPER "pod-wrap.pod.tt" %]
-use MooseX::Declare;
+use Moops;
 
 class [% class %][% IF extends.size %] extends [% extends.join(" extends ") %][% END %][%- IF with.size %] with [% with.join(" with ") %][% END %] {
     our $VERSION = '0.01';

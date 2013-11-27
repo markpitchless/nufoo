@@ -68,11 +68,11 @@ has t_file_name => (
     documentation => qq{Name for .t file when is using t_file option. Defaults to sensible name.},
 );
 
-has declare => (
+has moops => (
     is      => "rw",
     isa     => "Bool",
     default => 0,
-    documentation => qq{Use MooseX::Declare.},
+    documentation => qq{Use Moops with it's excellent new syntax.},
 );
 
 
@@ -82,7 +82,7 @@ sub _build_test_class_name {
 }
 
 method build {
-    my $tmpl = $self->declare ? "declare.pm.tt" : "class.pm.tt";
+    my $tmpl = $self->moops ? "moops.pm.tt" : "class.pm.tt";
     $self->tt_write( $self->class_file => $tmpl );
 
     if ( $self->test_more ) {
@@ -173,9 +173,9 @@ Create a normal .t file to run the Test::Class when using test_class option.
 
 Name for .t file when is using t_file option. Defaults to sensible name.
 
-=item decalre
+=item moops
 
-Use L<MooseX::Declare> with it's excellent new syntax.
+Use L<Moops> with it's excellent new syntax.
 
 =back
 
@@ -193,7 +193,7 @@ Use L<MooseX::Declare> with it's excellent new syntax.
  
  nufoo Perl.Moose.Class --class=User --has=name --test_more
  
- nufoo Perl.Moose.Class --declare --class=Point --has=Int:x --has=Int:y
+ nufoo Perl.Moose.Class --moops --class=Point --has=Int:x --has=Int:y
 
 =head1 SEE ALSO
 
