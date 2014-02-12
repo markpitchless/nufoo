@@ -50,12 +50,14 @@ has publishers => (
     is      => "rw",
     isa     => RosTopicList,
     coerce  => 1,
+    default => sub { [] },
 );
 
 has subscribers => (
     is      => "rw",
     isa     => RosTopicList,
     coerce  => 1,
+    default => sub { [] },
 );
 
 has dynamic_reconfigure => (
