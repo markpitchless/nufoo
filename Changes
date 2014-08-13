@@ -1,5 +1,7 @@
 Revision history for NuFoo
 
+    * Add Builder Ros.Node.
+
 0.06    18th Nove 2013
 
     * Use MooseX::Getopt::Usage for arg parsing, usage and manpage generation.
